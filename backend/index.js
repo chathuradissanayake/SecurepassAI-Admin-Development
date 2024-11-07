@@ -9,7 +9,6 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors());
 
 // Configure CORS to allow requests from Frontend
 app.use(cors({

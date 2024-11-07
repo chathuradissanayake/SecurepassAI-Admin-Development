@@ -11,10 +11,18 @@ const UserList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 10;
 
+  const [newUser, setNewUser] = useState({
+    firstName: '',
+    lastName: '',
+    userId: '',
+    email: '',
+    password: ''
+  });
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('/users');
+        const response = await axios.get('/users', { withCredentials: true });
         console.log('API response:', response.data);
         if (Array.isArray(response.data)) {
           setUsers(response.data);
@@ -30,6 +38,34 @@ const UserList = () => {
 
     fetchUsers();
   }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setNewUser((prevUser) => ({
+      ...prevUser,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post('/users/register', newUser, { withCredentials: true });
+      setIsModalVisible(false);
+      setNewUser({
+        firstName: '',
+        lastName: '',
+        userId: '',
+        email: '',
+        password: ''
+      });
+      // Refresh the user list
+      const response = await axios.get('/users', { withCredentials: true });
+      setUsers(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   if (loading) return <Spinner />;
   if (error) return <p>Error: {error}</p>;
@@ -95,27 +131,69 @@ const UserList = () => {
 
       <Modal isVisible={isModalVisible} onClose={() => setIsModalVisible(false)}>
         <h2 className="text-xl font-bold mb-4">Add New User</h2>
-        {/* Add your form for creating a new user here */}
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-gray-700">First Name</label>
-            <input type="text" className="w-full p-2 border rounded" />
+            <input
+              type="text"
+              name="firstName"
+              value={newUser.firstName}
+              onChange={handleChange}
+              className="w-full p-2 border rounded"
+              required
+            />
           </div>
           <div className="mb-4">
             <label className="block text-gray-700">Last Name</label>
-            <input type="text" className="w-full p-2 border rounded" />
+            <input
+              type="text"
+              name="lastName"
+              value={newUser.lastName}
+              onChange={handleChange}
+              className="w-full p-2 border rounded"
+              required
+            />
           </div>
           <div className="mb-4">
             <label className="block text-gray-700">Email</label>
-            <input type="email" className="w-full p-2 border rounded" />
+            <input
+              type="email"
+              name="email"
+              value={newUser.email}
+              onChange={handleChange}
+              className="w-full p-2 border rounded"
+              required
+            />
           </div>
           <div className="mb-4">
             <label className="block text-gray-700">User ID</label>
-            <input type="text" className="w-full p-2 border rounded" />
+            <input
+              type="text"
+              name="userId"
+              value={newUser.userId}
+              onChange={handleChange}
+              className="w-full p-2 border rounded"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700">Password</label>
+            <input
+              type="password"
+              name="password"
+              value={newUser.password}
+              onChange={handleChange}
+              className="w-full p-2 border rounded"
+              required
+            />
           </div>
           <div className="flex justify-end">
-            <button type="button" className="bg-gray-500 text-white px-4 py-2 rounded mr-2" onClick={() => setIsModalVisible(false)}>Cancel</button>
-            <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Save</button>
+            <button type="button" className="bg-gray-500 text-white px-4 py-2 rounded mr-2" onClick={() => setIsModalVisible(false)}>
+              Cancel
+            </button>
+            <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
+              Save
+            </button>
           </div>
         </form>
       </Modal>
