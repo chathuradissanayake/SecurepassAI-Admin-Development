@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Spinner from './Spinner';
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -26,7 +27,7 @@ const UserList = () => {
     fetchUsers();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Spinner/>;
   if (error) return <p>Error: {error}</p>;
 
   return (
