@@ -9,7 +9,6 @@ This project is the backend for the QR and FR Admin application. It provides the
 - Node.js
 - Express.js
 - MongoDB
-- JWT for authentication
 - Bcrypt for Hashing Password
 
 ## Getting Started
