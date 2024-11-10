@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Spinner from './Spinner';
-import Modal from './Modal';
+import Spinner from '../components/Spinner';
+import Modal from '../components/Modal';
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -10,6 +11,7 @@ const UserList = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 10;
+  const navigate = useNavigate();
 
   const [newUser, setNewUser] = useState({
     firstName: '',
@@ -22,7 +24,7 @@ const UserList = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('/users', { withCredentials: true });
+        const response = await axios.get('/api/users', { withCredentials: true });
         console.log('API response:', response.data);
         if (Array.isArray(response.data)) {
           setUsers(response.data);
@@ -50,7 +52,7 @@ const UserList = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/users/register', newUser, { withCredentials: true });
+      await axios.post('/api/users/register', newUser, { withCredentials: true });
       setIsModalVisible(false);
       setNewUser({
         firstName: '',
@@ -60,11 +62,15 @@ const UserList = () => {
         password: ''
       });
       // Refresh the user list
-      const response = await axios.get('/users', { withCredentials: true });
+      const response = await axios.get('/api/users', { withCredentials: true });
       setUsers(response.data);
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const handleRowClick = (id) => {
+    navigate(`/users/${id}`);
   };
 
   if (loading) return <Spinner />;
@@ -100,7 +106,7 @@ const UserList = () => {
         </thead>
         <tbody>
           {currentUsers.map(user => (
-            <tr key={user._id} className="border-b">
+            <tr key={user._id} className="border-b cursor-pointer" onClick={() => handleRowClick(user._id)}>
               <td className="p-4">{user.firstName} {user.lastName}</td>
               <td className="p-4">{user.email}</td>
               <td className="p-4">{user.userId}</td>
