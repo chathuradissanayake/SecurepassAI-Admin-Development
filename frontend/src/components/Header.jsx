@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import avatar from "../assets/avatar.png"
 
 const Header = () => {
   const location = useLocation();
@@ -36,7 +37,7 @@ const Header = () => {
         </div>
         <button className="text-gray-600">🌙</button>
         <img
-          src="/path-to-avatar.png"
+          src={avatar}
           alt="User Avatar"
           className="w-8 h-8 rounded-full"
         />
