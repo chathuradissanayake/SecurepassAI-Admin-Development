@@ -5,7 +5,7 @@ import logo from '../assets/logo.png';
 
 const Sidebar = () => {
   return (
-    <aside className="w-64 bg-white shadow-md h-screen p-4 flex flex-col">
+    <aside className="w-64 bg-white h-screen p-4 flex flex-col">
       <div className="flex justify-center mb-8">
         <NavLink to="/">
           
@@ -70,7 +70,7 @@ const Sidebar = () => {
         </ul>
       </nav>
     </aside>
-  );
+  );  
 };
 
 export default Sidebar;
