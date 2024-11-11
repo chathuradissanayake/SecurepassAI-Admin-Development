@@ -5,12 +5,17 @@ import avatar from "../assets/avatar.png"
 const Header = () => {
   const location = useLocation();
 
+
+
   const getTitle = (path) => {
+    if (path.startsWith('/users/') && path.split('/').length === 3) {
+      return 'User Details';
+    }
     switch (path) {
       case '/dashboard':
         return 'Dashboard';
       case '/users':
-        return 'Users List';
+        return 'Users';
       case '/doors':
         return 'Doors';
       case '/settings':
@@ -18,12 +23,12 @@ const Header = () => {
       case '/profile':
         return 'Profile';
       default:
-        return 'Dashboard';
+        return '';
     }
   };
 
   return (
-    <header className="flex justify-between items-center p-4 bg-white shadow-md">
+    <header className="flex justify-between items-center p-4 bg-white ">
       <h2 className="text-gray-600 text-sm">Pages / {getTitle(location.pathname)}</h2>
       <div className="flex items-center gap-4">
         <input
