@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../components/Spinner";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 
 const UserDetails = () => {
-  const { id } = useParams();
+  const { id } = useParams();  
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -30,6 +31,16 @@ const UserDetails = () => {
 
     fetchUser();
   }, [id]);
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`/api/users/${id}`, { withCredentials: true });
+      navigate('/users'); // Redirect to the users list page after deletion
+    } catch (err) {
+      console.error('Error deleting user:', err);
+      setError(err.message);
+    }
+  };
 
   if (loading) return <Spinner />;
   if (error) return <p>Error: {error}</p>;
@@ -57,6 +68,12 @@ const UserDetails = () => {
             <label className="block text-gray-700">User ID</label>
             <p className="p-2 border rounded">{user.userId}</p>
           </div>
+          <button
+            onClick={handleDelete}
+            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+          >
+            Delete User
+          </button>
         </div>
       </div>
     </div>
