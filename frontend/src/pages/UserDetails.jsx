@@ -171,21 +171,22 @@ const UserDetails = () => {
               </button>
             </div>
           ) : (
-            <div className="flex gap-4">
-              <button
-                onClick={() => setIsEditing(true)}
-                className="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700"
-              >
-                Edit
-              </button>
-              <button
-                onClick={handleDelete}
-                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-              >
-                Delete
-              </button>
-            </div>
+            <button
+              onClick={() => setIsEditing(true)}
+              className="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700"
+            >
+              Edit
+            </button>
           )}
+          <div className="mt-8">
+            <button
+              onClick={handleDelete}
+              className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+            >
+              Delete User
+            </button>
+            <p className="text-red-600 mt-2">Warning: This action cannot be undone.</p>
+          </div>
         </div>
       </div>
     </div>
