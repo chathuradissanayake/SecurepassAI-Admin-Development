@@ -12,7 +12,7 @@ const Header = () => {
       return 'User Details';
     }
     switch (path) {
-      case '/dashboard':
+      case '/':
         return 'Dashboard';
       case '/users':
         return 'Users';

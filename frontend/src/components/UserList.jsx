@@ -10,7 +10,7 @@ const UserList = () => {
   const [error, setError] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const usersPerPage = 10;
+  const usersPerPage = 6;
   const navigate = useNavigate();
 
   const [newUser, setNewUser] = useState({
