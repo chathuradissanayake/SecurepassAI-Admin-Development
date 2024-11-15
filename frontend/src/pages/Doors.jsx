@@ -4,7 +4,7 @@ import Header from '../components/Header';
 
 const Doors = () => {
   return (
-    <div className="flex">
+    <div className="flex h-full">
       <Sidebar />
       <div className="flex-1 p-4">
         <Header />
