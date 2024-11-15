@@ -57,25 +57,34 @@ const UserProfile = () => {
         
 
         <div className="bg-white rounded-lg shadow p-6 mb-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <img
-              src="https://via.placeholder.com/150"
-              alt="User Profile"
-              className="w-30 h-30 rounded-full"
-            />
-            <div className="ml-4">
-              <h2 className="text-xl font-semibold mb-3">User Details</h2>
-              <p className="text-gray-600 mb-2">User ID: InSP/2020/11/1111</p>
-              <p className="text-gray-600 mb-2">Name: John Smith</p>
-              <p className="text-gray-600">Email: abc@gmail.com</p>
-            </div>
-          </div>
-          <button className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">
-            Delete User
-          </button>
-        </div>
+  <div className="flex items-center justify-between">
+    {/* User Profile and Details */}
+    <div className="flex items-center">
+      <img
+        src="https://via.placeholder.com/150"
+        alt="User Profile"
+        className="w-30 h-30 rounded-full"
+      />
+      <div className="ml-4">
+        <h2 className="text-xl font-semibold mb-3">User Details</h2>
+        <p className="text-gray-600 mb-2">User ID: InSP/2020/11/1111</p>
+        <p className="text-gray-600 mb-2">Name: John Smith</p>
+        <p className="text-gray-600">Email: abc@gmail.com</p>
       </div>
+    </div>
+
+    {/* Action Buttons */}
+    <div className="flex flex-col gap-2">
+      <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+        Edit User
+      </button>
+      <button className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">
+        Delete User
+      </button>
+    </div>
+  </div>
+</div>
+
 
 
       {/* Pending Door Permission Requests */}
