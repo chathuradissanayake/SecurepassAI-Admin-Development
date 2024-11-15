@@ -10,7 +10,7 @@ const UserList = () => {
   const [error, setError] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const usersPerPage = 10;
+  const usersPerPage = 6;
   const navigate = useNavigate();
 
   const [newUser, setNewUser] = useState({
@@ -106,13 +106,12 @@ const UserList = () => {
         </thead>
         <tbody>
           {currentUsers.map(user => (
-            <tr key={user._id} className="border-b cursor-pointer" onClick={() => handleRowClick(user._id)}>
+            <tr key={user._id} className="border-b " >
               <td className="p-4">{user.firstName} {user.lastName}</td>
               <td className="p-4">{user.email}</td>
               <td className="p-4">{user.userId}</td>
               <td className="p-4 flex gap-2">
-                <button className="text-blue-600">✏️ Edit</button>
-                <button className="text-red-600">🗑️ Delete</button>
+              <button className="text-blue-600" onClick={() => handleRowClick(user._id)}>Manage</button>
               </td>
             </tr>
           ))}

@@ -32,7 +32,7 @@ const Doors = () => {
     { door: 'Main Entrance', user: 'Linda Thompson', time: '1 day ago', status: 'Access Granted' },
   ];
   return (
-    <div className="flex">
+    <div className="flex h-full">
       <Sidebar />
       <div className="flex-1 p-4">
       <Header />
