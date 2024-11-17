@@ -9,7 +9,7 @@ const Header = () => {
 
   const getTitle = (path) => {
     if (path.startsWith('/users/') && path.split('/').length === 3) {
-      return 'User Details';
+      return 'User Profile';
     }
     switch (path) {
       case '/':
