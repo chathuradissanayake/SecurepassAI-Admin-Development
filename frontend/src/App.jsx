@@ -1,11 +1,12 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
-import Users from './pages/Users';
-import UserDetails from './pages/UserDetails';
 import Doors from './pages/Doors';
-import Settings from './pages/Settings';
 import Profile from './pages/Profile';
+import Settings from './pages/Settings';
+import UserDetails from './pages/UserDetails';
+import UserProfile from './pages/UserProfile';
+import Users from './pages/Users';
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/doors" element={<Doors />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/userprofile" element={<UserProfile />} />
       </Routes>
     </Router>
   );
