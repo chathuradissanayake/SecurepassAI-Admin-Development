@@ -4,7 +4,6 @@ import Dashboard from './pages/Dashboard';
 import Doors from './pages/Doors';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
-import UserDetails from './pages/UserDetails';
 import UserProfile from './pages/UserProfile';
 import Users from './pages/Users';
 
