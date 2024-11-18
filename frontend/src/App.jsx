@@ -4,7 +4,6 @@ import Dashboard from './pages/Dashboard';
 import Doors from './pages/Doors';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
-import UserDetails from './pages/UserDetails';
 import UserProfile from './pages/UserProfile';
 import Users from './pages/Users';
 
@@ -14,11 +13,10 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/users" element={<Users />} />
-        <Route path="/users/:id" element={<UserDetails />} />
+        <Route path="/users/:id" element={<UserProfile />} />
         <Route path="/doors" element={<Doors />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/userprofile" element={<UserProfile />} />
       </Routes>
     </Router>
   );
