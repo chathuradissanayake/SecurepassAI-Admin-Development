@@ -24,7 +24,35 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-});
+  avatar: {
+    type: String,
+  },
+  doorAccess: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Door',
+  }],
+  pendingRequests: [{
+    type: Schema.Types.ObjectId,
+    ref: 'PermissionRequest',
+  }],
+  history: [{
+    door: {
+      type: Schema.Types.ObjectId,
+      ref: 'Door',
+    },
+    entryTime: {
+      type: Date,
+    },
+    exitTime: {
+      type: Date,
+    },
+    status: {
+      type: String,
+      enum: ['Active', 'Exited'],
+      default: 'Active',
+    },
+  }],
+}, { timestamps: true });
 
 const UserModel = mongoose.model('User', userSchema);
 
