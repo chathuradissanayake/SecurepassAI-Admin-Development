@@ -1,11 +1,36 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import UPDoorAccess from "../components/UPDoorAccess";
 import UPHistory from "../components/UPHistory";
 import UPPermissionRequests from "../components/UPPermissionRequests";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const UserProfile = () => {
+
+  const {id} = useParams();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        console.log(`Fetching user with id: ${id}`);
+        const response = await axios.get(`/api/users/${id}`, { withCredentials: true });
+        console.log('API response:', response.data);
+        setUser(response.data);
+        setLoading(false);
+      } catch (err) {
+        console.error('Error fetching user:', err);
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, [id]);
 
   const accessRecords = [
     { doorCode: 'D1', doorName: 'Main Entrance', entryTime: '08:00', exitTime: '18:00' },
@@ -48,6 +73,10 @@ const UserProfile = () => {
     },
   ];
 
+
+  if (loading) return <Spinner />;
+  if (error) return <p>Error: {error}</p>;
+
   return (
     <div className="flex">
       <Sidebar />
@@ -67,9 +96,9 @@ const UserProfile = () => {
       />
       <div className="ml-4">
         <h2 className="text-xl font-semibold mb-3">User Details</h2>
-        <p className="text-gray-600 mb-2">User ID: InSP/2020/11/1111</p>
-        <p className="text-gray-600 mb-2">Name: John Smith</p>
-        <p className="text-gray-600">Email: abc@gmail.com</p>
+        <p className="text-gray-600 mb-2">User ID: {user.userId}</p>
+        <p className="text-gray-600 mb-2">Name: {user.firstName} {user.lastName}</p>
+        <p className="text-gray-600">Email: {user.email}</p>
       </div>
     </div>
 
