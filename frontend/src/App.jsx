@@ -8,6 +8,7 @@ import Settings from "./pages/Settings";
 import UserProfile from "./pages/UserProfile";
 import Users from "./pages/Users";
 import LogoutPage from "./pages/LogoutPage";
+import LoginPage from "./pages/LoginPage";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/qrgenerator" element={<QRGenerator />} />
         <Route path="/logout" element={<LogoutPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </Router>
   );
