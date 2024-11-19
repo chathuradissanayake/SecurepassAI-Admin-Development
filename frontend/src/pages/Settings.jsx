@@ -40,7 +40,7 @@ const Settings = () => {
       <div className="flex-1 p-4">
         <Header />
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
-          <div className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-lg">
+          <div className="w-full max-w-6xl p-12 bg-white rounded-lg shadow-lg transform translate-y-[-50px] min-h-[70vh]">
             {/* Two-Factor Authentication */}
             <div className="mb-8">
               <h2 className="text-xl font-semibold text-gray-800">
