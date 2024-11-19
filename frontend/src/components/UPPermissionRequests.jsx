@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const UPPermissionRequests = ({ pendingRequests }) => {
   const itemsPerPage = 3;
   const [currentPage, setCurrentPage] = useState(0);
-  const [requests, setRequests] = useState(pendingRequests);
+  const [requests, setRequests] = useState(pendingRequests.filter(request => request.status === 'Pending'));
   const [selectedActions, setSelectedActions] = useState({});
 
   // Calculate total pages
@@ -66,21 +66,20 @@ const UPPermissionRequests = ({ pendingRequests }) => {
       {/* Table */}
       <div className="overflow-x-auto">
         <table className="min-w-full text-left border-collapse">
-        <thead>
-  <tr className="bg-gray-100">
-    <th className="p-2 border w-1/6">Door Code</th>   
-    <th className="p-2 border w-1/5">Door Name</th>   
-    <th className="p-2 border w-1/6">Entry Time</th>  
-    <th className="p-2 border w-1/6">Exit Time</th>   
-    <th className="p-2 border text-center">Action</th>      
-  </tr>
-</thead>
-
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="p-2 border w-1/6">Door Code</th>
+              <th className="p-2 border w-1/5">Door Name</th>
+              <th className="p-2 border w-1/6">Entry Time</th>
+              <th className="p-2 border w-1/6">Exit Time</th>
+              <th className="p-2 border text-center">Action</th>
+            </tr>
+          </thead>
           <tbody>
             {currentRequests.map((request, index) => (
               <tr key={index} className="hover:bg-gray-50">
-                <td className="p-2 border">{request.doorCode}</td>
-                <td className="p-2 border">{request.doorName}</td>
+                <td className="p-2 border">{request.door.doorCode}</td>
+                <td className="p-2 border">{request.door.doorName}</td>
                 <td className="p-2 border">{request.entryTime}</td>
                 <td className="p-2 border">{request.exitTime}</td>
                 <td className="p-2 border">
