@@ -68,8 +68,8 @@ const UPPermissionRequests = ({ pendingRequests }) => {
         <table className="min-w-full text-left border-collapse">
         <thead>
   <tr className="bg-gray-100">
-    <th className="p-2 border w-1/6">Door Code</th>   
-    <th className="p-2 border w-1/5">Door Name</th>   
+    <th className="p-2 border w-1/6">Door ID</th>   
+    <th className="p-2 border w-1/5">Room Name</th>   
     <th className="p-2 border w-1/6">Entry Time</th>  
     <th className="p-2 border w-1/6">Exit Time</th>   
     <th className="p-2 border text-center">Action</th>      
@@ -79,8 +79,8 @@ const UPPermissionRequests = ({ pendingRequests }) => {
           <tbody>
             {currentRequests.map((request, index) => (
               <tr key={index} className="hover:bg-gray-50">
-                <td className="p-2 border">{request.doorCode}</td>
-                <td className="p-2 border">{request.doorName}</td>
+                <td className="p-2 border">{request.doorId}</td>
+                <td className="p-2 border">{request.roomName}</td>
                 <td className="p-2 border">{request.entryTime}</td>
                 <td className="p-2 border">{request.exitTime}</td>
                 <td className="p-2 border">

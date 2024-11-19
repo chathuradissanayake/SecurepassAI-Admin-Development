@@ -39,7 +39,8 @@ const RecentAccessDoors = ({ accessRecords }) => {
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-gray-100">
-              <th className="p-2 border">Door</th>
+              <th className="p-2 border">Door ID</th>
+              <th className="p-2 border">Room Name</th>
               <th className="p-2 border">User</th>
               <th className="p-2 border">Time</th>
               <th className="p-2 border">Status</th>
@@ -48,7 +49,8 @@ const RecentAccessDoors = ({ accessRecords }) => {
           <tbody>
             {currentRecords.map((record, index) => (
               <tr key={index} className="hover:bg-gray-50">
-                <td className="p-2 border">{record.door}</td>
+                <td className="p-2 border">{record.doorId}</td>
+                <td className="p-2 border">{record.roomName}</td>
                 <td className="p-2 border">{record.user}</td>
                 <td className="p-2 border">{record.time}</td>
                 <td className="p-2 border">
