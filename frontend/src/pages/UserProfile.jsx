@@ -15,6 +15,7 @@ const UserProfile = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [pendingRequests, setPendingRequests] = useState([]);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -37,6 +38,7 @@ const UserProfile = () => {
           email: response.data.email,
           userId: response.data.userId
         });
+        setPendingRequests(response.data.pendingRequests);
         setLoading(false);
       } catch (err) {
         console.error('Error fetching user:', err);
@@ -96,117 +98,6 @@ const UserProfile = () => {
   if (loading) return <Spinner />;
   if (error) return <p>Error: {error}</p>;
 
-  const accessRecords = [
-    {
-      doorCode: "D1",
-      doorName: "Main Entrance",
-      entryTime: "08:00",
-      exitTime: "18:00",
-    },
-    {
-      doorCode: "D2",
-      doorName: "Security Hub",
-      entryTime: "09:00",
-      exitTime: "17:00",
-    },
-    {
-      doorCode: "D3",
-      doorName: "Office Area",
-      entryTime: "10:00",
-      exitTime: "16:00",
-    },
-    {
-      doorCode: "D4",
-      doorName: "Server Room",
-      entryTime: "11:00",
-      exitTime: "15:00",
-    },
-    {
-      doorCode: "D1",
-      doorName: "Main Entrance",
-      entryTime: "08:00",
-      exitTime: "18:00",
-    },
-    {
-      doorCode: "D2",
-      doorName: "Security Hub",
-      entryTime: "09:00",
-      exitTime: "17:00",
-    },
-    {
-      doorCode: "D3",
-      doorName: "Office Area",
-      entryTime: "10:00",
-      exitTime: "16:00",
-    },
-    {
-      doorCode: "D4",
-      doorName: "Server Room",
-      entryTime: "11:00",
-      exitTime: "15:00",
-    },
-    {
-      doorCode: "D1",
-      doorName: "Main Entrance",
-      entryTime: "08:00",
-      exitTime: "18:00",
-    },
-    {
-      doorCode: "D2",
-      doorName: "Security Hub",
-      entryTime: "09:00",
-      exitTime: "17:00",
-    },
-    {
-      doorCode: "D3",
-      doorName: "Office Area",
-      entryTime: "10:00",
-      exitTime: "16:00",
-    },
-    {
-      doorCode: "D4",
-      doorName: "Server Room",
-      entryTime: "11:00",
-      exitTime: "15:00",
-    },
-  ];
-
-  const pendingRequests = [
-    {
-      doorCode: "D3",
-      doorName: "Office Area",
-      entryTime: "10:00",
-      exitTime: "16:00",
-    },
-    {
-      doorCode: "D4",
-      doorName: "Server Room",
-      entryTime: "11:00",
-      exitTime: "15:00",
-    },
-  ];
-
-  const historyRecords = [
-    {
-      doorCode: "D1",
-      doorName: "Main Entrance",
-      entryTime: "2023-04-10 14:30:00",
-      exitTime: "2023-04-10 16:45:00",
-    },
-    {
-      doorCode: "D2",
-      doorName: "Security Hub",
-      entryTime: "2023-04-11 09:15:00",
-      exitTime: null, // Ongoing access
-    },
-    {
-      doorCode: "D3",
-      doorName: "Office Area",
-      entryTime: "2023-04-12 11:00:00",
-      exitTime: "2023-04-12 11:02:00",
-    },
-  ];
-
   return (
     <div className="flex">
       <Sidebar />
@@ -253,10 +144,10 @@ const UserProfile = () => {
         <UPPermissionRequests pendingRequests={pendingRequests} />
 
         {/* Door Access Table */}
-        <UPDoorAccess accessRecords={accessRecords} />
+        <UPDoorAccess accessRecords={user.doorAccess} />
 
         {/* Door Access History */}
-        <UPHistory historyRecords={historyRecords } />
+        <UPHistory historyRecords={user.history} />
 
         {/* Edit User Modal */}
         <Modal isVisible={isEditModalOpen} onClose={handleCloseEditModal}>
