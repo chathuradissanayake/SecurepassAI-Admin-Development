@@ -51,8 +51,8 @@ const UPDoorAccess = ({ accessRecords }) => {
         <table className="min-w-full text-left border-collapse">
           <thead>
             <tr className="bg-gray-100">
-              <th className="p-2 border">Door Code</th>
-              <th className="p-2 border">Door Name</th>
+              <th className="p-2 border">Door ID</th>
+              <th className="p-2 border">Room Name</th>
               <th className="p-2 border">Entry Time</th>
               <th className="p-2 border">Exit Time</th>
               <th className="p-2 border text-center">Action</th>
@@ -61,8 +61,8 @@ const UPDoorAccess = ({ accessRecords }) => {
           <tbody>
             {currentRecords.map((record, index) => (
               <tr key={index} className="hover:bg-gray-50">
-                <td className="p-2 border">{record.doorCode}</td>
-                <td className="p-2 border">{record.doorName}</td>
+                <td className="p-2 border">{record.doorId}</td>
+                <td className="p-2 border">{record.roomName}</td>
                 <td className="p-2 border">{record.entryTime}</td>
                 <td className="p-2 border">{record.exitTime}</td>
                 <td className="p-2 border text-center">

@@ -7,29 +7,29 @@ import Sidebar from '../components/Sidebar';
 const Doors = () => {
   
   const doors = [
-    { id: 'D1', name: 'Main Entrance', status: 'Active' },
-    { id: 'D2', name: 'Data Vault', status: 'Inactive' },
-    { id: 'D3', name: 'Executive Room', status: 'Active' },
-    { id: 'D4', name: 'CCTV Room', status: 'Inactive' },
-    { id: 'D5', name: 'Server Room', status: 'Inactive' },
-    { id: 'D6', name: 'Security Hub', status: 'Active' },
-    { id: 'D7', name: 'Lobby Entrance', status: 'Active' },
-    { id: 'D8', name: 'Storage Room', status: 'Inactive' },
-    { id: 'D9', name: 'Meeting Room', status: 'Active' },
-    { id: 'D10', name: 'Operations Room', status: 'Inactive' },
+    { doorId: 'D1', roomName: 'Main Entrance', status: 'Active' },
+    { doorId: 'D2', roomName: 'Data Vault', status: 'Inactive' },
+    { doorId: 'D3', roomName: 'Executive Room', status: 'Active' },
+    { doorId: 'D4', roomName: 'CCTV Room', status: 'Inactive' },
+    { doorId: 'D5', roomName: 'Server Room', status: 'Inactive' },
+    { doorId: 'D6', roomName: 'Security Hub', status: 'Active' },
+    { doorId: 'D7', roomName: 'Lobby Entrance', status: 'Active' },
+    { doorId: 'D8', roomName: 'Storage Room', status: 'Inactive' },
+    { doorId: 'D9', roomName: 'Meeting Room', status: 'Active' },
+    { doorId: 'D10', rooNname: 'Operations Room', status: 'Inactive' },
   ];
   const accessRecords = [
-    { door: 'Main Entrance', user: 'Christine Brooks', time: '2 minutes ago', status: 'Access Granted' },
-    { door: 'Security Hub', user: 'Rosie Pearson', time: '10 minutes ago', status: 'Access Denied' },
-    { door: 'Executive Room', user: 'Darrell Caldwell', time: '1 hour ago', status: 'Access Granted' },
-    { door: 'Data Vault', user: 'John Doe', time: '2 hours ago', status: 'Access Denied' },
-    { door: 'Server Room', user: 'Jane Smith', time: '3 hours ago', status: 'Access Granted' },
-    { door: 'CCTV Room', user: 'Michael Johnson', time: '4 hours ago', status: 'Access Denied' },
-    { door: 'Lobby Entrance', user: 'Alice Williams', time: '5 hours ago', status: 'Access Granted' },
-    { door: 'Storage Room', user: 'Tom Brown', time: '6 hours ago', status: 'Access Denied' },
-    { door: 'Meeting Room', user: 'Eve Davis', time: '7 hours ago', status: 'Access Granted' },
-    { door: 'Operations Room', user: 'Mark Taylor', time: '8 hours ago', status: 'Access Denied' },
-    { door: 'Main Entrance', user: 'Linda Thompson', time: '1 day ago', status: 'Access Granted' },
+    { doorId: 'ME02', roomName: 'Main Entrance', user: 'Christine Brooks', time: '2 minutes ago', status: 'Access Granted' },
+    { doorId: 'SE02', roomName: 'Security Hub', user: 'Rosie Pearson', time: '10 minutes ago', status: 'Access Denied' },
+    { doorId: 'ER02', roomName:'Executive Room', user: 'Darrell Caldwell', time: '1 hour ago', status: 'Access Granted' },
+    { doorId: 'DV02', roomName:'Data Vault', user: 'John Doe', time: '2 hours ago', status: 'Access Denied' },
+    { doorId: 'SR02', roomName:'Server Room', user: 'Jane Smith', time: '3 hours ago', status: 'Access Granted' },
+    { doorId: 'CR02', roomName:'CCTV Room', user: 'Michael Johnson', time: '4 hours ago', status: 'Access Denied' },
+    { doorId: 'LE02', roomName:'Lobby Entrance', user: 'Alice Williams', time: '5 hours ago', status: 'Access Granted' },
+    { doorId: 'SR02', roomName:'Storage Room', user: 'Tom Brown', time: '6 hours ago', status: 'Access Denied' },
+    { doorId: 'MR02', roomName:'Meeting Room', user: 'Eve Davis', time: '7 hours ago', status: 'Access Granted' },
+    { doorId: 'OR02', roomName:'Operations Room', user: 'Mark Taylor', time: '8 hours ago', status: 'Access Denied' },
+    { doorId: 'ME02', roomName:'Main Entrance', user: 'Linda Thompson', time: '1 day ago', status: 'Access Granted' },
   ];
   return (
     <div className="flex h-full">
@@ -55,7 +55,7 @@ const Doors = () => {
             <select className="w-full p-2 border rounded">
               <option>Select a door</option>
               {doors.map((door) => (
-                <option key={door.id}>{door.name}</option>
+                <option key={door.doorId}>{door.roomName}</option>
               ))}
             </select>
           </div>
@@ -74,7 +74,7 @@ const Doors = () => {
         </div>
       </div>
 
-
+            
       {/* Recent Access Records */}
       <div className="p-4 border rounded-lg shadow-sm bg-white">
           <RecentAccessDoors accessRecords={accessRecords} />
