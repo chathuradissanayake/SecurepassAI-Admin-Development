@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Header from '../components/Header';
+import Modal from '../components/Modal';
 import Sidebar from '../components/Sidebar';
+import Spinner from '../components/Spinner';
 import UPDoorAccess from "../components/UPDoorAccess";
 import UPHistory from "../components/UPHistory";
 import UPPermissionRequests from "../components/UPPermissionRequests";
-import Spinner from '../components/Spinner';
-import Modal from '../components/Modal';
 
 const UserProfile = () => {
   const { id } = useParams();
@@ -98,74 +98,74 @@ const UserProfile = () => {
 
   const accessRecords = [
     {
-      doorCode: "D1",
-      doorName: "Main Entrance",
+      doorId: "D1",
+      roomName: "Main Entrance",
       entryTime: "08:00",
       exitTime: "18:00",
     },
     {
-      doorCode: "D2",
-      doorName: "Security Hub",
+      doorId: "D2",
+      roomName: "Security Hub",
       entryTime: "09:00",
       exitTime: "17:00",
     },
     {
-      doorCode: "D3",
-      doorName: "Office Area",
+      doorId: "D3",
+      roomName: "Office Area",
       entryTime: "10:00",
       exitTime: "16:00",
     },
     {
-      doorCode: "D4",
-      doorName: "Server Room",
+      doorId: "D4",
+      roomName: "Server Room",
       entryTime: "11:00",
       exitTime: "15:00",
     },
     {
-      doorCode: "D1",
-      doorName: "Main Entrance",
+      doorId: "D1",
+      roomName: "Main Entrance",
       entryTime: "08:00",
       exitTime: "18:00",
     },
     {
-      doorCode: "D2",
-      doorName: "Security Hub",
+      doorId: "D2",
+      roomName: "Security Hub",
       entryTime: "09:00",
       exitTime: "17:00",
     },
     {
-      doorCode: "D3",
-      doorName: "Office Area",
+      doorId: "D3",
+      roomName: "Office Area",
       entryTime: "10:00",
       exitTime: "16:00",
     },
     {
-      doorCode: "D4",
-      doorName: "Server Room",
+      doorId: "D4",
+      roomName: "Server Room",
       entryTime: "11:00",
       exitTime: "15:00",
     },
     {
-      doorCode: "D1",
-      doorName: "Main Entrance",
+      doorId: "D1",
+      roomName: "Main Entrance",
       entryTime: "08:00",
       exitTime: "18:00",
     },
     {
-      doorCode: "D2",
-      doorName: "Security Hub",
+      doorId: "D2",
+      roomName: "Security Hub",
       entryTime: "09:00",
       exitTime: "17:00",
     },
     {
-      doorCode: "D3",
-      doorName: "Office Area",
+      doorId: "D3",
+      roomName: "Office Area",
       entryTime: "10:00",
       exitTime: "16:00",
     },
     {
-      doorCode: "D4",
-      doorName: "Server Room",
+      doorId: "D4",
+      roomName: "Server Room",
       entryTime: "11:00",
       exitTime: "15:00",
     },
@@ -173,14 +173,14 @@ const UserProfile = () => {
 
   const pendingRequests = [
     {
-      doorCode: "D3",
-      doorName: "Office Area",
+      doorId: "D3",
+      roomName: "Office Area",
       entryTime: "10:00",
       exitTime: "16:00",
     },
     {
-      doorCode: "D4",
-      doorName: "Server Room",
+      doorId: "D4",
+      roomName: "Server Room",
       entryTime: "11:00",
       exitTime: "15:00",
     },
@@ -188,20 +188,20 @@ const UserProfile = () => {
 
   const historyRecords = [
     {
-      doorCode: "D1",
-      doorName: "Main Entrance",
+      doorId: "D1",
+      roomName: "Main Entrance",
       entryTime: "2023-04-10 14:30:00",
       exitTime: "2023-04-10 16:45:00",
     },
     {
-      doorCode: "D2",
-      doorName: "Security Hub",
+      doorId: "D2",
+      roomName: "Security Hub",
       entryTime: "2023-04-11 09:15:00",
       exitTime: null, // Ongoing access
     },
     {
-      doorCode: "D3",
-      doorName: "Office Area",
+      doorId: "D3",
+      roomName: "Office Area",
       entryTime: "2023-04-12 11:00:00",
       exitTime: "2023-04-12 11:02:00",
     },

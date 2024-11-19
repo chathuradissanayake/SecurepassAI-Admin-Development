@@ -52,8 +52,8 @@ const UPHistory = ({ historyRecords }) => {
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-gray-100">
-              <th className="p-2 border w-1/8">Door Code</th>
-              <th className="p-2 border w-1/5">Door Name</th>
+              <th className="p-2 border w-1/8">Door ID</th>
+              <th className="p-2 border w-1/5">Room Name</th>
               <th className="p-2 border w-1/5">Entry Time</th>
               <th className="p-2 border w-1/5">Exit Time</th>
               <th className="p-2 border w-1/6">Duration</th>
@@ -63,8 +63,8 @@ const UPHistory = ({ historyRecords }) => {
           <tbody>
             {currentRecords.map((record, index) => (
               <tr key={index} className="hover:bg-gray-50">
-                <td className="p-2 border">{record.doorCode}</td>
-                <td className="p-2 border">{record.doorName}</td>
+                <td className="p-2 border">{record.doorId}</td>
+                <td className="p-2 border">{record.roomName}</td>
                 <td className="p-2 border">{record.entryTime}</td>
                 <td className="p-2 border">{record.exitTime || 'N/A'}</td>
                 <td className="p-2 border">
