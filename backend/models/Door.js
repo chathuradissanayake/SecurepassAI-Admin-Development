@@ -1,12 +1,13 @@
-const mongoose = require('mongoose');
-const { Schema } = mongoose;
+const mongoose = require("mongoose");
 
-const doorSchema = new Schema({
-  doorCode: { type: String, required: true, unique: true },
-  doorName: { type: String, required: true },
-  location: { type: String }
-}, { timestamps: true });
+const DoorSchema = new mongoose.Schema({
+    companyName: { type: String, required: true },
+    doorId: { type: String, required: true },
+    roomName: { type: String, required: true },
+    qrData: { type: String, required: true },  // QR code data (companyName-doorId-roomName)
+    qrImage: { type: String}, // Base64 string for the QR image
+});
 
-const DoorModel = mongoose.model('Door', doorSchema);
+const Door = mongoose.model("Doors", DoorSchema);
 
-module.exports = DoorModel;
+module.exports = Door;
