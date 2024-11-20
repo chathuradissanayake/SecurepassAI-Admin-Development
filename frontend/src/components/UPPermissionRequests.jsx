@@ -68,46 +68,52 @@ const UPPermissionRequests = ({ pendingRequests }) => {
         <table className="min-w-full text-left border-collapse">
           <thead>
             <tr className="bg-gray-100">
-              <th className="p-2 border w-1/6">Door Code</th>
+              <th className="p-2 border w-1/6">Door ID</th>
               <th className="p-2 border w-1/5">Door Name</th>
+              <th className="p-2 border w-1/5">Date</th>
               <th className="p-2 border w-1/6">Entry Time</th>
               <th className="p-2 border w-1/6">Exit Time</th>
               <th className="p-2 border text-center">Action</th>
             </tr>
           </thead>
           <tbody>
-            {currentRequests.map((request, index) => (
-              <tr key={index} className="hover:bg-gray-50">
-                <td className="p-2 border">{request.door.doorCode}</td>
-                <td className="p-2 border">{request.door.doorName}</td>
-                <td className="p-2 border">{request.entryTime}</td>
-                <td className="p-2 border">{request.exitTime}</td>
-                <td className="p-2 border">
-                  <div className="flex items-center gap-2">
-                    {/* Action Dropdown */}
-                    <select
-                      value={selectedActions[currentPage * itemsPerPage + index] || ''}
-                      onChange={(e) =>
-                        handleSelectAction(currentPage * itemsPerPage + index, e.target.value)
-                      }
-                      className="px-2 py-1 border rounded bg-white"
-                    >
-                      <option value="">Select action</option>
-                      <option value="Approve">Approve</option>
-                      <option value="Reject">Reject</option>
-                    </select>
+            {currentRequests.map((request, index) => {
+              const date = new Date(request.date);
+              const formattedDate = date.toLocaleDateString('en-CA'); // 'en-CA' locale formats date as yyyy-mm-dd
+              return (
+                <tr key={index} className="hover:bg-gray-50">
+                  <td className="p-2 border">{request.door.doorCode}</td>
+                  <td className="p-2 border">{request.door.doorName}</td>
+                  <td className="p-2 border">{formattedDate}</td>
+                  <td className="p-2 border">{request.inTime}</td>
+                  <td className="p-2 border">{request.outTime}</td>
+                  <td className="p-2 border">
+                    <div className="flex items-center gap-2">
+                      {/* Action Dropdown */}
+                      <select
+                        value={selectedActions[currentPage * itemsPerPage + index] || ''}
+                        onChange={(e) =>
+                          handleSelectAction(currentPage * itemsPerPage + index, e.target.value)
+                        }
+                        className="px-2 py-1 border rounded bg-white"
+                      >
+                        <option value="">Select action</option>
+                        <option value="Approve">Approve</option>
+                        <option value="Reject">Reject</option>
+                      </select>
 
-                    {/* Confirm Button */}
-                    <button
-                      onClick={() => handleConfirmAction(currentPage * itemsPerPage + index)}
-                      className="bg-blue-600 text-white py-1 px-3 rounded hover:bg-blue-700"
-                    >
-                      Confirm
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+                      {/* Confirm Button */}
+                      <button
+                        onClick={() => handleConfirmAction(currentPage * itemsPerPage + index)}
+                        className="bg-blue-600 text-white py-1 px-3 rounded hover:bg-blue-700"
+                      >
+                        Confirm
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
