@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const UPPermissionRequests = ({ pendingRequests }) => {
   const itemsPerPage = 3;
@@ -41,21 +42,29 @@ const UPPermissionRequests = ({ pendingRequests }) => {
   };
 
   // Handler for confirming the action
-  const handleConfirmAction = (indexToConfirm) => {
+  const handleConfirmAction = async (indexToConfirm) => {
     const action = selectedActions[indexToConfirm];
+    const request = currentRequests[indexToConfirm];
 
     if (action) {
-      // Remove the request from the list
-      const updatedRequests = requests.filter((_, index) => index !== indexToConfirm);
-      setRequests(updatedRequests);
+      try {
+        if (action === 'Approve') {
+          await axios.put(`/api/permission-requests/${request._id}/approve`);
+        } else if (action === 'Reject') {
+          await axios.put(`/api/permission-requests/${request._id}/reject`);
+        }
 
-      // Adjust current page if it goes out of range after removal
-      if (updatedRequests.length > 0 && currentPage >= Math.ceil(updatedRequests.length / itemsPerPage)) {
-        setCurrentPage(currentPage - 1);
+        // Remove the request from the list
+        const updatedRequests = requests.filter((_, index) => index !== indexToConfirm);
+        setRequests(updatedRequests);
+
+        // Adjust current page if it goes out of range after removal
+        if (updatedRequests.length > 0 && currentPage >= Math.ceil(updatedRequests.length / itemsPerPage)) {
+          setCurrentPage(currentPage - 1);
+        }
+      } catch (error) {
+        console.error('Error updating request:', error);
       }
-
-      // Optionally, handle the action (e.g., API call for approval/rejection)
-      console.log(`Request ${indexToConfirm} ${action}`);
     }
   };
 
