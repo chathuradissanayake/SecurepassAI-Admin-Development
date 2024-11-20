@@ -1,25 +1,28 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Dashboard from './pages/Dashboard';
-import Users from './pages/Users';
-import Doors from './pages/Doors';
-import Settings from './pages/Settings';
-import Profile from './pages/Profile';
-import axios from 'axios';
-
-axios.defaults.baseURL = import.meta.env.VITE_API_URL;
-axios.defaults.withCredentials = true;
+import React from "react";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import QRGenerator from "./components/QRGenerator";
+import Dashboard from "./pages/Dashboard";
+import Doors from "./pages/Doors";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
+import UserProfile from "./pages/UserProfile";
+import Users from "./pages/Users";
+import LogoutPage from "./pages/LogoutPage";
+import LoginPage from "./pages/LoginPage";
 
 const App = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Dashboard />} />
-        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/users/:id" element={<UserProfile />} />
         <Route path="/doors" element={<Doors />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/qrgenerator" element={<QRGenerator />} />
+        <Route path="/logout" element={<LogoutPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </Router>
   );
