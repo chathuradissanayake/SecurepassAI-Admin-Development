@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const UPPermissionRequests = ({ pendingRequests }) => {
+const UPPermissionRequests = ({ pendingRequests, onRequestUpdate }) => {
   const itemsPerPage = 3;
   const [currentPage, setCurrentPage] = useState(0);
   const [requests, setRequests] = useState(pendingRequests.filter(request => request.status === 'Pending'));
@@ -62,6 +62,9 @@ const UPPermissionRequests = ({ pendingRequests }) => {
         if (updatedRequests.length > 0 && currentPage >= Math.ceil(updatedRequests.length / itemsPerPage)) {
           setCurrentPage(currentPage - 1);
         }
+
+        // Trigger the state update in the UserProfile component
+        onRequestUpdate();
       } catch (error) {
         console.error('Error updating request:', error);
       }
