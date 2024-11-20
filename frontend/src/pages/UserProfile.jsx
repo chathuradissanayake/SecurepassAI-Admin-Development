@@ -95,6 +95,16 @@ const UserProfile = () => {
     }));
   };
 
+  const handleRequestUpdate = async () => {
+    try {
+      const response = await axios.get(`/api/users/${id}`, { withCredentials: true });
+      setUser(response.data);
+      setPendingRequests(response.data.pendingRequests);
+    } catch (err) {
+      console.error('Error fetching updated user data:', err);
+    }
+  };
+
   if (loading) return <Spinner />;
   if (error) return <p>Error: {error}</p>;
 
@@ -141,7 +151,7 @@ const UserProfile = () => {
         </div>
 
         {/* Pending Door Permission Requests */}
-        <UPPermissionRequests pendingRequests={pendingRequests} />
+        <UPPermissionRequests pendingRequests={pendingRequests} onRequestUpdate={handleRequestUpdate} />
 
         {/* Door Access Table */}
         <UPDoorAccess accessRecords={user.doorAccess} />
