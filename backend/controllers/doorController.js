@@ -31,6 +31,15 @@ const getDoorById = async (req, res) => {
   }
 };
 
+const getAllDoors = async (req, res) => {
+  try {
+    const doors = await Door.find();
+    res.status(200).json(doors);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 const updateDoor = async (req, res) => {
   const { id } = req.params;
   const { doorCode, doorName, location } = req.body;
@@ -67,6 +76,7 @@ const deleteDoor = async (req, res) => {
 module.exports = {
   createDoor,
   getDoorById,
+  getAllDoors,
   updateDoor,
   deleteDoor,
 };
