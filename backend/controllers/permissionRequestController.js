@@ -1,4 +1,5 @@
 const PermissionRequest = require('../models/PermissionRequest');
+const User = require('../models/User'); // Import the User model
 
 const createPermissionRequest = async (req, res) => {
   const { userId, doorId } = req.body;
@@ -21,7 +22,6 @@ const createPermissionRequest = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 
 const getPermissionRequestsByUserId = async (req, res) => {
   const { userId } = req.params;
