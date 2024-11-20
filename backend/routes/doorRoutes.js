@@ -8,6 +8,9 @@ router.post('/', doorController.createDoor);
 // Route to get a door by ID
 router.get('/:id', doorController.getDoorById);
 
+// Route to get all doors
+router.get('/', doorController.getAllDoors); 
+
 // Route to update a door by ID
 router.put('/:id', doorController.updateDoor);
 
