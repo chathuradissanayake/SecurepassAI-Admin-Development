@@ -49,13 +49,19 @@ const approvePermissionRequest = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const request = await PermissionRequest.findById(id);
+    const request = await PermissionRequest.findById(id).populate('door');
     if (!request) {
       return res.status(404).json({ error: "Permission request not found" });
     }
 
     request.status = "Approved";
     await request.save();
+
+    // Update the user's doorAccess array
+    await User.findByIdAndUpdate(request.user, {
+      $push: { doorAccess: request.door._id },
+      $pull: { pendingRequests: request._id }
+    });
 
     res.status(200).json(request);
   } catch (error) {
@@ -74,6 +80,11 @@ const rejectPermissionRequest = async (req, res) => {
 
     request.status = "Rejected";
     await request.save();
+
+    // Remove the request from the user's pendingRequests array
+    await User.findByIdAndUpdate(request.user, {
+      $pull: { pendingRequests: request._id }
+    });
 
     res.status(200).json(request);
   } catch (error) {
