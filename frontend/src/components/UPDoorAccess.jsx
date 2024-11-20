@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const UPDoorAccess = ({ accessRecords }) => {
   const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(0);
   const [records, setRecords] = useState(accessRecords);
+
+  useEffect(() => {
+    setRecords(accessRecords);
+  }, [accessRecords]);
 
   // Calculate total pages
   const totalPages = Math.ceil(records.length / itemsPerPage);
