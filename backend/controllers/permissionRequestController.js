@@ -1,5 +1,6 @@
 const PermissionRequest = require("../models/PermissionRequest");
 const User = require("../models/User");
+const Door = require("../models/Door");
 
 const createPermissionRequest = async (req, res) => {
   const { userId, doorId, name, doorName, inTime, outTime, date, message } = req.body;
@@ -61,6 +62,11 @@ const approvePermissionRequest = async (req, res) => {
     await User.findByIdAndUpdate(request.user, {
       $push: { doorAccess: request.door._id },
       $pull: { pendingRequests: request._id }
+    });
+
+    // Update the door's approvedUsers array
+    await Door.findByIdAndUpdate(request.door._id, {
+      $push: { approvedUsers: request.user }
     });
 
     res.status(200).json(request);
