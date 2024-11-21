@@ -1,19 +1,11 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const DoorSection = ({ doors, setDoors }) => {
   // Pagination state
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 6;
-
-  // Form state
-  const [formData, setFormData] = useState({
-    doorCode: '',
-    doorName: '',
-    location: ''
-  });
-  const [message, setMessage] = useState('');
-  const [showForm, setShowForm] = useState(false); // Add state for form visibility
+  const navigate = useNavigate();
 
   // Calculate total pages
   const totalPages = Math.ceil(doors.length / itemsPerPage);
@@ -37,39 +29,12 @@ const DoorSection = ({ doors, setDoors }) => {
     }
   };
 
-  // Handlers for form input
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  // Handler for form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post('/api/doors/create', formData, { withCredentials: true });
-      setDoors((prevDoors) => [...prevDoors, response.data]);
-      setMessage('Door created successfully');
-      setFormData({
-        doorCode: '',
-        doorName: '',
-        location: ''
-      });
-      setShowForm(false); // Hide the form after successful submission
-    } catch (error) {
-      setMessage('Error creating door');
-    }
-  };
-
   return (
     <div>
       {/* Door List */}
       <div className='flex justify-between items-center mb-4'>
         <h2 className="text-lg font-semibold">Doors</h2>
-        <button className='px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700' onClick={() => setShowForm(true)}>Add new Door</button>
+        <button className='px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700' onClick={() => navigate('/create-door')}>Add new Door</button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -86,7 +51,12 @@ const DoorSection = ({ doors, setDoors }) => {
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <button className="text-blue-600 hover:underline">View QR</button>
+              <button
+                onClick={() => navigate(`/doors/${door._id}`)}
+                className="text-blue-600 hover:underline"
+              >
+                View Details
+              </button>
               <button className="text-blue-600 hover:underline">Regenerate</button>
               <select className=" px-2 py-1 border rounded">
                 <option disabled>Status</option>
@@ -118,47 +88,6 @@ const DoorSection = ({ doors, setDoors }) => {
         >
           Next
         </button>
-      </div>
-
-      {/* Add New Door Form */}
-      <div className={`p-4 border rounded-lg shadow-sm bg-white mt-4 ${showForm ? '' : 'hidden'}`}>
-        <h2 className="text-lg font-semibold mb-4">Add New Door</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700">Door Code</label>
-            <input
-              type="text"
-              name="doorCode"
-              value={formData.doorCode}
-              onChange={handleChange}
-              className="p-2 border rounded w-full"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">Door Name</label>
-            <input
-              type="text"
-              name="doorName"
-              value={formData.doorName}
-              onChange={handleChange}
-              className="p-2 border rounded w-full"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">Location</label>
-            <input
-              type="text"
-              name="location"
-              value={formData.location}
-              onChange={handleChange}
-              className="p-2 border rounded w-full"
-            />
-          </div>
-          <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-            Add Door
-          </button>
-        </form>
-        {message && <p className="mt-4">{message}</p>}
       </div>
     </div>
   );
