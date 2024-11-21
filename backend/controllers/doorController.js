@@ -1,4 +1,5 @@
 const Door = require('../models/Door');
+const PermissionRequest = require('../models/PermissionRequest');
 
 const createDoor = async (req, res) => {
   const { doorCode, doorName, location } = req.body;
@@ -25,7 +26,10 @@ const getDoorById = async (req, res) => {
     if (!door) {
       return res.status(404).json({ error: 'Door not found' });
     }
-    res.status(200).json(door);
+
+    const approvedRequests = await PermissionRequest.find({ door: id, status: 'Approved' }).populate('user', 'firstName lastName');
+
+    res.status(200).json({ door, approvedRequests });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
