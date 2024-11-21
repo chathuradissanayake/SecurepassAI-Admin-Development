@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import avatar from "../assets/avatar.png"
+import avatar from "../assets/avatar.png";
 
 const Header = () => {
   const location = useLocation();
@@ -22,6 +22,8 @@ const Header = () => {
         return 'Settings';
       case '/profile':
         return 'Profile';
+        case '/qrgenerator':
+          return 'Doors / QR generator ';
       default:
         return '';
     }

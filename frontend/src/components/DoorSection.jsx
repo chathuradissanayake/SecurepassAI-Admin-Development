@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
 
 const DoorSection = ({ doors }) => {
+
+  const navigate = useNavigate();
+
     // Pagination state
     const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 6;
@@ -33,7 +37,10 @@ const DoorSection = ({ doors }) => {
     {/* Door List */}
       <div className='flex justify-between items-center mb-4'>
         <h2 className="text-lg font-semibold">Doors</h2>
-        <button className='px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700'>Add new Door</button>
+        <button className='px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700'
+        onClick={() => {
+          navigate("/qrgenerator");
+        }}>Add new Door</button>
       </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

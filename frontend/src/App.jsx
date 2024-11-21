@@ -1,14 +1,15 @@
 import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import QRGenerator from "./components/QRGenerator";
+
 import Dashboard from "./pages/Dashboard";
 import Doors from "./pages/Doors";
+import LoginPage from "./pages/LoginPage";
+import LogoutPage from "./pages/LogoutPage";
 import Profile from "./pages/Profile";
+import QRGenerator from "./pages/QRGenerator";
 import Settings from "./pages/Settings";
 import UserProfile from "./pages/UserProfile";
 import Users from "./pages/Users";
-import LogoutPage from "./pages/LogoutPage";
-import LoginPage from "./pages/LoginPage";
 
 const App = () => {
   return (

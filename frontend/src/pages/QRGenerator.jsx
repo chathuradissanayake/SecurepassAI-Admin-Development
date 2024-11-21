@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { QRCodeCanvas } from "qrcode.react";
 import { useState } from "react";
+import Header from '../components/Header';
+import Sidebar from '../components/Sidebar';
 
 
 const QRGenerator = () => {
@@ -57,7 +59,12 @@ const saveQRCodeToDatabase = async () => {
   };
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+
+    <div className="flex h-full">
+      <Sidebar />
+      <div className="flex-1 p-4">
+      <Header />
+    
       <h1 className="text-2xl font-bold mb-6">QR Code Generator</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Left Column: Form */}
@@ -169,6 +176,7 @@ const saveQRCodeToDatabase = async () => {
           )}
         </div>
       </div>
+    </div>
     </div>
   );
 };
