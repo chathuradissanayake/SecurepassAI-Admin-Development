@@ -91,7 +91,7 @@ const Sidebar = () => {
           <li>
             <button
               onClick={handleLogout}
-              className="text-gray-600 flex items-center gap-2 w-full text-left"
+              className="text-red-600 flex items-center gap-2 w-full text-left"
             >
               <FaSignOutAlt /> Logout
             </button>
