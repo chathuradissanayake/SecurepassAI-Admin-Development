@@ -22,8 +22,6 @@ const Header = () => {
         return 'Settings';
       case '/profile':
         return 'Profile';
-        case '/qrgenerator':
-          return 'Doors / QR generator ';
       default:
         return '';
     }

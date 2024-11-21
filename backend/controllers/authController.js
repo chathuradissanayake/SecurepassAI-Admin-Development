@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const PermissionRequest = require('../models/PermissionRequest')
 const { hashPassword } = require('../helper/auth');
 
 // Register User
@@ -74,10 +75,32 @@ const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
     console.log('Fetching user with id:', id); // Log the id
-    const user = await User.findById(id);
+
+    // Find the user and populate the pending requests
+    const user = await User.findById(id).populate({
+      path: 'pendingRequests',
+      match: { status: 'Pending' },
+      populate: { path: 'door' }
+    });
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
+
+    // Find approved permission requests for the user
+    const approvedRequests = await PermissionRequest.find({ user: id, status: 'Approved' }).populate('door');
+
+    // Extract the doors from the approved requests
+    const approvedDoors = approvedRequests.map(request => request.door);
+
+    // Update the user's doorAccess with the approved doors
+    user.doorAccess = approvedDoors;
+
+    // Find pending permission requests for the user
+    const pendingRequests = await PermissionRequest.find({ user: id, status: 'Pending' }).populate('door');
+
+    // Update the user's pendingRequests with the full details
+    user.pendingRequests = pendingRequests;
+
     console.log('Fetched user:', user); // Log the fetched user
     res.status(200).json(user);
   } catch (error) {
