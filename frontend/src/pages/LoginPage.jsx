@@ -1,8 +1,12 @@
-import React from "react";
-import { FaGoogle, FaPhone, FaThumbsUp } from "react-icons/fa";
+import React, { useState } from "react";
+import { FaPhone, FaThumbsUp } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import logo from "../assets/logo.png";
 
 const LoginPage = () => {
+  const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
+
   return (
     <div className="h-screen w-screen flex items-center justify-center bg-gray-800">
       {/* Main Container */}
@@ -10,7 +14,7 @@ const LoginPage = () => {
         {/* Left Section */}
         <div className="w-1/2 bg-gray-100 flex flex-col justify-center items-center p-6">
           {/* Logo */}
-          <img src={logo} alt="Logo" className="w-16 h-16 mb-6" />
+          <img src={logo} alt="Logo" className="w-32 h-32 mb-6" />
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
             Welcome Back
           </h1>
@@ -19,7 +23,7 @@ const LoginPage = () => {
           {/* Social Login Buttons */}
           <div className="flex gap-4 mb-4">
             <button className="flex items-center px-4 py-2 border rounded-lg hover:bg-gray-200 transition">
-              <FaGoogle className="mr-2 text-lg text-red-500" />
+              <FcGoogle className="mr-2 text-lg" />
               Google
             </button>
 
@@ -43,18 +47,19 @@ const LoginPage = () => {
             className="w-full max-w-md px-4 py-2 border rounded-lg mb-4 mx-auto focus:ring-2 focus:ring-green-500 outline-none"
           />
 
-          {/* Password Input */}
+          {/* Password Input with Show/Hide Toggle */}
           <div className="w-full max-w-md mx-auto relative">
             <input
-              type="password"
+              type={showPassword ? "text" : "password"} // Conditional input type
               placeholder="Password"
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
             />
             <button
               type="button"
+              onClick={() => setShowPassword(!showPassword)} // Toggle state
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
             >
-              👁️
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
             </button>
           </div>
 
