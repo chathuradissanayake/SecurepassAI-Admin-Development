@@ -1,16 +1,16 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
-import Users from './pages/Users';
-import UserProfile from './pages/UserProfile';
-import Doors from './pages/Doors';
 import DoorDetails from './pages/DoorDetails';
-import Settings from './pages/Settings';
-import Profile from './pages/Profile';
-import NotFound from './pages/NotFound';
-import QRGenerator from './pages/QRGenerator';
+import Doors from './pages/Doors';
 import LoginPage from './pages/LoginPage';
 import LogoutPage from './pages/LogoutPage';
+import NotFound from './pages/NotFound';
+import Profile from './pages/Profile';
+import QRGenerator from './pages/QRGenerator';
+import Settings from './pages/Settings';
+import UserProfile from './pages/UserProfile';
+import Users from './pages/Users';
 
 const App = () => {
   return (

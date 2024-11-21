@@ -1,13 +1,13 @@
 import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
 import {
-  FaHome,
-  FaUserFriends,
-  FaDoorOpen,
   FaCog,
-  FaUser,
+  FaDoorOpen,
+  FaHome,
   FaSignOutAlt,
+  FaUser,
+  FaUserFriends,
 } from "react-icons/fa";
+import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 
 const Sidebar = () => {
@@ -91,7 +91,7 @@ const Sidebar = () => {
           <li>
             <button
               onClick={handleLogout}
-              className="text-red-600 flex items-center gap-2 w-full text-left"
+              className="text-gray-600 flex items-center gap-2 w-full text-left"
             >
               <FaSignOutAlt /> Logout
             </button>

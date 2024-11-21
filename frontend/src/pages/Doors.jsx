@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
 import axios from 'axios';
+import React, { useEffect, useState } from "react";
 import DoorSection from "../components/DoorSection";
 import Header from "../components/Header";
 import RecentAccessDoors from "../components/RecentAccessDoors";
@@ -44,12 +44,12 @@ const Doors = () => {
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1">
                 <label className="block mb-2 text-sm font-medium">
-                  Door Location
+                  Door location
                 </label>
                 <select className="w-full p-2 border rounded">
                   <option>Select a door</option>
                   {doors.map((door) => (
-                    <option key={door._id}>{door.doorName}</option>
+                    <option key={door._id}>{door.roomName}</option>
                   ))}
                 </select>
               </div>

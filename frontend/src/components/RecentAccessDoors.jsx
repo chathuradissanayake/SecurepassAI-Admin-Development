@@ -49,7 +49,7 @@ const RecentAccessDoors = ({ accessRecords }) => {
           <tbody>
             {currentRecords.map((record, index) => (
               <tr key={index} className="hover:bg-gray-50">
-                <td className="p-2 border">{record.doorId}</td>
+                <td className="p-2 border">{record.doorCode}</td>
                 <td className="p-2 border">{record.roomName}</td>
                 <td className="p-2 border">{record.user}</td>
                 <td className="p-2 border">{record.time}</td>

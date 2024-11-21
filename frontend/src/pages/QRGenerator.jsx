@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { QRCodeCanvas } from 'qrcode.react';
+import React, { useState } from 'react';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 
 const QRGenerator = () => {
-  const [companyName, setCompanyName] = useState('');
-  const [doorId, setDoorId] = useState('');
-  const [roomName, setRoomName] = useState('');
+  const [location, setlocation] = useState('');
+  const [doorCode, setdoorCode] = useState('');
+  const [roomName, setroomName] = useState('');
   const [qrData, setQrData] = useState('');
 
   // Example company list for the dropdown
@@ -16,8 +15,8 @@ const QRGenerator = () => {
 
   const generateQRCode = async (e) => {
     e.preventDefault();
-    if (companyName && doorId && roomName) {
-      const qrValue = `${companyName}-${doorId}-${roomName}`;
+    if (location && doorCode && roomName) {
+      const qrValue = `${location}-${doorCode}-${roomName}`;
       setQrData(qrValue);
     } else {
       alert('Please fill in all fields.');
@@ -27,8 +26,8 @@ const QRGenerator = () => {
   const saveQRCodeToDatabase = async () => {
     try {
       const response = await axios.post('api/doors/create/', {
-        companyName,
-        doorId,
+        location,
+        doorCode,
         roomName,
         qrData,
       });
@@ -46,7 +45,7 @@ const QRGenerator = () => {
       .replace('image/png', 'image/octet-stream');
     const downloadLink = document.createElement('a');
     downloadLink.href = pngUrl;
-    downloadLink.download = `${companyName}_${doorId}_${roomName}_QR.png`;
+    downloadLink.download = `${location}_${doorCode}_${roomName}_QR.png`;
     downloadLink.click();
   };
 
@@ -64,8 +63,8 @@ const QRGenerator = () => {
               <div>
                 <label className="block text-sm font-medium">Company Name</label>
                 <select
-                  value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
+                  value={location}
+                  onChange={(e) => setlocation(e.target.value)}
                   className="border p-2 w-full rounded"
                 >
                   <option value="">Select a company</option>
@@ -80,8 +79,8 @@ const QRGenerator = () => {
                 <label className="block text-sm font-medium">Door ID</label>
                 <input
                   type="text"
-                  value={doorId}
-                  onChange={(e) => setDoorId(e.target.value)}
+                  value={doorCode}
+                  onChange={(e) => setdoorCode(e.target.value)}
                   placeholder="Enter door ID"
                   className="border p-2 w-full rounded"
                 />
@@ -91,7 +90,7 @@ const QRGenerator = () => {
                 <input
                   type="text"
                   value={roomName}
-                  onChange={(e) => setRoomName(e.target.value)}
+                  onChange={(e) => setroomName(e.target.value)}
                   placeholder="Enter room name"
                   className="border p-2 w-full rounded"
                 />
@@ -99,7 +98,7 @@ const QRGenerator = () => {
               <div className="flex items-center space-x-4">
                 <button
                   type="submit"
-                  disabled={!companyName || !doorId || !roomName}
+                  disabled={!location || !doorCode || !roomName}
                   className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                 >
                   Generate QR Code
@@ -142,10 +141,10 @@ const QRGenerator = () => {
             {qrData ? (
               <div className="space-y-2">
                 <p>
-                  <span className="font-medium">Company Name:</span> {companyName}
+                  <span className="font-medium">Company Name:</span> {location}
                 </p>
                 <p>
-                  <span className="font-medium">Door ID:</span> {doorId}
+                  <span className="font-medium">Door ID:</span> {doorCode}
                 </p>
                 <p>
                   <span className="font-medium">Room Name:</span> {roomName}

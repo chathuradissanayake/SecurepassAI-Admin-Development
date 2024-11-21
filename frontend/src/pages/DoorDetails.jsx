@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import Spinner from '../components/Spinner';
@@ -49,8 +49,8 @@ const DoorDetails = () => {
               <div className="ml-4">
                 <h2 className="text-xl font-semibold mb-3">Door Details</h2>
                 <p className="text-gray-600 mb-2"><strong>Door Code:</strong> {door.doorCode}</p>
-                <p className="text-gray-600 mb-2"><strong>Door Name:</strong> {door.doorName}</p>
-                <p className="text-gray-600 mb-2"><strong>Location:</strong> {door.location}</p>
+                <p className="text-gray-600 mb-2"><strong>Door Name:</strong> {door.roomName}</p>
+                <p className="text-gray-600 mb-2"><strong>location:</strong> {door.location}</p>
                 <h3 className="text-lg font-semibold mb-3">Approved Permission Requests</h3>
                 <div className="overflow-x-auto">
                   <table className="min-w-full text-left border-collapse">

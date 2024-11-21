@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Sidebar from "../components/Sidebar";
-import Header from "../components/Header";
-import avatar from "../assets/avatar.png";
 import { FaPencilAlt } from "react-icons/fa";
+import avatar from "../assets/avatar.png";
+import Header from "../components/Header";
+import Sidebar from "../components/Sidebar";
 
 const Profile = () => {
   const [profile, setProfile] = useState({

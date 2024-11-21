@@ -1,8 +1,8 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import Spinner from '../components/Spinner';
 import Modal from '../components/Modal';
+import Spinner from '../components/Spinner';
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
