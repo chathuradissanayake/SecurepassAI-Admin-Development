@@ -9,6 +9,8 @@ import Settings from './pages/Settings';
 import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
 import QRGenerator from './pages/QRGenerator';
+import LoginPage from './pages/LoginPage';
+import LogoutPage from './pages/LogoutPage';
 
 const App = () => {
   return (
@@ -23,6 +25,9 @@ const App = () => {
         <Route path="/settings" element={<Settings />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/qrgenerator" element={<QRGenerator />} />
+        <Route path="/logout" element={<LogoutPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </Router>
   );

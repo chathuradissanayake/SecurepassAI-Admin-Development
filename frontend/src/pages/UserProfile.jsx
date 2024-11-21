@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Header from '../components/Header';
+import Modal from '../components/Modal';
 import Sidebar from '../components/Sidebar';
+import Spinner from '../components/Spinner';
 import UPDoorAccess from "../components/UPDoorAccess";
 import UPHistory from "../components/UPHistory";
 import UPPermissionRequests from "../components/UPPermissionRequests";
-import Spinner from '../components/Spinner';
-import Modal from '../components/Modal';
 
 const UserProfile = () => {
   const { id } = useParams();
@@ -107,6 +107,28 @@ const UserProfile = () => {
 
   if (loading) return <Spinner />;
   if (error) return <p>Error: {error}</p>;
+
+
+  const historyRecords = [
+    {
+      doorId: "D1",
+      roomName: "Main Entrance",
+      entryTime: "2023-04-10 14:30:00",
+      exitTime: "2023-04-10 16:45:00",
+    },
+    {
+      doorId: "D2",
+      roomName: "Security Hub",
+      entryTime: "2023-04-11 09:15:00",
+      exitTime: null, // Ongoing access
+    },
+    {
+      doorId: "D3",
+      roomName: "Office Area",
+      entryTime: "2023-04-12 11:00:00",
+      exitTime: "2023-04-12 11:02:00",
+    },
+  ];
 
   return (
     <div className="flex">

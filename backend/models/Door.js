@@ -8,6 +8,6 @@ const doorSchema = new Schema({
   approvedUsers: [{ type: Schema.Types.ObjectId, ref: 'User' }] // New field for approved users
 }, { timestamps: true });
 
-const DoorModel = mongoose.model('Door', doorSchema);
+const Door = mongoose.model("Doors", doorSchema);
 
-module.exports = DoorModel;
+module.exports = Door;
