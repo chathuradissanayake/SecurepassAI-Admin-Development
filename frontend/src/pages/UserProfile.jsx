@@ -15,6 +15,7 @@ const UserProfile = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [pendingRequests, setPendingRequests] = useState([]);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -37,6 +38,7 @@ const UserProfile = () => {
           email: response.data.email,
           userId: response.data.userId
         });
+        setPendingRequests(response.data.pendingRequests);
         setLoading(false);
       } catch (err) {
         console.error('Error fetching user:', err);
@@ -93,98 +95,19 @@ const UserProfile = () => {
     }));
   };
 
+  const handleRequestUpdate = async () => {
+    try {
+      const response = await axios.get(`/api/users/${id}`, { withCredentials: true });
+      setUser(response.data);
+      setPendingRequests(response.data.pendingRequests);
+    } catch (err) {
+      console.error('Error fetching updated user data:', err);
+    }
+  };
+
   if (loading) return <Spinner />;
   if (error) return <p>Error: {error}</p>;
 
-  const accessRecords = [
-    {
-      doorId: "D1",
-      roomName: "Main Entrance",
-      entryTime: "08:00",
-      exitTime: "18:00",
-    },
-    {
-      doorId: "D2",
-      roomName: "Security Hub",
-      entryTime: "09:00",
-      exitTime: "17:00",
-    },
-    {
-      doorId: "D3",
-      roomName: "Office Area",
-      entryTime: "10:00",
-      exitTime: "16:00",
-    },
-    {
-      doorId: "D4",
-      roomName: "Server Room",
-      entryTime: "11:00",
-      exitTime: "15:00",
-    },
-    {
-      doorId: "D1",
-      roomName: "Main Entrance",
-      entryTime: "08:00",
-      exitTime: "18:00",
-    },
-    {
-      doorId: "D2",
-      roomName: "Security Hub",
-      entryTime: "09:00",
-      exitTime: "17:00",
-    },
-    {
-      doorId: "D3",
-      roomName: "Office Area",
-      entryTime: "10:00",
-      exitTime: "16:00",
-    },
-    {
-      doorId: "D4",
-      roomName: "Server Room",
-      entryTime: "11:00",
-      exitTime: "15:00",
-    },
-    {
-      doorId: "D1",
-      roomName: "Main Entrance",
-      entryTime: "08:00",
-      exitTime: "18:00",
-    },
-    {
-      doorId: "D2",
-      roomName: "Security Hub",
-      entryTime: "09:00",
-      exitTime: "17:00",
-    },
-    {
-      doorId: "D3",
-      roomName: "Office Area",
-      entryTime: "10:00",
-      exitTime: "16:00",
-    },
-    {
-      doorId: "D4",
-      roomName: "Server Room",
-      entryTime: "11:00",
-      exitTime: "15:00",
-    },
-  ];
-
-  const pendingRequests = [
-    {
-      doorId: "D3",
-      roomName: "Office Area",
-      entryTime: "10:00",
-      exitTime: "16:00",
-    },
-    {
-      doorId: "D4",
-      roomName: "Server Room",
-      entryTime: "11:00",
-      exitTime: "15:00",
-    },
-  ];
 
   const historyRecords = [
     {
@@ -250,13 +173,13 @@ const UserProfile = () => {
         </div>
 
         {/* Pending Door Permission Requests */}
-        <UPPermissionRequests pendingRequests={pendingRequests} />
+        <UPPermissionRequests pendingRequests={pendingRequests} onRequestUpdate={handleRequestUpdate} />
 
         {/* Door Access Table */}
-        <UPDoorAccess accessRecords={accessRecords} />
+        <UPDoorAccess accessRecords={user.doorAccess} />
 
         {/* Door Access History */}
-        <UPHistory historyRecords={historyRecords } />
+        <UPHistory historyRecords={user.history} />
 
         {/* Edit User Modal */}
         <Modal isVisible={isEditModalOpen} onClose={handleCloseEditModal}>
