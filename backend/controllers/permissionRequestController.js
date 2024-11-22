@@ -58,9 +58,16 @@ const approvePermissionRequest = async (req, res) => {
     request.status = "Approved";
     await request.save();
 
-    // Update the user's doorAccess array
+    // Update the user's doorAccess array with permission details
     await User.findByIdAndUpdate(request.user, {
-      $push: { doorAccess: request.door._id },
+      $push: { 
+        doorAccess: {
+          door: request.door._id,
+          inTime: request.inTime,
+          outTime: request.outTime,
+          date: request.date
+        }
+      },
       $pull: { pendingRequests: request._id }
     });
 
