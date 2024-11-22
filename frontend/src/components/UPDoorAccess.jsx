@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const UPDoorAccess = ({ accessRecords }) => {
@@ -73,7 +73,7 @@ const UPDoorAccess = ({ accessRecords }) => {
                     onClick={() => navigate(`/doors/${record._id}`)}
                     className="text-blue-600 hover:underline"
                   >
-                    {record.doorName}
+                    {record.roomName}
                   </button>
                 </td>
                 <td className="p-2 border">{record.entryTime}</td>

@@ -2,21 +2,30 @@ const Door = require('../models/Door');
 const PermissionRequest = require('../models/PermissionRequest');
 
 const createDoor = async (req, res) => {
-  const { doorCode, doorName, location } = req.body;
+  const { location, doorCode, roomName, qrData} = req.body;
+
+  if (!location || !doorCode || !roomName || !qrData  ) {
+    return res.status(400).json({ success: false, message: "All fields are required." });
+  }
 
   try {
     const newDoor = new Door({
-      doorCode,
-      doorName,
       location,
+      doorCode,
+      roomName,
+      qrData,
+    //   qrImage,
     });
 
-    const savedDoor = await newDoor.save();
-    res.status(201).json(savedDoor);
+    await newDoor.save(); // Save to database
+    
+    res.status(201).json({ success: true, message: "QR Code saved successfully!" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Error saving QR Code:", error);
+    res.status(500).json({ success: false, message: "Error saving QR Code." });
   }
 };
+
 
 const getDoorById = async (req, res) => {
   const { id } = req.params;
@@ -46,12 +55,12 @@ const getAllDoors = async (req, res) => {
 
 const updateDoor = async (req, res) => {
   const { id } = req.params;
-  const { doorCode, doorName, location } = req.body;
+  const { doorCode, roomName, location } = req.body;
 
   try {
     const updatedDoor = await Door.findByIdAndUpdate(
       id,
-      { doorCode, doorName, location },
+      { doorCode, roomName, location },
       { new: true, runValidators: true }
     );
     if (!updatedDoor) {

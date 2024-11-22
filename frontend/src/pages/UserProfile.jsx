@@ -111,19 +111,19 @@ const UserProfile = () => {
 
   const historyRecords = [
     {
-      doorId: "D1",
+      doorCode: "D1",
       roomName: "Main Entrance",
       entryTime: "2023-04-10 14:30:00",
       exitTime: "2023-04-10 16:45:00",
     },
     {
-      doorId: "D2",
+      doorCode: "D2",
       roomName: "Security Hub",
       entryTime: "2023-04-11 09:15:00",
       exitTime: null, // Ongoing access
     },
     {
-      doorId: "D3",
+      doorCode: "D3",
       roomName: "Office Area",
       entryTime: "2023-04-12 11:00:00",
       exitTime: "2023-04-12 11:02:00",
