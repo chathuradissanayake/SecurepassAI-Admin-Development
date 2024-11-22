@@ -58,7 +58,8 @@ const UPDoorAccess = ({ accessRecords }) => {
           <thead>
             <tr className="bg-gray-100">
               <th className="p-2 border">Door ID</th>
-              <th className="p-2 border">Room Name</th>
+              <th className="p-2 border">Door Name</th>
+              <th className="p-2 border">Date</th>
               <th className="p-2 border">Entry Time</th>
               <th className="p-2 border">Exit Time</th>
               <th className="p-2 border text-center">Action</th>
@@ -71,11 +72,12 @@ const UPDoorAccess = ({ accessRecords }) => {
                 <td className="p-2 border">
                   <button
                     onClick={() => navigate(`/doors/${record._id}`)}
-                    className="text-blue-600 hover:underline"
+                    className=""
                   >
-                    {record.roomName}
+                    {record.doorName}
                   </button>
                 </td>
+                <td className="p-2 border">{record.doorName}</td>
                 <td className="p-2 border">{record.entryTime}</td>
                 <td className="p-2 border">{record.exitTime}</td>
                 <td className="p-2 border text-center">
