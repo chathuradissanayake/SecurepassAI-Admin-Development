@@ -29,8 +29,11 @@ const Profile = () => {
       <Sidebar />
       <div className="flex-1 p-4">
         <Header />
-        <div className="flex justify-center items-center min-h-screen bg-gray-100">
-          <div className="w-full max-w-6xl p-12 bg-white rounded-lg shadow-lg transform translate-y-[-50px] min-h-[70vh]">
+        <div className="p-6 space-y-6">
+              <h2 className="text-xl font-semibold text-gray-800">
+                Profile
+              </h2>
+        
             {/* Profile Image and Edit Button */}
             <div className="flex items-center justify-center mb-8 relative">
               <div className="relative">
@@ -102,7 +105,7 @@ const Profile = () => {
             </div>
 
             {/* Save Button */}
-            <div className="mt-8 flex justify-end">
+            <div className="mt-8 ">
               <button
                 onClick={handleSave}
                 className="bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -112,8 +115,8 @@ const Profile = () => {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+        </div>
+      
   );
 };
 
