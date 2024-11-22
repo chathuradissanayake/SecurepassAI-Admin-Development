@@ -2,55 +2,18 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-  firstName: {
-    type: String,
-    required: true,
-  },
-  lastName: {
-    type: String,
-    required: true,
-  },
-  userId: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  avatar: {
-    type: String,
-  },
-  doorAccess: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Door',
-  }],
-  pendingRequests: [{
-    type: Schema.Types.ObjectId,
-    ref: 'PermissionRequest',
-  }],
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  userId: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  doorAccess: [{ type: Schema.Types.ObjectId, ref: 'Door' }],
+  pendingRequests: [{ type: Schema.Types.ObjectId, ref: 'PermissionRequest' }],
   history: [{
-    door: {
-      type: Schema.Types.ObjectId,
-      ref: 'Door',
-    },
-    entryTime: {
-      type: Date,
-    },
-    exitTime: {
-      type: Date,
-    },
-    status: {
-      type: String,
-      enum: ['Active', 'Exited'],
-      default: 'Active',
-    },
+    door: { type: Schema.Types.ObjectId, ref: 'Door' },
+    entryTime: { type: Date },
+    exitTime: { type: Date },
+    status: { type: String, enum: ['Active', 'Exited'], default: 'Active' },
   }],
 }, { timestamps: true });
 

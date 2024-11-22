@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const UPDoorAccess = ({ accessRecords }) => {
   const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(0);
   const [records, setRecords] = useState(accessRecords);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setRecords(accessRecords);
+  }, [accessRecords]);
 
   // Calculate total pages
   const totalPages = Math.ceil(records.length / itemsPerPage);
@@ -61,8 +67,15 @@ const UPDoorAccess = ({ accessRecords }) => {
           <tbody>
             {currentRecords.map((record, index) => (
               <tr key={index} className="hover:bg-gray-50">
-                <td className="p-2 border">{record.doorId}</td>
-                <td className="p-2 border">{record.roomName}</td>
+                <td className="p-2 border">{record.doorCode}</td>
+                <td className="p-2 border">
+                  <button
+                    onClick={() => navigate(`/doors/${record._id}`)}
+                    className="text-blue-600 hover:underline"
+                  >
+                    {record.roomName}
+                  </button>
+                </td>
                 <td className="p-2 border">{record.entryTime}</td>
                 <td className="p-2 border">{record.exitTime}</td>
                 <td className="p-2 border text-center">

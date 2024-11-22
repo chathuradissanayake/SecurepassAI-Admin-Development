@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
+import Sidebar from '../components/Sidebar';
 
 const Settings = () => {
   const [isTwoFactorEnabled, setIsTwoFactorEnabled] = useState(false);
@@ -39,10 +39,9 @@ const Settings = () => {
       <Sidebar />
       <div className="flex-1 p-4">
         <Header />
-        <div className="flex justify-center items-center min-h-screen bg-gray-100">
-          <div className="w-full max-w-6xl p-12 bg-white rounded-lg shadow-lg transform translate-y-[-50px] min-h-[70vh]">
+        
             {/* Two-Factor Authentication */}
-            <div className="mb-8">
+            <div className="p-6 space-y-6">
               <h2 className="text-xl font-semibold text-gray-800">
                 Two-factor Authentication
               </h2>
@@ -63,7 +62,7 @@ const Settings = () => {
             </div>
 
             {/* Change Password */}
-            <div className="mb-8">
+            <div className="px-6 space-y-6">
               <h2 className="text-xl font-semibold text-gray-800">Change Password</h2>
               <div className="mt-4">
                 <label
@@ -78,7 +77,7 @@ const Settings = () => {
                   name="currentPassword"
                   value={passwords.currentPassword}
                   onChange={handleChange}
-                  className="w-full mt-2 px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
+                  className="w-1/2 mt-2 px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
                   placeholder="********"
                 />
               </div>
@@ -95,7 +94,7 @@ const Settings = () => {
                   name="newPassword"
                   value={passwords.newPassword}
                   onChange={handleChange}
-                  className="w-full mt-2 px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
+                  className="w-1/2 mt-2 px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
                   placeholder="********"
                 />
               </div>
@@ -112,7 +111,7 @@ const Settings = () => {
                   name="confirmPassword"
                   value={passwords.confirmPassword}
                   onChange={handleChange}
-                  className="w-full mt-2 px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
+                  className="w-1/2 mt-2 px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
                   placeholder="********"
                 />
               </div>
@@ -120,7 +119,7 @@ const Settings = () => {
             </div>
 
             {/* Save Button */}
-            <div className="flex justify-end">
+            <div className="p-6 space-y-6">
               <button
                 onClick={handleSave}
                 className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
@@ -130,8 +129,7 @@ const Settings = () => {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      
   );
 };
 

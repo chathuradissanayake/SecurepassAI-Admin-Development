@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import avatar from "../assets/avatar.png"
+import avatar from "../assets/avatar.png";
 
 const Header = () => {
   const location = useLocation();
@@ -28,6 +28,7 @@ const Header = () => {
   };
 
   return (
+    <div>
     <header className="flex justify-between items-center p-4 bg-white ">
       <h2 className="text-gray-600 text-sm">Pages / {getTitle(location.pathname)}</h2>
       <div className="flex items-center gap-4">
@@ -46,8 +47,16 @@ const Header = () => {
           alt="User Avatar"
           className="w-8 h-8 rounded-full"
         />
+        
+
       </div>
+
+      
     </header>
+    <hr />
+
+    </div>
+    
   );
 };
 

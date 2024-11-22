@@ -1,9 +1,10 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 
-const UPPermissionRequests = ({ pendingRequests }) => {
+const UPPermissionRequests = ({ pendingRequests, onRequestUpdate }) => {
   const itemsPerPage = 3;
   const [currentPage, setCurrentPage] = useState(0);
-  const [requests, setRequests] = useState(pendingRequests);
+  const [requests, setRequests] = useState(pendingRequests.filter(request => request.status === 'Pending'));
   const [selectedActions, setSelectedActions] = useState({});
 
   // Calculate total pages
@@ -41,21 +42,32 @@ const UPPermissionRequests = ({ pendingRequests }) => {
   };
 
   // Handler for confirming the action
-  const handleConfirmAction = (indexToConfirm) => {
+  const handleConfirmAction = async (indexToConfirm) => {
     const action = selectedActions[indexToConfirm];
+    const request = currentRequests[indexToConfirm];
 
     if (action) {
-      // Remove the request from the list
-      const updatedRequests = requests.filter((_, index) => index !== indexToConfirm);
-      setRequests(updatedRequests);
+      try {
+        if (action === 'Approve') {
+          await axios.put(`/api/permission-requests/${request._id}/approve`);
+        } else if (action === 'Reject') {
+          await axios.put(`/api/permission-requests/${request._id}/reject`);
+        }
 
-      // Adjust current page if it goes out of range after removal
-      if (updatedRequests.length > 0 && currentPage >= Math.ceil(updatedRequests.length / itemsPerPage)) {
-        setCurrentPage(currentPage - 1);
+        // Remove the request from the list
+        const updatedRequests = requests.filter((_, index) => index !== indexToConfirm);
+        setRequests(updatedRequests);
+
+        // Adjust current page if it goes out of range after removal
+        if (updatedRequests.length > 0 && currentPage >= Math.ceil(updatedRequests.length / itemsPerPage)) {
+          setCurrentPage(currentPage - 1);
+        }
+
+        // Trigger the state update in the UserProfile component
+        onRequestUpdate();
+      } catch (error) {
+        console.error('Error updating request:', error);
       }
-
-      // Optionally, handle the action (e.g., API call for approval/rejection)
-      console.log(`Request ${indexToConfirm} ${action}`);
     }
   };
 
@@ -66,49 +78,54 @@ const UPPermissionRequests = ({ pendingRequests }) => {
       {/* Table */}
       <div className="overflow-x-auto">
         <table className="min-w-full text-left border-collapse">
-        <thead>
-  <tr className="bg-gray-100">
-    <th className="p-2 border w-1/6">Door ID</th>   
-    <th className="p-2 border w-1/5">Room Name</th>   
-    <th className="p-2 border w-1/6">Entry Time</th>  
-    <th className="p-2 border w-1/6">Exit Time</th>   
-    <th className="p-2 border text-center">Action</th>      
-  </tr>
-</thead>
-
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="p-2 border w-1/6">Door ID</th>
+              <th className="p-2 border w-1/5">Door Name</th>
+              <th className="p-2 border w-1/5">Date</th>
+              <th className="p-2 border w-1/6">Entry Time</th>
+              <th className="p-2 border w-1/6">Exit Time</th>
+              <th className="p-2 border text-center">Action</th>
+            </tr>
+          </thead>
           <tbody>
-            {currentRequests.map((request, index) => (
-              <tr key={index} className="hover:bg-gray-50">
-                <td className="p-2 border">{request.doorId}</td>
-                <td className="p-2 border">{request.roomName}</td>
-                <td className="p-2 border">{request.entryTime}</td>
-                <td className="p-2 border">{request.exitTime}</td>
-                <td className="p-2 border">
-                  <div className="flex items-center gap-2">
-                    {/* Action Dropdown */}
-                    <select
-                      value={selectedActions[currentPage * itemsPerPage + index] || ''}
-                      onChange={(e) =>
-                        handleSelectAction(currentPage * itemsPerPage + index, e.target.value)
-                      }
-                      className="px-2 py-1 border rounded bg-white"
-                    >
-                      <option value="">Select action</option>
-                      <option value="Approve">Approve</option>
-                      <option value="Reject">Reject</option>
-                    </select>
+            {currentRequests.map((request, index) => {
+              const date = new Date(request.date);
+              const formattedDate = date.toLocaleDateString('en-CA'); // 'en-CA' locale formats date as yyyy-mm-dd
+              return (
+                <tr key={index} className="hover:bg-gray-50">
+                  <td className="p-2 border">{request.door.doorCode}</td>
+                  <td className="p-2 border">{request.door.roomName}</td>
+                  <td className="p-2 border">{formattedDate}</td>
+                  <td className="p-2 border">{request.inTime}</td>
+                  <td className="p-2 border">{request.outTime}</td>
+                  <td className="p-2 border">
+                    <div className="flex items-center gap-2">
+                      {/* Action Dropdown */}
+                      <select
+                        value={selectedActions[currentPage * itemsPerPage + index] || ''}
+                        onChange={(e) =>
+                          handleSelectAction(currentPage * itemsPerPage + index, e.target.value)
+                        }
+                        className="px-2 py-1 border rounded bg-white"
+                      >
+                        <option value="">Select action</option>
+                        <option value="Approve">Approve</option>
+                        <option value="Reject">Reject</option>
+                      </select>
 
-                    {/* Confirm Button */}
-                    <button
-                      onClick={() => handleConfirmAction(currentPage * itemsPerPage + index)}
-                      className="bg-blue-600 text-white py-1 px-3 rounded hover:bg-blue-700"
-                    >
-                      Confirm
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+                      {/* Confirm Button */}
+                      <button
+                        onClick={() => handleConfirmAction(currentPage * itemsPerPage + index)}
+                        className="bg-blue-600 text-white py-1 px-3 rounded hover:bg-blue-700"
+                      >
+                        Confirm
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
