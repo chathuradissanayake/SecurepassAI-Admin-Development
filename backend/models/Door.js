@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
 const doorSchema = new mongoose.Schema({
     location: { type: String, required: true },
