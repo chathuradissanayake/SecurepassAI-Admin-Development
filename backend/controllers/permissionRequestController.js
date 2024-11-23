@@ -59,7 +59,7 @@ const approvePermissionRequest = async (req, res) => {
     await request.save();
 
     // Fetch the user's details
-    const user = await User.findById(request.user);
+    const user = await User.findById(request.user).populate('doorAccess.door');
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
@@ -67,6 +67,9 @@ const approvePermissionRequest = async (req, res) => {
     // Update the user's doorAccess array with permission details
     user.doorAccess.push({
       door: request.door._id,
+      doorCode: request.door.doorCode,
+      roomName: request.door.roomName,
+      location: request.door.location,
       inTime: request.inTime,
       outTime: request.outTime,
       date: request.date
