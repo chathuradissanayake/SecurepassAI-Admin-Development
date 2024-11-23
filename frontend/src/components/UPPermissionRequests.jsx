@@ -81,7 +81,7 @@ const UPPermissionRequests = ({ pendingRequests, onRequestUpdate }) => {
           <thead>
             <tr className="bg-gray-100">
               <th className="p-2 border w-1/6">Door ID</th>
-              <th className="p-2 border w-1/5">Door Name</th>
+              <th className="p-2 border w-1/5">Room Name</th>
               <th className="p-2 border w-1/5">Date</th>
               <th className="p-2 border w-1/6">Entry Time</th>
               <th className="p-2 border w-1/6">Exit Time</th>
