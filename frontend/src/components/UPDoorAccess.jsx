@@ -69,16 +69,16 @@ const UPDoorAccess = ({ accessRecords }) => {
           <tbody>
             {currentRecords.map((record, index) => (
               <tr key={index} className="hover:bg-gray-50">
-                <td className="p-2 border">{record.door.doorCode}</td>
+                <td className="p-2 border">{record.door?.doorCode || 'N/A'}</td>
                 <td className="p-2 border">
                   <button
-                    onClick={() => navigate(`/doors/${record.door._id}`)}
+                    onClick={() => navigate(`/doors/${record.door?._id}`)}
                     className="text-blue-600 hover:underline"
                   >
-                    {record.door.roomName}
+                    {record.door?.roomName || 'N/A'}
                   </button>
                 </td>
-                <td className="p-2 border">{record.door.location}</td>
+                <td className="p-2 border">{record.door?.location || 'N/A'}</td>
                 <td className="p-2 border">{new Date(record.date).toLocaleDateString('en-CA')}</td>
                 <td className="p-2 border">{record.inTime}</td>
                 <td className="p-2 border">{record.outTime}</td>
