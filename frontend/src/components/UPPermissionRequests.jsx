@@ -95,7 +95,7 @@ const UPPermissionRequests = ({ pendingRequests, onRequestUpdate }) => {
               return (
                 <tr key={index} className="hover:bg-gray-50">
                   <td className="p-2 border">{request.door.doorCode}</td>
-                  <td className="p-2 border">{request.door.doorName}</td>
+                  <td className="p-2 border">{request.door.roomName}</td>
                   <td className="p-2 border">{formattedDate}</td>
                   <td className="p-2 border">{request.inTime}</td>
                   <td className="p-2 border">{request.outTime}</td>
