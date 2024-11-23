@@ -1,5 +1,5 @@
 const User = require('../models/User');
-const PermissionRequest = require('../models/PermissionRequest')
+const PermissionRequest = require('../models/PermissionRequest');
 const { hashPassword } = require('../helper/auth');
 
 // Register User
@@ -81,6 +81,9 @@ const getUserById = async (req, res) => {
       path: 'pendingRequests',
       match: { status: 'Pending' },
       populate: { path: 'door' }
+    }).populate({
+      path: 'doorAccess.door',
+      select: 'doorCode roomName location'
     });
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
@@ -90,7 +93,15 @@ const getUserById = async (req, res) => {
     const approvedRequests = await PermissionRequest.find({ user: id, status: 'Approved' }).populate('door');
 
     // Extract the doors from the approved requests
-    const approvedDoors = approvedRequests.map(request => request.door);
+    const approvedDoors = approvedRequests.map(request => ({
+      door: request.door._id,
+      doorCode: request.door.doorCode,
+      roomName: request.door.roomName,
+      location: request.door.location,
+      inTime: request.inTime,
+      outTime: request.outTime,
+      date: request.date
+    }));
 
     // Update the user's doorAccess with the approved doors
     user.doorAccess = approvedDoors;
