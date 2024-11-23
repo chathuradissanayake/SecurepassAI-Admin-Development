@@ -108,28 +108,6 @@ const UserProfile = () => {
   if (loading) return <Spinner />;
   if (error) return <p>Error: {error}</p>;
 
-
-  const historyRecords = [
-    {
-      doorCode: "D1",
-      roomName: "Main Entrance",
-      entryTime: "2023-04-10 14:30:00",
-      exitTime: "2023-04-10 16:45:00",
-    },
-    {
-      doorCode: "D2",
-      roomName: "Security Hub",
-      entryTime: "2023-04-11 09:15:00",
-      exitTime: null, // Ongoing access
-    },
-    {
-      doorCode: "D3",
-      roomName: "Office Area",
-      entryTime: "2023-04-12 11:00:00",
-      exitTime: "2023-04-12 11:02:00",
-    },
-  ];
-
   return (
     <div className="flex">
       <Sidebar />
