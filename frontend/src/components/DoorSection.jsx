@@ -58,7 +58,7 @@ const DoorSection = ({ doors, setDoors }) => {
               >
                 View Details
               </button>
-              <button className="text-blue-600 hover:underline">Regenerate</button>
+              
               <select className=" px-2 py-1 border rounded">
                 <option disabled>Status</option>
                 <option>Active</option>
