@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import axios from 'axios';
+import React, { useState } from 'react';
 
 const UPPermissionRequests = ({ pendingRequests, onRequestUpdate }) => {
   const itemsPerPage = 3;
@@ -81,7 +81,7 @@ const UPPermissionRequests = ({ pendingRequests, onRequestUpdate }) => {
           <thead>
             <tr className="bg-gray-100">
               <th className="p-2 border w-1/6">Door ID</th>
-              <th className="p-2 border w-1/5">Door Name</th>
+              <th className="p-2 border w-1/5">Room Name</th>
               <th className="p-2 border w-1/5">Date</th>
               <th className="p-2 border w-1/6">Entry Time</th>
               <th className="p-2 border w-1/6">Exit Time</th>
@@ -95,7 +95,7 @@ const UPPermissionRequests = ({ pendingRequests, onRequestUpdate }) => {
               return (
                 <tr key={index} className="hover:bg-gray-50">
                   <td className="p-2 border">{request.door.doorCode}</td>
-                  <td className="p-2 border">{request.door.doorName}</td>
+                  <td className="p-2 border">{request.door.roomName}</td>
                   <td className="p-2 border">{formattedDate}</td>
                   <td className="p-2 border">{request.inTime}</td>
                   <td className="p-2 border">{request.outTime}</td>

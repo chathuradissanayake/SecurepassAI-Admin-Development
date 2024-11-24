@@ -1,13 +1,13 @@
 import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
 import {
-  FaHome,
-  FaUserFriends,
-  FaDoorOpen,
   FaCog,
-  FaUser,
+  FaDoorOpen,
+  FaHome,
   FaSignOutAlt,
+  FaUser,
+  FaUserFriends,
 } from "react-icons/fa";
+import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 
 const Sidebar = () => {
@@ -20,20 +20,20 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="w-64 bg-white h-screen p-4 flex flex-col">
-      <div className="flex justify-center mb-8">
+    <aside className="w-64 bg-slate-200 min-h-screen p-6 flex flex-col space-y-6">
+      <div className="flex justify-center mb-6">
         <NavLink to="/">
           <img src={logo} alt="Logo" className="w-24 h-24" />
         </NavLink>
       </div>
       <nav className="flex-1">
-        <ul className="space-y-4">
+        <ul className="space-y-6">
           <li>
             <NavLink
               to="/"
               className={({ isActive }) =>
                 isActive
-                  ? "text-blue-600 flex items-center gap-2"
+                  ? " text-blue-600 flex items-center gap-4"
                   : "text-gray-600 flex items-center gap-2"
               }
             >
@@ -45,7 +45,7 @@ const Sidebar = () => {
               to="/users"
               className={({ isActive }) =>
                 isActive
-                  ? "text-blue-600 flex items-center gap-2"
+                  ? "text-blue-600 flex items-center gap-4"
                   : "text-gray-600 flex items-center gap-2"
               }
             >
@@ -57,7 +57,7 @@ const Sidebar = () => {
               to="/doors"
               className={({ isActive }) =>
                 isActive
-                  ? "text-blue-600 flex items-center gap-2"
+                  ? "text-blue-600 flex items-center gap-4"
                   : "text-gray-600 flex items-center gap-2"
               }
             >
@@ -69,7 +69,7 @@ const Sidebar = () => {
               to="/settings"
               className={({ isActive }) =>
                 isActive
-                  ? "text-blue-600 flex items-center gap-2"
+                  ? "text-blue-600 flex items-center gap-4"
                   : "text-gray-600 flex items-center gap-2"
               }
             >
@@ -81,7 +81,7 @@ const Sidebar = () => {
               to="/profile"
               className={({ isActive }) =>
                 isActive
-                  ? "text-blue-600 flex items-center gap-2"
+                  ? "text-blue-600 flex items-center gap-4"
                   : "text-gray-600 flex items-center gap-2"
               }
             >
@@ -91,7 +91,7 @@ const Sidebar = () => {
           <li>
             <button
               onClick={handleLogout}
-              className="text-red-600 flex items-center gap-2 w-full text-left"
+              className="text-gray-600 flex items-center gap-2 w-full text-left"
             >
               <FaSignOutAlt /> Logout
             </button>

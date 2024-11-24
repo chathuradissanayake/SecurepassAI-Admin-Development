@@ -3,7 +3,7 @@ const User = require("../models/User");
 const Door = require("../models/Door");
 
 const createPermissionRequest = async (req, res) => {
-  const { userId, doorId, name, doorName, inTime, outTime, date, message } = req.body;
+  const { userId, doorId, name, roomName, inTime, outTime, date, message } = req.body;
 
   try {
     // Fetch the user's details using the userId
@@ -16,7 +16,7 @@ const createPermissionRequest = async (req, res) => {
       user: user._id, // Use the MongoDB ObjectId
       door: doorId,
       name,
-      doorName,
+      roomName,
       inTime,
       outTime,
       date,
@@ -58,11 +58,27 @@ const approvePermissionRequest = async (req, res) => {
     request.status = "Approved";
     await request.save();
 
-    // Update the user's doorAccess array
-    await User.findByIdAndUpdate(request.user, {
-      $push: { doorAccess: request.door._id },
-      $pull: { pendingRequests: request._id }
+    // Fetch the user's details
+    const user = await User.findById(request.user).populate('doorAccess.door');
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Update the user's doorAccess array with permission details
+    user.doorAccess.push({
+      door: request.door._id,
+      doorCode: request.door.doorCode,
+      roomName: request.door.roomName,
+      location: request.door.location,
+      inTime: request.inTime,
+      outTime: request.outTime,
+      date: request.date
     });
+
+    // Remove the request from the user's pendingRequests array
+    user.pendingRequests = user.pendingRequests.filter(reqId => reqId.toString() !== id);
+
+    await user.save();
 
     // Update the door's approvedUsers array
     await Door.findByIdAndUpdate(request.door._id, {

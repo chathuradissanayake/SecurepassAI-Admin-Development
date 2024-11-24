@@ -57,8 +57,10 @@ const UPDoorAccess = ({ accessRecords }) => {
         <table className="min-w-full text-left border-collapse">
           <thead>
             <tr className="bg-gray-100">
-              <th className="p-2 border">Door ID</th>
+              <th className="p-2 border">Door Code</th>
               <th className="p-2 border">Room Name</th>
+              <th className="p-2 border">Location</th>
+              <th className="p-2 border">Date</th>
               <th className="p-2 border">Entry Time</th>
               <th className="p-2 border">Exit Time</th>
               <th className="p-2 border text-center">Action</th>
@@ -67,17 +69,19 @@ const UPDoorAccess = ({ accessRecords }) => {
           <tbody>
             {currentRecords.map((record, index) => (
               <tr key={index} className="hover:bg-gray-50">
-                <td className="p-2 border">{record.doorCode}</td>
+                <td className="p-2 border">{record.door?.doorCode || 'N/A'}</td>
                 <td className="p-2 border">
                   <button
-                    onClick={() => navigate(`/doors/${record._id}`)}
+                    onClick={() => navigate(`/doors/${record.door?._id}`)}
                     className="text-blue-600 hover:underline"
                   >
-                    {record.doorName}
+                    {record.door?.roomName || 'N/A'}
                   </button>
                 </td>
-                <td className="p-2 border">{record.entryTime}</td>
-                <td className="p-2 border">{record.exitTime}</td>
+                <td className="p-2 border">{record.door?.location || 'N/A'}</td>
+                <td className="p-2 border">{new Date(record.date).toLocaleDateString('en-CA')}</td>
+                <td className="p-2 border">{record.inTime}</td>
+                <td className="p-2 border">{record.outTime}</td>
                 <td className="p-2 border text-center">
                   <button
                     onClick={() => handleRemovePermission(currentPage * itemsPerPage + index)}
