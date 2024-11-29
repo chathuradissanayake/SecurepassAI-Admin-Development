@@ -9,6 +9,7 @@ import {
 } from "react-icons/fa";
 
 const Dashboard = () => {
+  // Dummy data for access requests
   const [accessRequests, setAccessRequests] = useState([
     {
       id: 1,
@@ -39,6 +40,15 @@ const Dashboard = () => {
   const [showDenyPopup, setShowDenyPopup] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [denyReason, setDenyReason] = useState("");
+
+  // Dummy data for room occupancy
+  const rooms = [
+    { name: "Main Entrance", capacity: 20, current: 15 },
+    { name: "Conference Room A", capacity: 10, current: 8 },
+    { name: "Executive Room", capacity: 15, current: 10 },
+    { name: "Lobby", capacity: 30, current: 25 },
+    { name: "Cafeteria", capacity: 50, current: 40 },
+  ];
 
   const handleAccept = (id) => {
     setAccessRequests((prev) => prev.filter((request) => request.id !== id));
@@ -119,47 +129,86 @@ const Dashboard = () => {
           </div>
         </div>
 
+        {/* Room Occupancy Section */}
+        <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
+          <h3 className="text-lg font-bold text-gray-800 mb-4">
+            Room Occupancy
+          </h3>
+          <ul>
+            {rooms.map((room, index) => {
+              const occupancyPercentage = Math.round(
+                (room.current / room.capacity) * 100
+              );
+              return (
+                <li
+                  key={index}
+                  className="mb-4 bg-gray-100 p-4 rounded-lg shadow"
+                >
+                  <div className="flex justify-between items-center mb-2">
+                    <p className="font-bold text-gray-800">{room.name}</p>
+                    <p className="text-sm text-gray-500">
+                      {room.current} / {room.capacity} occupants
+                    </p>
+                  </div>
+                  <div className="w-full bg-gray-300 rounded-full h-4">
+                    <div
+                      className={`h-4 rounded-full ${
+                        occupancyPercentage > 75
+                          ? "bg-red-500"
+                          : occupancyPercentage > 50
+                          ? "bg-yellow-500"
+                          : "bg-green-500"
+                      }`}
+                      style={{ width: `${occupancyPercentage}%` }}
+                    ></div>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
         {/* Access Requests Section */}
-        <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="p-6 bg-white border rounded-lg shadow-md">
-            <h3 className="text-gray-600 text-lg mb-4">Access Requests</h3>
-            {accessRequests.length > 0 ? (
-              <ul>
-                {accessRequests.map((request) => (
-                  <li
-                    key={request.id}
-                    className="flex justify-between items-center mb-4 bg-gray-100 p-3 rounded-lg"
-                  >
-                    <div>
-                      <p className="font-bold text-gray-800">{request.name}</p>
-                      <p className="text-sm text-gray-500">
-                        {request.room} - {request.date} {request.time}
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        Status: {request.status}
-                      </p>
-                    </div>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleAccept(request.id)}
-                        className="px-4 py-1 bg-green-500 hover:bg-green-600 text-white rounded-lg"
-                      >
-                        Accept
-                      </button>
-                      <button
-                        onClick={() => handleOpenDenyPopup(request)}
-                        className="px-4 py-1 bg-red-500 hover:bg-red-600 text-white rounded-lg"
-                      >
-                        Deny
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-gray-500">No access requests at the moment.</p>
-            )}
-          </div>
+        <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
+          <h3 className="text-lg font-bold text-gray-800 mb-4">
+            Access Requests
+          </h3>
+          {accessRequests.length > 0 ? (
+            <ul>
+              {accessRequests.map((request) => (
+                <li
+                  key={request.id}
+                  className="flex justify-between items-center mb-4 bg-gray-100 p-4 rounded-lg"
+                >
+                  <div>
+                    <p className="font-bold text-gray-800">{request.name}</p>
+                    <p className="text-sm text-gray-500">
+                      {request.room} - {request.date} {request.time}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Status: {request.status}
+                    </p>
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleAccept(request.id)}
+                      className="px-4 py-1 bg-green-500 hover:bg-green-600 text-white rounded-lg"
+                    >
+                      Accept
+                    </button>
+                    <button
+                      onClick={() => handleOpenDenyPopup(request)}
+                      className="px-4 py-1 bg-red-500 hover:bg-red-600 text-white rounded-lg"
+                    >
+                      Deny
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-500">No access requests at the moment.</p>
+          )}
         </div>
       </div>
 
@@ -182,10 +231,17 @@ const Dashboard = () => {
               rows="4"
               placeholder="Enter your reason here..."
             ></textarea>
-            <div className="flex justify-end gap-2 mt-4">
+            <p> Provide a reason for denying the request:</p>
+            <textarea
+              value={denyReason}
+              onChange={(e) => setDenyReason(e.target.value)}
+              className="w-full h-20 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+              placeholder="Enter denial reason here..."
+            ></textarea>
+            <div className="flex justify-end mt-4 gap-2">
               <button
                 onClick={handleCloseDenyPopup}
-                className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-lg"
+                className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg"
               >
                 Cancel
               </button>
