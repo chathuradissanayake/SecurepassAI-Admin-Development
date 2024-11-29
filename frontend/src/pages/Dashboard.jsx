@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import Sidebar from "../components/Sidebar";
-import Header from "../components/Header";
 import {
-  FaUsers,
-  FaDoorOpen,
   FaCheckCircle,
+  FaDoorOpen,
   FaExclamationTriangle,
+  FaUsers,
 } from "react-icons/fa";
+import Header from "../components/Header";
+import Messages from "../components/Messages";
+import Sidebar from "../components/Sidebar";
 
 const Dashboard = () => {
   // Dummy data for access requests
@@ -129,8 +130,63 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Room Occupancy Section */}
-        <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
+       
+
+        {/* Access Requests Section */}
+        <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+  
+  <div className="p-6 bg-white border rounded-lg shadow-md">
+    <h3 className="text-gray-600 text-lg mb-4">Access Requests</h3>
+    {accessRequests.length > 0 ? (
+      <ul>
+        {accessRequests.map((request) => (
+          <li
+            key={request.id}
+            className="flex justify-between items-center mb-4 bg-gray-100 p-3 rounded-lg"
+          >
+            <div>
+              <p className="font-bold text-gray-800">{request.name}</p>
+              <p className="text-sm text-gray-500">
+                {request.room} - {request.date} {request.time}
+              </p>
+              <p className="text-sm text-gray-500">
+                Status: {request.status}
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => handleAccept(request.id)}
+                className="px-4 py-1 bg-green-500 hover:bg-green-600 text-white rounded-lg"
+              >
+                Accept
+              </button>
+              <button
+                onClick={() => handleOpenDenyPopup(request)}
+                className="px-4 py-1 bg-red-500 hover:bg-red-600 text-white rounded-lg"
+              >
+                Deny
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p className="text-gray-500">No access requests at the moment.</p>
+    )}
+  </div>
+
+  {/* Messages */}
+  <div className="p-6 bg-white border rounded-lg shadow-md">
+    <h3 className="text-gray-600 text-lg mb-4">Messages</h3>
+    
+     <Messages/>
+    
+  </div>
+</div>
+
+
+{/* Room Occupancy Section */}
+<div className="mt-6 bg-white p-6 rounded-lg shadow-md">
           <h3 className="text-lg font-bold text-gray-800 mb-4">
             Room Occupancy
           </h3>
@@ -168,49 +224,13 @@ const Dashboard = () => {
           </ul>
         </div>
 
-        {/* Access Requests Section */}
-        <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-lg font-bold text-gray-800 mb-4">
-            Access Requests
-          </h3>
-          {accessRequests.length > 0 ? (
-            <ul>
-              {accessRequests.map((request) => (
-                <li
-                  key={request.id}
-                  className="flex justify-between items-center mb-4 bg-gray-100 p-4 rounded-lg"
-                >
-                  <div>
-                    <p className="font-bold text-gray-800">{request.name}</p>
-                    <p className="text-sm text-gray-500">
-                      {request.room} - {request.date} {request.time}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Status: {request.status}
-                    </p>
-                  </div>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => handleAccept(request.id)}
-                      className="px-4 py-1 bg-green-500 hover:bg-green-600 text-white rounded-lg"
-                    >
-                      Accept
-                    </button>
-                    <button
-                      onClick={() => handleOpenDenyPopup(request)}
-                      className="px-4 py-1 bg-red-500 hover:bg-red-600 text-white rounded-lg"
-                    >
-                      Deny
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-500">No access requests at the moment.</p>
-          )}
-        </div>
+
+        
       </div>
+
+
+ 
+
 
       {/* Deny Popup */}
       {showDenyPopup && (
