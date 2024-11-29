@@ -130,44 +130,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Room Occupancy Section */}
-        <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-lg font-bold text-gray-800 mb-4">
-            Room Occupancy
-          </h3>
-          <ul>
-            {rooms.map((room, index) => {
-              const occupancyPercentage = Math.round(
-                (room.current / room.capacity) * 100
-              );
-              return (
-                <li
-                  key={index}
-                  className="mb-4 bg-gray-100 p-4 rounded-lg shadow"
-                >
-                  <div className="flex justify-between items-center mb-2">
-                    <p className="font-bold text-gray-800">{room.name}</p>
-                    <p className="text-sm text-gray-500">
-                      {room.current} / {room.capacity} occupants
-                    </p>
-                  </div>
-                  <div className="w-full bg-gray-300 rounded-full h-4">
-                    <div
-                      className={`h-4 rounded-full ${
-                        occupancyPercentage > 75
-                          ? "bg-red-500"
-                          : occupancyPercentage > 50
-                          ? "bg-yellow-500"
-                          : "bg-green-500"
-                      }`}
-                      style={{ width: `${occupancyPercentage}%` }}
-                    ></div>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
+       
 
         {/* Access Requests Section */}
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -222,10 +185,52 @@ const Dashboard = () => {
 </div>
 
 
+{/* Room Occupancy Section */}
+<div className="mt-6 bg-white p-6 rounded-lg shadow-md">
+          <h3 className="text-lg font-bold text-gray-800 mb-4">
+            Room Occupancy
+          </h3>
+          <ul>
+            {rooms.map((room, index) => {
+              const occupancyPercentage = Math.round(
+                (room.current / room.capacity) * 100
+              );
+              return (
+                <li
+                  key={index}
+                  className="mb-4 bg-gray-100 p-4 rounded-lg shadow"
+                >
+                  <div className="flex justify-between items-center mb-2">
+                    <p className="font-bold text-gray-800">{room.name}</p>
+                    <p className="text-sm text-gray-500">
+                      {room.current} / {room.capacity} occupants
+                    </p>
+                  </div>
+                  <div className="w-full bg-gray-300 rounded-full h-4">
+                    <div
+                      className={`h-4 rounded-full ${
+                        occupancyPercentage > 75
+                          ? "bg-red-500"
+                          : occupancyPercentage > 50
+                          ? "bg-yellow-500"
+                          : "bg-green-500"
+                      }`}
+                      style={{ width: `${occupancyPercentage}%` }}
+                    ></div>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
 
 
         
       </div>
+
+
+ 
+
 
       {/* Deny Popup */}
       {showDenyPopup && (
