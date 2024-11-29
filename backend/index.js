@@ -19,6 +19,7 @@ app.use(cors({
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/doors', require('./routes/doorRoutes'));
 app.use('/api/permission-requests', require('./routes/permissionRequestRoutes'));
+app.use('/api/contactus', require('./routes/messageRoutes'));
 
 // database connection
 mongoose.connect(process.env.MONGO_URI)
