@@ -61,10 +61,10 @@ const Dashboard = () => {
   };
 
   const rooms = [
-    { name: "Main Entrance", capacity: 20, current: 15 },
+    { name: "Main Entrance", capacity: 20, current: 19 },
     { name: "Conference Room A", capacity: 10, current: 8 },
     { name: "Executive Room", capacity: 15, current: 10 },
-    { name: "Lobby", capacity: 30, current: 25 },
+    { name: "Lobby", capacity: 30, current: 28 },
     { name: "Cafeteria", capacity: 50, current: 40 },
   ];
 
@@ -143,14 +143,24 @@ const Dashboard = () => {
               return (
                 <li
                   key={index}
-                  className="mb-4 bg-gray-100 p-4 rounded-lg shadow"
+                  className="mb-4 bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-lg shadow"
                 >
                   <div className="flex justify-between items-center mb-2">
-                    <h4 className="text-gray-800 font-bold">{room.name}</h4>
-                    <p className="text-sm text-gray-500">
+                    <h4 className="text-blue-800 font-bold text-lg">
+                      {room.name}
+                    </h4>
+                    <p className="text-sm text-blue-600 font-medium">
                       {occupancyPercentage}% occupied ({room.current}/
                       {room.capacity})
                     </p>
+                  </div>
+                  <div className="w-full bg-gray-300 rounded-full h-2">
+                    <div
+                      className={`h-2 rounded-full ${
+                        occupancyPercentage > 90 ? "bg-red-500" : "bg-blue-500"
+                      }`}
+                      style={{ width: `${occupancyPercentage}%` }}
+                    ></div>
                   </div>
                 </li>
               );

@@ -5,12 +5,13 @@ const DashboardRequest = () => {
   const itemsPerPage = 5;
   const [allRequests, setAllRequests] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
+  const [selectedActions, setSelectedActions] = useState({});
 
   // Fetch all requests on component mount
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const response = await axios.get("/api/permission-requests");
+        const response = await axios.get("http://localhost:3000/api/permission-requests/");
         setAllRequests(response.data);
       } catch (error) {
         console.error("Error fetching all requests:", error);
@@ -46,6 +47,49 @@ const DashboardRequest = () => {
     setCurrentPage(pageIndex);
   };
 
+  // Handler for selecting an action
+  const handleSelectAction = (index, action) => {
+    setSelectedActions((prevActions) => ({
+      ...prevActions,
+      [index]: action,
+    }));
+  };
+
+  // Handler for confirming the action
+  const handleConfirmAction = async (indexToConfirm) => {
+    const action = selectedActions[indexToConfirm];
+    const request = currentRequests[indexToConfirm];
+
+    if (action) {
+      try {
+        if (action === "Approve") {
+          await axios.put(`http://localhost:3000/api/permission-requests/${request._id}/approve`);
+        } else if (action === "Reject") {
+          await axios.put(`http://localhost:3000/api/permission-requests/${request._id}/reject`);
+        }
+
+        // Update request status locally
+        const updatedRequests = currentRequests.map((req, index) =>
+          index === indexToConfirm ? { ...req, status: action } : req
+        );
+        setAllRequests((prevRequests) => 
+          prevRequests.map((req, i) =>
+            currentPage * itemsPerPage + indexToConfirm === i ? { ...req, status: action } : req
+          )
+        );
+
+        // Adjust current page if it goes out of range after removal
+        if (updatedRequests.length > 0 && currentPage >= Math.ceil(updatedRequests.length / itemsPerPage)) {
+          setCurrentPage(currentPage - 1);
+        }
+      } catch (error) {
+        console.error("Error updating request:", error);
+      }
+    } else {
+      alert("Please select an action before confirming.");
+    }
+  };
+
   return (
     <div className="p-4 bg-white rounded-lg shadow-sm mb-6">
       <h2 className="text-xl font-semibold mb-4">All Permission Requests</h2>
@@ -56,11 +100,11 @@ const DashboardRequest = () => {
           <thead>
             <tr className="bg-gray-100">
               <th className="p-2 border w-1/6">User Name</th>
-              <th className="p-2 border w-1/6">Door ID</th>
-              <th className="p-2 border w-1/5">Room Name</th>
-              <th className="p-2 border w-1/5">Date</th>
-              <th className="p-2 border w-1/6">Entry Time</th>
-              <th className="p-2 border w-1/6">Exit Time</th>
+              <th className="p-2 border w-1/6">Room Name</th>
+              <th className="p-2 border w-1/4">User Message</th>
+              <th className="p-2 border w-1/6">Date</th>
+              <th className="p-2 border w-1/7">Entry Time</th>
+              <th className="p-2 border w-1/7">Exit Time</th>
               <th className="p-2 border w-1/6">Status</th>
             </tr>
           </thead>
@@ -70,22 +114,46 @@ const DashboardRequest = () => {
               const formattedDate = date.toLocaleDateString("en-CA");
               return (
                 <tr key={index} className="hover:bg-gray-50">
-                  <td className="p-2 border">{request.user.name}</td>
-                  <td className="p-2 border">{request.door.doorCode}</td>
+                  <td className="p-2 border">{request.name}</td>
                   <td className="p-2 border">{request.door.roomName}</td>
+                  <td className="p-2 border">
+                    {request.message || "No message provided"}
+                  </td>
                   <td className="p-2 border">{formattedDate}</td>
                   <td className="p-2 border">{request.inTime}</td>
                   <td className="p-2 border">{request.outTime}</td>
-                  <td
-                    className={`p-2 border text-${
-                      request.status === "Pending"
-                        ? "yellow-500"
-                        : request.status === "Approved"
-                        ? "green-500"
-                        : "red-500"
-                    }`}
-                  >
-                    {request.status}
+                  <td className="p-2 border">
+                    {request.status === "Pending" ? (
+                      <div className="flex gap-2">
+                        <select
+                          value={selectedActions[currentPage * itemsPerPage + index] || ""}
+                          onChange={(e) =>
+                            handleSelectAction(currentPage * itemsPerPage + index, e.target.value)
+                          }
+                          className="px-2 py-1 border rounded bg-white"
+                        >
+                          <option value="">Select action</option>
+                          <option value="Approve">Approve</option>
+                          <option value="Reject">Reject</option>
+                        </select>
+                        <button
+                          onClick={() => handleConfirmAction(currentPage * itemsPerPage + index)}
+                          className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+                        >
+                          Confirm
+                        </button>
+                      </div>
+                    ) : (
+                      <span
+                        className={`px-3 py-1 rounded text-white ${
+                          request.status === "Approved"
+                            ? "bg-green-500"
+                            : "bg-red-500"
+                        }`}
+                      >
+                        {request.status}
+                      </span>
+                    )}
                   </td>
                 </tr>
               );
