@@ -13,7 +13,13 @@ const messageSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
-  }
+  },
+  status: { 
+    type: String, 
+    enum: ["unread", "read"], 
+    default: "unread" },
+
+
 });
 
 const Message = mongoose.model('contactus', messageSchema);

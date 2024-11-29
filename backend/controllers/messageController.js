@@ -13,4 +13,28 @@ const getMessages = async (req, res) => {
   }
 };
 
-module.exports = { getMessages };
+
+const toggleReadState = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body; 
+
+  try {
+    const updatedMessage = await ContactUs.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
+
+    if (!updatedMessage) {
+      return res.status(404).json({ error: "Message not found" });
+    }
+
+    res.status(200).json(updatedMessage);
+  } catch (error) {
+    console.error("Error toggling message status:", error);
+    res.status(500).json({ error: "Failed to toggle message status" });
+  }
+};
+
+
+module.exports = { getMessages, toggleReadState };
