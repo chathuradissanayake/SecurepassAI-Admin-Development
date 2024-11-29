@@ -114,9 +114,21 @@ const rejectPermissionRequest = async (req, res) => {
   }
 };
 
+const getAllPermissionRequests = async (req, res) => {
+  try {
+    const requests = await PermissionRequest.find({})
+      .populate("user", "name") // Include user's name
+      .populate("door", "doorCode roomName"); // Include door's details
+    res.status(200).json(requests);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createPermissionRequest,
   getPermissionRequestsByUserId,
+  getAllPermissionRequests,
   approvePermissionRequest,
   rejectPermissionRequest,
 };
