@@ -87,7 +87,7 @@ const UserList = () => {
   return (
     <div className="p-6 space-y-6">
         <h2 className="text-xl font-semibold text-gray-800">
-                Door Management
+                User Management
               </h2>
       <div className="flex justify-end items-center ">
         

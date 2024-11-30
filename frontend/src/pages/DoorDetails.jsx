@@ -25,7 +25,16 @@ const DoorDetails = () => {
     link.download = `${door.doorCode}_${door.roomName}_${door.location}_QR.png`; // Name of the downloaded file
     link.click();
   };
-
+  
+  const handleDeleteDoor = async () => {
+    try {
+      await axios.delete(`/api/doors/${id}`, { withCredentials: true });
+      navigate('/doors'); // Redirect to the doors list page after deletion
+    } catch (err) {
+      console.error('Error deleting door:', err);
+      setError(err.message);
+    }
+  };
 
   useEffect(() => {
     const fetchDoor = async () => {
@@ -112,6 +121,14 @@ const DoorDetails = () => {
                     
                     className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mb-2 w-40">
                     Download QR
+                  </button>
+                </div>
+                <div>
+                  <button
+                    type="button"
+                    onClick={handleDeleteDoor}
+                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 mb-2 w-40">
+                    Delete Door
                   </button>
                 </div>
                 </div>

@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Door = require('../models/Door');
 const PermissionRequest = require('../models/PermissionRequest');
 const { hashPassword } = require('../helper/auth');
 
@@ -70,7 +71,6 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-
 // Get user by _id
 const getUserById = async (req, res) => {
   try {
@@ -98,6 +98,44 @@ const getUserById = async (req, res) => {
   }
 };
 
+const removeDoorAccess = async (req, res) => {
+  try {
+    const { userId, doorAccessId } = req.params;
+    console.log(`Removing door access with id: ${doorAccessId} for user with id: ${userId}`); // Log the ids
+
+    // Find the user and update the doorAccess array
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Find the door access object to be removed
+    const doorAccess = user.doorAccess.id(doorAccessId);
+    if (!doorAccess) {
+      return res.status(404).json({ error: 'Door access not found' });
+    }
+
+    // Remove the door access from the user's doorAccess array
+    user.doorAccess.pull({ _id: doorAccessId });
+
+    // Save the updated user
+    await user.save();
+
+    // Remove the user from the list of approved users in the Door collection
+    await Door.findByIdAndUpdate(doorAccess.door, {
+      $pull: { approvedUsers: userId }
+    });
+
+    // Find and delete the corresponding permission request
+    await PermissionRequest.findOneAndDelete({ user: userId, door: doorAccess.door });
+
+    console.log('Updated user:', user); // Log the updated user
+    res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Error removing door access' });
+  }
+};
 // Update user by _id
 const updateUserById = async (req, res) => {
   try {
@@ -140,4 +178,4 @@ const deleteUserById = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, getAllUsers, getUserById, updateUserById, deleteUserById };
+module.exports = { registerUser, getAllUsers, getUserById, updateUserById, deleteUserById,removeDoorAccess };
