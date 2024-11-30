@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-const UPDoorAccess = ({ accessRecords }) => {
+const UPDoorAccess = ({ accessRecords, userId, onAccessUpdate }) => {
   const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(0);
   const [records, setRecords] = useState(accessRecords);
@@ -38,13 +39,21 @@ const UPDoorAccess = ({ accessRecords }) => {
   };
 
   // Handler for removing a record
-  const handleRemovePermission = (indexToRemove) => {
-    const updatedRecords = records.filter((_, index) => index !== indexToRemove);
-    setRecords(updatedRecords);
+  const handleRemovePermission = async (indexToRemove, doorAccessId) => {
+    try {
+      await axios.delete(`/api/users/${userId}/doorAccess/${doorAccessId}`, { withCredentials: true });
+      const updatedRecords = records.filter((_, index) => index !== indexToRemove);
+      setRecords(updatedRecords);
 
-    // Adjust current page if it goes out of range after removal
-    if (updatedRecords.length > 0 && currentPage >= Math.ceil(updatedRecords.length / itemsPerPage)) {
-      setCurrentPage(currentPage - 1);
+      // Adjust current page if it goes out of range after removal
+      if (updatedRecords.length > 0 && currentPage >= Math.ceil(updatedRecords.length / itemsPerPage)) {
+        setCurrentPage(currentPage - 1);
+      }
+
+      // Trigger the state update in the UserProfile component
+      onAccessUpdate();
+    } catch (error) {
+      console.error('Error removing door access:', error);
     }
   };
 
@@ -84,7 +93,7 @@ const UPDoorAccess = ({ accessRecords }) => {
                 <td className="p-2 border">{record.outTime}</td>
                 <td className="p-2 border text-center">
                   <button
-                    onClick={() => handleRemovePermission(currentPage * itemsPerPage + index)}
+                    onClick={() => handleRemovePermission(currentPage * itemsPerPage + index, record._id)}
                     className="bg-red-400 text-white py-1 px-3 rounded hover:bg-red-500"
                   >
                     Remove Permission

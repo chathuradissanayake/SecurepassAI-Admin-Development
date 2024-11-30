@@ -105,6 +105,15 @@ const UserProfile = () => {
     }
   };
 
+  const handleAccessUpdate = async () => {
+    try {
+      const response = await axios.get(`/api/users/${id}`, { withCredentials: true });
+      setUser(response.data);
+    } catch (err) {
+      console.error('Error fetching updated user data:', err);
+    }
+  };
+
   if (loading) return <Spinner />;
   if (error) return <p>Error: {error}</p>;
 
@@ -154,7 +163,7 @@ const UserProfile = () => {
         <UPPermissionRequests pendingRequests={pendingRequests} onRequestUpdate={handleRequestUpdate} />
 
         {/* Door Access Table */}
-        <UPDoorAccess accessRecords={user.doorAccess} />
+        <UPDoorAccess accessRecords={user.doorAccess} userId={user._id} onAccessUpdate={handleAccessUpdate} />
 
         {/* Door Access History */}
         <UPHistory historyRecords={user.history} />
