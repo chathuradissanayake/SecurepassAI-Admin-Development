@@ -11,7 +11,7 @@ const QRGenerator = () => {
   const [qrData, setQrData] = useState('');
 
   // Example company list for the dropdown
-  const companyList = ['Company A', 'Company B', 'Company C', 'Company D'];
+  const companyList = ['SLT Colombo', 'SLT Walisara', 'SLT Trace City'];
 
   const generateQRCode = async (e) => {
     e.preventDefault();

@@ -7,7 +7,12 @@ const userSchema = new Schema({
   userId: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  doorAccess: [{ type: Schema.Types.ObjectId, ref: 'Door' }],
+  doorAccess: [{
+    door: { type: Schema.Types.ObjectId, ref: 'Door' },
+    inTime: { type: String },
+    outTime: { type: String },
+    date: { type: Date }
+  }],
   pendingRequests: [{ type: Schema.Types.ObjectId, ref: 'PermissionRequest' }],
   history: [{
     door: { type: Schema.Types.ObjectId, ref: 'Door' },

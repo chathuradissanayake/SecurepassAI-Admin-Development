@@ -1,5 +1,6 @@
 const User = require('../models/User');
-const PermissionRequest = require('../models/PermissionRequest')
+const Door = require('../models/Door');
+const PermissionRequest = require('../models/PermissionRequest');
 const { hashPassword } = require('../helper/auth');
 
 // Register User
@@ -76,30 +77,18 @@ const getUserById = async (req, res) => {
     const { id } = req.params;
     console.log('Fetching user with id:', id); // Log the id
 
-    // Find the user and populate the pending requests
+    // Find the user and populate the pending requests and doorAccess
     const user = await User.findById(id).populate({
       path: 'pendingRequests',
       match: { status: 'Pending' },
       populate: { path: 'door' }
+    }).populate({
+      path: 'doorAccess.door',
+      select: 'doorCode roomName location'
     });
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
-
-    // Find approved permission requests for the user
-    const approvedRequests = await PermissionRequest.find({ user: id, status: 'Approved' }).populate('door');
-
-    // Extract the doors from the approved requests
-    const approvedDoors = approvedRequests.map(request => request.door);
-
-    // Update the user's doorAccess with the approved doors
-    user.doorAccess = approvedDoors;
-
-    // Find pending permission requests for the user
-    const pendingRequests = await PermissionRequest.find({ user: id, status: 'Pending' }).populate('door');
-
-    // Update the user's pendingRequests with the full details
-    user.pendingRequests = pendingRequests;
 
     console.log('Fetched user:', user); // Log the fetched user
     res.status(200).json(user);
@@ -109,6 +98,44 @@ const getUserById = async (req, res) => {
   }
 };
 
+const removeDoorAccess = async (req, res) => {
+  try {
+    const { userId, doorAccessId } = req.params;
+    console.log(`Removing door access with id: ${doorAccessId} for user with id: ${userId}`); // Log the ids
+
+    // Find the user and update the doorAccess array
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Find the door access object to be removed
+    const doorAccess = user.doorAccess.id(doorAccessId);
+    if (!doorAccess) {
+      return res.status(404).json({ error: 'Door access not found' });
+    }
+
+    // Remove the door access from the user's doorAccess array
+    user.doorAccess.pull({ _id: doorAccessId });
+
+    // Save the updated user
+    await user.save();
+
+    // Remove the user from the list of approved users in the Door collection
+    await Door.findByIdAndUpdate(doorAccess.door, {
+      $pull: { approvedUsers: userId }
+    });
+
+    // Find and delete the corresponding permission request
+    await PermissionRequest.findOneAndDelete({ user: userId, door: doorAccess.door });
+
+    console.log('Updated user:', user); // Log the updated user
+    res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Error removing door access' });
+  }
+};
 // Update user by _id
 const updateUserById = async (req, res) => {
   try {
@@ -151,4 +178,4 @@ const deleteUserById = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, getAllUsers, getUserById, updateUserById, deleteUserById };
+module.exports = { registerUser, getAllUsers, getUserById, updateUserById, deleteUserById,removeDoorAccess };

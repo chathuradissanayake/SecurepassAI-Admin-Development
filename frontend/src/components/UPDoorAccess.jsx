@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-const UPDoorAccess = ({ accessRecords }) => {
+const UPDoorAccess = ({ accessRecords, userId, onAccessUpdate }) => {
   const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(0);
   const [records, setRecords] = useState(accessRecords);
@@ -38,13 +39,21 @@ const UPDoorAccess = ({ accessRecords }) => {
   };
 
   // Handler for removing a record
-  const handleRemovePermission = (indexToRemove) => {
-    const updatedRecords = records.filter((_, index) => index !== indexToRemove);
-    setRecords(updatedRecords);
+  const handleRemovePermission = async (indexToRemove, doorAccessId) => {
+    try {
+      await axios.delete(`/api/users/${userId}/doorAccess/${doorAccessId}`, { withCredentials: true });
+      const updatedRecords = records.filter((_, index) => index !== indexToRemove);
+      setRecords(updatedRecords);
 
-    // Adjust current page if it goes out of range after removal
-    if (updatedRecords.length > 0 && currentPage >= Math.ceil(updatedRecords.length / itemsPerPage)) {
-      setCurrentPage(currentPage - 1);
+      // Adjust current page if it goes out of range after removal
+      if (updatedRecords.length > 0 && currentPage >= Math.ceil(updatedRecords.length / itemsPerPage)) {
+        setCurrentPage(currentPage - 1);
+      }
+
+      // Trigger the state update in the UserProfile component
+      onAccessUpdate();
+    } catch (error) {
+      console.error('Error removing door access:', error);
     }
   };
 
@@ -57,8 +66,10 @@ const UPDoorAccess = ({ accessRecords }) => {
         <table className="min-w-full text-left border-collapse">
           <thead>
             <tr className="bg-gray-100">
-              <th className="p-2 border">Door ID</th>
+              <th className="p-2 border">Door Code</th>
               <th className="p-2 border">Room Name</th>
+              <th className="p-2 border">Location</th>
+              <th className="p-2 border">Date</th>
               <th className="p-2 border">Entry Time</th>
               <th className="p-2 border">Exit Time</th>
               <th className="p-2 border text-center">Action</th>
@@ -67,20 +78,22 @@ const UPDoorAccess = ({ accessRecords }) => {
           <tbody>
             {currentRecords.map((record, index) => (
               <tr key={index} className="hover:bg-gray-50">
-                <td className="p-2 border">{record.doorCode}</td>
+                <td className="p-2 border">{record.door?.doorCode || 'N/A'}</td>
                 <td className="p-2 border">
                   <button
-                    onClick={() => navigate(`/doors/${record._id}`)}
+                    onClick={() => navigate(`/doors/${record.door?._id}`)}
                     className="text-blue-600 hover:underline"
                   >
-                    {record.roomName}
+                    {record.door?.roomName || 'N/A'}
                   </button>
                 </td>
-                <td className="p-2 border">{record.entryTime}</td>
-                <td className="p-2 border">{record.exitTime}</td>
+                <td className="p-2 border">{record.door?.location || 'N/A'}</td>
+                <td className="p-2 border">{new Date(record.date).toLocaleDateString('en-CA')}</td>
+                <td className="p-2 border">{record.inTime}</td>
+                <td className="p-2 border">{record.outTime}</td>
                 <td className="p-2 border text-center">
                   <button
-                    onClick={() => handleRemovePermission(currentPage * itemsPerPage + index)}
+                    onClick={() => handleRemovePermission(currentPage * itemsPerPage + index, record._id)}
                     className="bg-red-400 text-white py-1 px-3 rounded hover:bg-red-500"
                   >
                     Remove Permission
