@@ -12,7 +12,7 @@ const messageSchema = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now
+    required: true
   },
   status: { 
     type: String, 
