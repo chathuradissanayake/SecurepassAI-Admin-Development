@@ -128,15 +128,14 @@ const UserProfile = () => {
           <div className="flex items-center justify-between">
             {/* User Profile and Details */}
             <div className="flex items-center">
-              <img
-                src={user.avatar || "https://via.placeholder.com/150"}
-                alt="User Profile"
-                className="w-30 h-30 rounded-full"
-              />
+            <img
+                src={user.profilePicture} 
+                alt="Profile"
+                className="w-32 h-32 object-cover rounded-full"
+            />
               <div className="ml-4">
-                <h2 className="text-xl font-semibold mb-3">User Details</h2>
+                <h2 className="text-2xl font-bold mb-3"> {user.firstName} {user.lastName} </h2>
                 <p className="text-gray-600 mb-2"><strong>User ID:</strong> {user.userId}</p>
-                <p className="text-gray-600 mb-2"><strong>Name:</strong> {user.firstName} {user.lastName}</p>
                 <p className="text-gray-600"><strong>Email:</strong> {user.email}</p>
               </div>
             </div>

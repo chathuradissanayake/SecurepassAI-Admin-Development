@@ -6,7 +6,7 @@ const { hashPassword } = require('../helper/auth');
 // Register User
 const registerUser = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, userId } = req.body;
+    const { firstName, lastName, email, password, userId , profilePicture} = req.body;
     console.log('Registering user:', req.body); // Log the request body
 
     // Check name
@@ -49,6 +49,7 @@ const registerUser = async (req, res) => {
       email,
       password: hashedPassword,
       userId,
+      profilePicture,
     });
 
     console.log('User created:', user); // Log the created user
