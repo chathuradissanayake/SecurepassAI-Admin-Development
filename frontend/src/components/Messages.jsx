@@ -81,7 +81,7 @@ const Messages = () => {
                       
                   }`}
                 >
-                  {message.status === "read" ? "Mark as Unread" : "Mark as Read"}
+                  {message.status === "read" ? "Mark" : "Read"}
                 </button>
                 </div>
                 </div>
