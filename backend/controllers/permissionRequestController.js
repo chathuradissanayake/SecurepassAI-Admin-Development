@@ -114,9 +114,24 @@ const rejectPermissionRequest = async (req, res) => {
   }
 };
 
+
+
+const pendingRequest = async (req, res) => {
+  try {
+    const pendingRequests = await PermissionRequest.find({ status: 'Pending' });
+    res.json(pendingRequests);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+
+
+
 module.exports = {
   createPermissionRequest,
   getPermissionRequestsByUserId,
   approvePermissionRequest,
   rejectPermissionRequest,
+  pendingRequest,
 };
