@@ -22,6 +22,7 @@ const PendingRequests = () => {
   return (
     <div>
       {requests.length > 0 ? (
+        <div className="max-h-96 overflow-y-auto">
         <ul>
           {requests.map((request) => (
             <div
@@ -45,6 +46,7 @@ const PendingRequests = () => {
             </div>
           ))}
         </ul>
+        </div>
       ) : (
         <p className="text-gray-600">No pending requests found.</p>
       )}
