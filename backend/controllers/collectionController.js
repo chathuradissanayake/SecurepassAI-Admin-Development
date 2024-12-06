@@ -44,6 +44,20 @@ const getFilteredHistoriesCount = async (req, res) => {
   }
 };
 
+const getUnreadMessageCount = async (req, res) => {
+  try {
+    const db = mongoose.connection;
+
+    // Count documents where the status is "unread"
+    const count = await db.collection("contactus").countDocuments({ status: "unread" });
+
+    res.json({ count });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+
+};
 
 
-module.exports = { getCollectionCounts, getFilteredHistoriesCount };
+
+module.exports = { getCollectionCounts, getFilteredHistoriesCount, getUnreadMessageCount };
