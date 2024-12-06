@@ -41,6 +41,41 @@ const Dashboard = () => {
     fetchCollectionsCount();
   }, []);
 
+
+  const getTodayDate = () => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, "0");
+    const dd = String(today.getDate()).padStart(2, "0");
+  
+    return `${yyyy}-${mm}-${dd}`; // Returns "YYYY-MM-DD"
+  };
+  
+  const [todayCount, setTodayCount] = useState(null);  
+
+  useEffect(() => {
+    const fetchTodayCount = async () => {
+      try {
+        const todayDate = getTodayDate();
+        console.log("Today's Date:", todayDate);
+    
+        // Send today's date to the backend
+        const response = await fetch(
+          `http://localhost:5000/api/collections/history?entryTime=${todayDate}`
+        );
+        const data = await response.json();
+    
+        setTodayCount(data.count || 0);
+      } catch (error) {
+        console.error("Error fetching today's histories count:", error);
+      }
+    };
+    
+
+    fetchTodayCount();
+  }, []);
+
+
   // Dummy data for room occupancy
   const rooms = [
     { name: "Main Entrance", capacity: 20, current: 15 },
@@ -88,8 +123,8 @@ const Dashboard = () => {
             </div>
             <div>
               <h3 className="text-gray-600 text-sm">Access Attempts (24h)</h3>
-              <p className="text-2xl font-bold">{historiesCount !== null ? historiesCount : "Loading..."}</p>
-              <p className="text-green-500 text-sm">94% success rate</p>
+              <p className="text-2xl font-bold">{todayCount !== null ? todayCount : "Loading..."}</p>
+              <p className="text-green-500 text-sm">{historiesCount !== null ? historiesCount : "Loading..."} of total Attempts</p>
             </div>
           </div>
           <div className="p-4 bg-white rounded-lg shadow-md flex items-center gap-4">
@@ -127,6 +162,13 @@ const Dashboard = () => {
 <div>
   <CollectionCounts/>
 </div>
+<div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold">Today's Histories Count</h1>
+      <p className="text-lg mt-2">
+        Number of documents in the <strong>histories</strong> collection with
+        today's entryTime: {todayCount !== null ? todayCount : "Loading..."}
+      </p>
+    </div>
 
 {/* Room Occupancy Section */}
 <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
