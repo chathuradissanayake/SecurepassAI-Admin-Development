@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { FaCheckCircle, FaDoorOpen, FaExclamationTriangle, FaUsers } from "react-icons/fa";
+import { FaCheckCircle, FaCommentAlt, FaDoorOpen, FaUsers } from "react-icons/fa";
 
 const CollectionCounts = () => {
   const [doorsCount, setDoorsCount] = useState(null);
   const [usersCount, setUsersCount] = useState(null);
   const [historiesCount, setHistoriesCount] = useState(null);
   const [todayCount, setTodayCount] = useState(null);
+
+  const [unreadCount, setUnreadCount] = useState(0);
+
+
 
   // Helper function to get today's date in "YYYY-MM-DD" format
   const getTodayDate = () => {
@@ -15,6 +19,9 @@ const CollectionCounts = () => {
     const dd = String(today.getDate()).padStart(2, "0");
     return `${yyyy}-${mm}-${dd}`;
   };
+
+
+ 
 
   // Fetch counts for collections: doors, users, histories
   useEffect(() => {
@@ -55,6 +62,27 @@ const CollectionCounts = () => {
     fetchTodayCount();
   }, []);
 
+
+  // Fetch unreaded messages count
+  useEffect(() => {
+    const fetchUnreadMessagesCount = async () => {
+      try {
+        const response = await fetch(`/api/collections/unread-count`);
+        const data = await response.json();
+    
+        console.log("Unread Messages Count:", data.count); // Log the count
+        setUnreadCount(data.count || 0); // Update the state with the count
+      } catch (error) {
+        console.error("Error fetching unread messages count:", error);
+      }
+    };
+      fetchUnreadMessagesCount();
+    }, []);
+
+ 
+
+ 
+
   return (
     <div>
       {/* Metrics Section */}
@@ -69,7 +97,7 @@ const CollectionCounts = () => {
             <p className="text-2xl font-bold">
               {usersCount !== null ? usersCount : "Loading..."}
             </p>
-            <p className="text-green-500 text-sm">+20 new users today</p>
+            <p className="text-green-500 text-sm">#20 new users today</p>
           </div>
         </div>
 
@@ -83,7 +111,7 @@ const CollectionCounts = () => {
             <p className="text-2xl font-bold">
               {doorsCount !== null ? doorsCount : "Loading..."}
             </p>
-            <p className="text-blue-500 text-sm">72% rooms in use</p>
+            <p className="text-blue-500 text-sm">#72% rooms in use</p>
           </div>
         </div>
 
@@ -103,18 +131,22 @@ const CollectionCounts = () => {
           </div>
         </div>
 
-        {/* Security Alerts Card */}
+        {/* Unread Messages Card */}
         <div className="p-4 bg-white rounded-lg shadow-md flex items-center gap-4">
-          <div className="text-red-500 text-3xl">
-            <FaExclamationTriangle />
+          <div className="text-purple-500 text-3xl">
+            <FaCommentAlt />
           </div>
           <div>
-            <h3 className="text-gray-600 text-sm">Security Alerts</h3>
-            <p className="text-2xl font-bold">6</p>
-            <p className="text-red-500 text-sm">3 high priority</p>
+            <h3 className="text-gray-600 text-sm">Unread Messages</h3>
+            <p className="text-2xl font-bold">{unreadCount}</p>
+            <p className="text-purple-500 text-sm">#3 high priority</p>
           </div>
         </div>
       </div>
+
+
+      
+
     </div>
   );
 };
