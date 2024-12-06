@@ -14,25 +14,28 @@ import Sidebar from "../components/Sidebar";
 const Dashboard = () => {
   
   const [doorsCount, setDoorsCount] = useState(null);
+  const [usersCount, setUsersCount] = useState(null);
 
   useEffect(() => {
-    const fetchDoorsCount = async () => {
+    const fetchCollectionsCount = async () => {
       try {
         // Fetch data from backend
         const response = await fetch("/api/collections/counts");
         const data = await response.json();
 
-        // Find the doors collection
+        // Find the counts for doors and users collections
         const doorsCollection = data.find((collection) => collection.name === "doors");
+        const usersCollection = data.find((collection) => collection.name === "users");
 
-        // Set the count for doors collection
+        // Set the counts for doors and users collections
         setDoorsCount(doorsCollection ? doorsCollection.count : 0);
+        setUsersCount(usersCollection ? usersCollection.count : 0);
       } catch (error) {
-        console.error("Error fetching doors collection count:", error);
+        console.error("Error fetching collection counts:", error);
       }
     };
 
-    fetchDoorsCount();
+    fetchCollectionsCount();
   }, []);
 
   // Dummy data for room occupancy
@@ -62,7 +65,7 @@ const Dashboard = () => {
             </div>
             <div>
               <h3 className="text-gray-600 text-sm">Total Users</h3>
-              <p className="text-2xl font-bold">1,234</p>
+              <p className="text-2xl font-bold">{usersCount !== null ? usersCount : "Loading..."}</p>
               <p className="text-green-500 text-sm">+20 new users today</p>
             </div>
           </div>
