@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 const Messages = () => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   // Fetch messages from the backend
   useEffect(() => {
@@ -48,8 +49,26 @@ const Messages = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchUnreadMessagesCount = async () => {
+      try {
+        const response = await fetch(`/api/collections/unread-count`);
+        const data = await response.json();
+    
+        console.log("Unread Messages Count:", data.count); // Log the count
+        setUnreadCount(data.count || 0); // Update the state with the count
+      } catch (error) {
+        console.error("Error fetching unread messages count:", error);
+      }
+    };
+      fetchUnreadMessagesCount();
+    }, []);
+
   return (
     <div>
+      
+      <h3 className="text-gray-600 text-lg mb-4">Messages &nbsp;   {unreadCount} </h3>
+      <span></span>
       {loading ? (
         <p className="text-gray-500">Loading messages...</p>
       ) : messages.length > 0 ? (
@@ -65,7 +84,7 @@ const Messages = () => {
                 <div className="my-2 ml-2 flex justify-between">
                 <div>
                 <p className="text-gray-800 font-medium">
-                  User ID: {message.userId}
+                  {message.userId}
                 </p>
                 <p className="text-sm text-gray-500 mb-2">
                   {new Date(message.createdAt).toLocaleString()}

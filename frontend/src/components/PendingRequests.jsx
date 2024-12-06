@@ -27,18 +27,18 @@ const PendingRequests = () => {
           {requests.map((request) => (
             <div
               key={request._id}
-              className="items-center mb-4 bg-gray-100 p-3 rounded-lg"
+              className="items-center mb-4 bg-gray-50 p-3 rounded-lg"
             >
               <div className='flex justify-between'>
               <h2 className="text-lg font-semibold text-gray-700">
                 {request.name}   
-                {/* this should name and userId of the user in user collection          */}
+                {/* add here the userId of the user in user collection          */}
               </h2>       
               <p className="text-yellow-500 font-bold mt-2">{request.status}</p>
               </div>
               {/* <p>{request.door.doorCode} {request.door.roomName}</p>  */}
               <p>
-                <strong>Location:</strong>  {request.roomName}
+                <strong>Location:</strong>  {request.roomName} 
               </p>
               <p>
                 <strong>Message:</strong> {request.message}
