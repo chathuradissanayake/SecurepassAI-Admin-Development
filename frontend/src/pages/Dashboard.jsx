@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaCheckCircle,
   FaDoorOpen,
   FaExclamationTriangle,
   FaUsers,
 } from "react-icons/fa";
+import CollectionCounts from "../components/CollectionCounts";
 import Header from "../components/Header";
 import Messages from "../components/Messages";
 import PendingRequests from "../components/PendingRequests";
@@ -12,7 +13,27 @@ import Sidebar from "../components/Sidebar";
 
 const Dashboard = () => {
   
- 
+  const [doorsCount, setDoorsCount] = useState(null);
+
+  useEffect(() => {
+    const fetchDoorsCount = async () => {
+      try {
+        // Fetch data from backend
+        const response = await fetch("/api/collections/counts");
+        const data = await response.json();
+
+        // Find the doors collection
+        const doorsCollection = data.find((collection) => collection.name === "doors");
+
+        // Set the count for doors collection
+        setDoorsCount(doorsCollection ? doorsCollection.count : 0);
+      } catch (error) {
+        console.error("Error fetching doors collection count:", error);
+      }
+    };
+
+    fetchDoorsCount();
+  }, []);
 
   // Dummy data for room occupancy
   const rooms = [
@@ -50,8 +71,8 @@ const Dashboard = () => {
               <FaDoorOpen />
             </div>
             <div>
-              <h3 className="text-gray-600 text-sm">Active Rooms</h3>
-              <p className="text-2xl font-bold">18 / 25</p>
+              <h3 className="text-gray-600 text-sm">Active Doors</h3>
+              <p className="text-2xl font-bold">{doorsCount !== null ? doorsCount : "Loading..."}</p>
               <p className="text-blue-500 text-sm">72% rooms in use</p>
             </div>
           </div>
@@ -97,7 +118,9 @@ const Dashboard = () => {
     
   </div>
 </div>
-
+<div>
+  <CollectionCounts/>
+</div>
 
 {/* Room Occupancy Section */}
 <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
