@@ -1,10 +1,4 @@
-import React, { useEffect, useState } from "react";
-import {
-  FaCheckCircle,
-  FaDoorOpen,
-  FaExclamationTriangle,
-  FaUsers,
-} from "react-icons/fa";
+import React from "react";
 import CollectionCounts from "../components/CollectionCounts";
 import Header from "../components/Header";
 import Messages from "../components/Messages";
@@ -13,68 +7,7 @@ import Sidebar from "../components/Sidebar";
 
 const Dashboard = () => {
   
-  const [doorsCount, setDoorsCount] = useState(null);
-  const [usersCount, setUsersCount] = useState(null);
-  const [historiesCount, setHistoriesCount] = useState(null);
-
-  useEffect(() => {
-    const fetchCollectionsCount = async () => {
-      try {
-        // Fetch data from backend
-        const response = await fetch("/api/collections/counts");
-        const data = await response.json();
-
-        // Find the counts for doors and users collections
-        const doorsCollection = data.find((collection) => collection.name === "doors");
-        const usersCollection = data.find((collection) => collection.name === "users");
-        const historiesCollection = data.find((collection) => collection.name === "histories");
-
-        // Set the counts for doors and users collections
-        setDoorsCount(doorsCollection ? doorsCollection.count : 0);
-        setUsersCount(usersCollection ? usersCollection.count : 0);
-        setHistoriesCount(historiesCollection ? historiesCollection.count : 0);
-      } catch (error) {
-        console.error("Error fetching collection counts:", error);
-      }
-    };
-
-    fetchCollectionsCount();
-  }, []);
-
-
-  const getTodayDate = () => {
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, "0");
-    const dd = String(today.getDate()).padStart(2, "0");
   
-    return `${yyyy}-${mm}-${dd}`; // Returns "YYYY-MM-DD"
-  };
-  
-  const [todayCount, setTodayCount] = useState(null);  
-
-  useEffect(() => {
-    const fetchTodayCount = async () => {
-      try {
-        const todayDate = getTodayDate();
-        console.log("Today's Date:", todayDate);
-    
-        // Send today's date to the backend
-        const response = await fetch(
-          `http://localhost:5000/api/collections/history?entryTime=${todayDate}`
-        );
-        const data = await response.json();
-    
-        setTodayCount(data.count || 0);
-      } catch (error) {
-        console.error("Error fetching today's histories count:", error);
-      }
-    };
-    
-
-    fetchTodayCount();
-  }, []);
-
 
   // Dummy data for room occupancy
   const rooms = [
@@ -95,83 +28,33 @@ const Dashboard = () => {
       <div className="flex-1 p-6">
         <Header />
 
-        {/* Metrics Section */}
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="p-4 bg-white rounded-lg shadow-md flex items-center gap-4">
-            <div className="text-blue-500 text-3xl">
-              <FaUsers />
-            </div>
-            <div>
-              <h3 className="text-gray-600 text-sm">Total Users</h3>
-              <p className="text-2xl font-bold">{usersCount !== null ? usersCount : "Loading..."}</p>
-              <p className="text-green-500 text-sm">+20 new users today</p>
-            </div>
-          </div>
-          <div className="p-4 bg-white rounded-lg shadow-md flex items-center gap-4">
-            <div className="text-green-500 text-3xl">
-              <FaDoorOpen />
-            </div>
-            <div>
-              <h3 className="text-gray-600 text-sm">Active Doors</h3>
-              <p className="text-2xl font-bold">{doorsCount !== null ? doorsCount : "Loading..."}</p>
-              <p className="text-blue-500 text-sm">72% rooms in use</p>
-            </div>
-          </div>
-          <div className="p-4 bg-white rounded-lg shadow-md flex items-center gap-4">
-            <div className="text-yellow-500 text-3xl">
-              <FaCheckCircle />
-            </div>
-            <div>
-              <h3 className="text-gray-600 text-sm">Access Attempts (24h)</h3>
-              <p className="text-2xl font-bold">{todayCount !== null ? todayCount : "Loading..."}</p>
-              <p className="text-green-500 text-sm">{historiesCount !== null ? historiesCount : "Loading..."} of total Attempts</p>
-            </div>
-          </div>
-          <div className="p-4 bg-white rounded-lg shadow-md flex items-center gap-4">
-            <div className="text-red-500 text-3xl">
-              <FaExclamationTriangle />
-            </div>
-            <div>
-              <h3 className="text-gray-600 text-sm">Security Alerts</h3>
-              <p className="text-2xl font-bold">6</p>
-              <p className="text-red-500 text-sm">3 high priority</p>
-            </div>
-          </div>
+      {/* Collection Counts Section */}
+      <div>
+        <CollectionCounts/>
+      </div>      
+
+      {/* Access Requests Section */}
+      <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="p-6 bg-white border rounded-lg shadow-md">
+          <h3 className="text-gray-600 text-lg mb-4">Pending Requests</h3>
+          <PendingRequests/>
+
+      </div>
+
+        
+
+        {/* Messages */}
+        <div className="p-6 bg-white border rounded-lg shadow-md">
+          <h3 className="text-gray-600 text-lg mb-4">Messages</h3>
+          
+            <Messages/>
+          
         </div>
+      </div>
 
-       
 
-{/* Access Requests Section */}
-<div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
-  <div className="p-6 bg-white border rounded-lg shadow-md">
-    <h3 className="text-gray-600 text-lg mb-4">Pending Requests</h3>
-    <PendingRequests/>
-
-  </div>
-
-  
-
-  {/* Messages */}
-  <div className="p-6 bg-white border rounded-lg shadow-md">
-    <h3 className="text-gray-600 text-lg mb-4">Messages</h3>
-    
-      <Messages/>
-    
-  </div>
-</div>
-<div>
-  <CollectionCounts/>
-</div>
-<div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold">Today's Histories Count</h1>
-      <p className="text-lg mt-2">
-        Number of documents in the <strong>histories</strong> collection with
-        today's entryTime: {todayCount !== null ? todayCount : "Loading..."}
-      </p>
-    </div>
-
-{/* Room Occupancy Section */}
-<div className="mt-6 bg-white p-6 rounded-lg shadow-md">
+      {/* Room Occupancy Section */}
+      <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
           <h3 className="text-lg font-bold text-gray-800 mb-4">
             Room Occupancy
           </h3>
