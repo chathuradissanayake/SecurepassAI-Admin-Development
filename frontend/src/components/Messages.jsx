@@ -65,7 +65,7 @@ const Messages = () => {
                 <div className="my-2 ml-2 flex justify-between">
                 <div>
                 <p className="text-gray-800 font-medium">
-                  User ID: {message.userId}
+                  {message.userId}
                 </p>
                 <p className="text-sm text-gray-500 mb-2">
                   {new Date(message.createdAt).toLocaleString()}
