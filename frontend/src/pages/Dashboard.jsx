@@ -15,6 +15,7 @@ const Dashboard = () => {
   
   const [doorsCount, setDoorsCount] = useState(null);
   const [usersCount, setUsersCount] = useState(null);
+  const [historiesCount, setHistoriesCount] = useState(null);
 
   useEffect(() => {
     const fetchCollectionsCount = async () => {
@@ -26,10 +27,12 @@ const Dashboard = () => {
         // Find the counts for doors and users collections
         const doorsCollection = data.find((collection) => collection.name === "doors");
         const usersCollection = data.find((collection) => collection.name === "users");
+        const historiesCollection = data.find((collection) => collection.name === "histories");
 
         // Set the counts for doors and users collections
         setDoorsCount(doorsCollection ? doorsCollection.count : 0);
         setUsersCount(usersCollection ? usersCollection.count : 0);
+        setHistoriesCount(historiesCollection ? historiesCollection.count : 0);
       } catch (error) {
         console.error("Error fetching collection counts:", error);
       }
@@ -85,7 +88,7 @@ const Dashboard = () => {
             </div>
             <div>
               <h3 className="text-gray-600 text-sm">Access Attempts (24h)</h3>
-              <p className="text-2xl font-bold">3,287</p>
+              <p className="text-2xl font-bold">{historiesCount !== null ? historiesCount : "Loading..."}</p>
               <p className="text-green-500 text-sm">94% success rate</p>
             </div>
           </div>
