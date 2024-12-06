@@ -20,7 +20,7 @@ const CollectionCounts = () => {
   useEffect(() => {
     const fetchCollectionsCount = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/collections/counts");
+        const response = await fetch("/api/collections/counts");
         const data = await response.json();
 
         const doorsCollection = data.find((collection) => collection.name === "doors");
@@ -43,8 +43,7 @@ const CollectionCounts = () => {
     const fetchTodayCount = async () => {
       try {
         const todayDate = getTodayDate();
-        const response = await fetch(
-          `http://localhost:5000/api/collections/history?entryTime=${todayDate}`
+        const response = await fetch(`/api/collections/history?entryTime=${todayDate}`
         );
         const data = await response.json();
         setTodayCount(data.count || 0);
