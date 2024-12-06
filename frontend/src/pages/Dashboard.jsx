@@ -45,7 +45,7 @@ const Dashboard = () => {
 
         {/* Messages */}
         <div className="p-6 bg-white border rounded-lg shadow-md">
-          <h3 className="text-gray-600 text-lg mb-4">Messages</h3>
+          
           
             <Messages/>
           
