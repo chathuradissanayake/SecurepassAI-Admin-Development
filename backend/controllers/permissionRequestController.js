@@ -115,16 +115,16 @@ const rejectPermissionRequest = async (req, res) => {
 };
 
 
-
 const pendingRequest = async (req, res) => {
   try {
-    const pendingRequests = await PermissionRequest.find({ status: 'Pending' });
+    const pendingRequests = await PermissionRequest.find({ status: 'Pending' })
+      .populate('user', 'firstName lastName userId')
+      .populate('door', 'doorCode roomName location');
     res.json(pendingRequests);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }
 };
-
 
 
 
