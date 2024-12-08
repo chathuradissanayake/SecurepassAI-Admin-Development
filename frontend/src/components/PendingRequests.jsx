@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const PendingRequests = () => {
   const [requests, setRequests] = useState([]);
@@ -25,10 +26,8 @@ const PendingRequests = () => {
         <div className="max-h-96 overflow-y-auto">
           <ul>
             {requests.map((request) => (
-              <div
-                key={request._id}
-                className="items-center mb-4 bg-gray-50 p-3 rounded-lg"
-              >
+              <Link to={`/users/${request.user._id}`} key={request._id} className="block bg-gray-100 p-4 rounded-lg hover:bg-gray-200">
+              
                 <div className='flex justify-between'>
                   <h2 className="text-lg font-semibold text-gray-700">
                     {request.user.firstName} {request.user.lastName} ({request.user.userId})
@@ -36,7 +35,7 @@ const PendingRequests = () => {
                   <p className="text-yellow-500 font-bold mt-2">{request.status}</p>
                 </div>
                 <p>
-                  <strong>Door:</strong> {request.door.doorCode} - {request.door.roomName}
+                  <strong>Door:</strong> {request.door.doorCode} - {request.door.roomName} 
                 </p>
                 <p>
                   <strong>Location:</strong> {request.door.location}
@@ -48,7 +47,8 @@ const PendingRequests = () => {
                   <strong>Requested Time:</strong>{' '}
                   {new Date(request.requestTime).toLocaleString()}
                 </p>
-              </div>
+              
+              </Link>
             ))}
           </ul>
         </div>

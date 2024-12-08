@@ -138,7 +138,7 @@ const CollectionCounts = () => {
           </div>
           <div>
             <h3 className="text-gray-600 text-sm">Unread Messages</h3>
-            <p className="text-2xl font-bold">{unreadCount}</p>
+            <p className="text-2xl font-bold">{unreadCount !== null ? unreadCount : "Loading..."}</p>
             <p className="text-purple-500 text-sm">#3 high priority</p>
           </div>
         </div>
