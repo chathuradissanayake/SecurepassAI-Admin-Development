@@ -1,13 +1,17 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const historySchema = new Schema({
-  door: { type: Schema.Types.ObjectId, ref: 'Door', required: true },
+  doorCode: { type: String, required: true },
   entryTime: { type: Date, required: true },
-  exitTime: { type: Date },
-  status: { type: String, enum: ['Entered', 'Exited'], default: 'Active' }
-}, { timestamps: true });
+  exitTime: { type: Date, default: null },
+  location: { type: String},
+  roomName: { type: String},
+  user: {
+    userId: { type: String, required: true },
+  },
+});
 
-const HistoryModel = mongoose.model('History', historySchema);
+const History = mongoose.model("History", historySchema);
 
-module.exports = HistoryModel;
+module.exports = History;
