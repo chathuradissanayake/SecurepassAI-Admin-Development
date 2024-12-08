@@ -16,6 +16,7 @@ const UserProfile = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [pendingRequests, setPendingRequests] = useState([]);
+  const [historyRecords, setHistoryRecords] = useState([]);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -47,7 +48,19 @@ const UserProfile = () => {
       }
     };
 
+    const fetchHistory = async () => {
+      try {
+        console.log(`Fetching history for user with id: ${id}`);
+        const response = await axios.get(`/api/users/${id}/history`, { withCredentials: true });
+        console.log('History API response:', response.data);
+        setHistoryRecords(response.data);
+      } catch (err) {
+        console.error('Error fetching history:', err);
+      }
+    };
+
     fetchUser();
+    fetchHistory();
   }, [id]);
 
   const handleEdit = () => {
@@ -128,11 +141,11 @@ const UserProfile = () => {
           <div className="flex items-center justify-between">
             {/* User Profile and Details */}
             <div className="flex items-center">
-            <img
+              <img
                 src={user.profilePicture} 
                 alt="Profile"
                 className="w-32 h-32 object-cover rounded-full"
-            />
+              />
               <div className="ml-4">
                 <h2 className="text-2xl font-bold mb-3"> {user.firstName} {user.lastName} </h2>
                 <p className="text-gray-600 mb-2"><strong>User ID:</strong> {user.userId}</p>
@@ -165,7 +178,7 @@ const UserProfile = () => {
         <UPDoorAccess accessRecords={user.doorAccess} userId={user._id} onAccessUpdate={handleAccessUpdate} />
 
         {/* Door Access History */}
-        <UPHistory historyRecords={user.history} />
+        <UPHistory historyRecords={historyRecords} />
 
         {/* Edit User Modal */}
         <Modal isVisible={isEditModalOpen} onClose={handleCloseEditModal}>
