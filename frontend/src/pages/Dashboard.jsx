@@ -9,14 +9,14 @@ const Dashboard = () => {
   
   
 
-  // Dummy data for room occupancy
-  const rooms = [
-    { name: "Main Entrance", capacity: 20, current: 15 },
-    { name: "Conference Room A", capacity: 10, current: 8 },
-    { name: "Executive Room", capacity: 15, current: 10 },
-    { name: "Lobby", capacity: 30, current: 25 },
-    { name: "Cafeteria", capacity: 50, current: 40 },
-  ];
+  // // Dummy data for room occupancy
+  // const rooms = [
+  //   { name: "Main Entrance", capacity: 20, current: 15 },
+  //   { name: "Conference Room A", capacity: 10, current: 8 },
+  //   { name: "Executive Room", capacity: 15, current: 10 },
+  //   { name: "Lobby", capacity: 30, current: 25 },
+  //   { name: "Cafeteria", capacity: 50, current: 40 },
+  // ];
 
 
 
@@ -54,7 +54,7 @@ const Dashboard = () => {
 
 
       {/* Room Occupancy Section */}
-      <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
+      {/* <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
           <h3 className="text-lg font-bold text-gray-800 mb-4">
             Room Occupancy
           </h3>
@@ -90,7 +90,7 @@ const Dashboard = () => {
               );
             })}
           </ul>
-        </div>
+        </div> */}
 
 
         
