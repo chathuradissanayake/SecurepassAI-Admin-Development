@@ -52,7 +52,7 @@ const UPHistory = ({ historyRecords }) => {
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-gray-100">
-              <th className="p-2 border w-1/8">Door ID</th>
+              <th className="p-2 border w-1/8">Door Code</th>
               <th className="p-2 border w-1/5">Room Name</th>
               <th className="p-2 border w-1/5">Entry Time</th>
               <th className="p-2 border w-1/5">Exit Time</th>
@@ -65,8 +65,8 @@ const UPHistory = ({ historyRecords }) => {
               <tr key={index} className="hover:bg-gray-50">
                 <td className="p-2 border">{record.doorCode}</td>
                 <td className="p-2 border">{record.roomName}</td>
-                <td className="p-2 border">{record.entryTime}</td>
-                <td className="p-2 border">{record.exitTime || 'N/A'}</td>
+                <td className="p-2 border">{new Date(record.entryTime).toLocaleString()}</td>
+                <td className="p-2 border">{record.exitTime ? new Date(record.exitTime).toLocaleString() : 'N/A'}</td>
                 <td className="p-2 border">
                   {calculateDuration(record.entryTime, record.exitTime)}
                 </td>
