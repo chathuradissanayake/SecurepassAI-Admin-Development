@@ -1,11 +1,13 @@
 const User = require('../models/User');
+const Door = require('../models/Door');
+const History = require('../models/History');
 const PermissionRequest = require('../models/PermissionRequest');
 const { hashPassword } = require('../helper/auth');
 
 // Register User
 const registerUser = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, userId } = req.body;
+    const { firstName, lastName, email, password, userId , profilePicture} = req.body;
     console.log('Registering user:', req.body); // Log the request body
 
     // Check name
@@ -48,6 +50,7 @@ const registerUser = async (req, res) => {
       email,
       password: hashedPassword,
       userId,
+      profilePicture,
     });
 
     console.log('User created:', user); // Log the created user
@@ -69,7 +72,6 @@ const getAllUsers = async (req, res) => {
     res.status(500).json({ error: 'Error fetching users' });
   }
 };
-
 
 // Get user by _id
 const getUserById = async (req, res) => {
@@ -98,6 +100,44 @@ const getUserById = async (req, res) => {
   }
 };
 
+const removeDoorAccess = async (req, res) => {
+  try {
+    const { userId, doorAccessId } = req.params;
+    console.log(`Removing door access with id: ${doorAccessId} for user with id: ${userId}`); // Log the ids
+
+    // Find the user and update the doorAccess array
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Find the door access object to be removed
+    const doorAccess = user.doorAccess.id(doorAccessId);
+    if (!doorAccess) {
+      return res.status(404).json({ error: 'Door access not found' });
+    }
+
+    // Remove the door access from the user's doorAccess array
+    user.doorAccess.pull({ _id: doorAccessId });
+
+    // Save the updated user
+    await user.save();
+
+    // Remove the user from the list of approved users in the Door collection
+    await Door.findByIdAndUpdate(doorAccess.door, {
+      $pull: { approvedUsers: userId }
+    });
+
+    // Find and delete the corresponding permission request
+    await PermissionRequest.findOneAndDelete({ user: userId, door: doorAccess.door });
+
+    console.log('Updated user:', user); // Log the updated user
+    res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Error removing door access' });
+  }
+};
 // Update user by _id
 const updateUserById = async (req, res) => {
   try {
@@ -140,4 +180,24 @@ const deleteUserById = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, getAllUsers, getUserById, updateUserById, deleteUserById };
+// Get user history by _id
+const getUserHistoryById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log('Fetching history for user with id:', id); // Log the id
+
+    // Find the user history
+    const history = await History.find({ 'user.userId': id }).sort({ entryTime: -1 });
+    if (!history) {
+      return res.status(404).json({ error: 'History not found' });
+    }
+
+    console.log('Fetched user history:', history); // Log the fetched history
+    res.status(200).json(history);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Error fetching user history' });
+  }
+};
+
+module.exports = { registerUser, getAllUsers, getUserById, updateUserById, deleteUserById,removeDoorAccess, getUserHistoryById };

@@ -114,16 +114,19 @@ const rejectPermissionRequest = async (req, res) => {
   }
 };
 
-const getAllPermissionRequests = async (req, res) => {
+
+const pendingRequest = async (req, res) => {
   try {
-    const requests = await PermissionRequest.find({})
-      .populate("user", "name") // Include user's name
-      .populate("door", "doorCode roomName"); // Include door's details
-    res.status(200).json(requests);
+    const pendingRequests = await PermissionRequest.find({ status: 'Pending' })
+      .populate('user', 'firstName lastName userId')
+      .populate('door', 'doorCode roomName location');
+    res.json(pendingRequests);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'Server error' });
   }
 };
+
+
 
 module.exports = {
   createPermissionRequest,
@@ -131,4 +134,5 @@ module.exports = {
   getAllPermissionRequests,
   approvePermissionRequest,
   rejectPermissionRequest,
+  pendingRequest,
 };

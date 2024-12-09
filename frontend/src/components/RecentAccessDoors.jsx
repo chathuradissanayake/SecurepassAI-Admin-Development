@@ -39,11 +39,12 @@ const RecentAccessDoors = ({ accessRecords }) => {
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-gray-100">
-              <th className="p-2 border">Door ID</th>
+              <th className="p-2 border">Door Code</th>
               <th className="p-2 border">Room Name</th>
+              <th className="p-2 border">Location</th>
               <th className="p-2 border">User</th>
-              <th className="p-2 border">Time</th>
-              <th className="p-2 border">Status</th>
+              <th className="p-2 border">Entry Time</th>
+              <th className="p-2 border">Exit Time</th>
             </tr>
           </thead>
           <tbody>
@@ -51,19 +52,14 @@ const RecentAccessDoors = ({ accessRecords }) => {
               <tr key={index} className="hover:bg-gray-50">
                 <td className="p-2 border">{record.doorCode}</td>
                 <td className="p-2 border">{record.roomName}</td>
-                <td className="p-2 border">{record.user}</td>
-                <td className="p-2 border">{record.time}</td>
+                <td className="p-2 border">{record.location}</td>
                 <td className="p-2 border">
-                  <span
-                    className={`px-2 py-1 rounded text-sm ${
-                      record.status === 'Access Granted'
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-red-100 text-red-700'
-                    }`}
-                  >
-                    {record.status}
-                  </span>
+                  {record.user && record.user.userId
+                    ? `${record.user.userId.firstName} ${record.user.userId.lastName}`
+                    : 'Unknown User'}
                 </td>
+                <td className="p-2 border">{new Date(record.entryTime).toLocaleString()}</td>
+                <td className="p-2 border">{record.exitTime ? new Date(record.exitTime).toLocaleString() : 'N/A'}</td>
               </tr>
             ))}
           </tbody>

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from 'react-router-dom'; // Import useNavigate
 import avatar from "../assets/avatar.png";
 
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate(); // Initialize useNavigate
+  const [unreadCount, setUnreadCount] = useState(0);
 
   const getTitle = (path) => {
     if (path.startsWith('/users/') && path.split('/').length === 3) {
@@ -26,6 +27,21 @@ const Header = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchUnreadMessagesCount = async () => {
+      try {
+        const response = await fetch(`/api/collections/unread-count`);
+        const data = await response.json();
+    
+        console.log("Unread Messages Count:", data.count); // Log the count
+        setUnreadCount(data.count || 0); // Update the state with the count
+      } catch (error) {
+        console.error("Error fetching unread messages count:", error);
+      }
+    };
+      fetchUnreadMessagesCount();
+    }, []);
+
   return (
     <div>
       <header className="flex justify-between items-center p-4 bg-white">
@@ -37,7 +53,7 @@ const Header = () => {
             className="p-2 rounded-full bg-gray-100"
           />
           <div className="relative">
-            <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full text-xs px-1">3</span>
+            <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full text-xs px-1">{unreadCount}</span>
             <button className="text-gray-600">🔔</button>
           </div>
           <button className="text-gray-600">🌙</button>
