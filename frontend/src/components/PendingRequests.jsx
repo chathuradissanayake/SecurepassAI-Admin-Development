@@ -26,7 +26,7 @@ const PendingRequests = () => {
         <div className="max-h-96 overflow-y-auto">
           <ul>
             {requests.map((request) => (
-              <Link to={`/users/${request.user._id}`} key={request._id} className="block bg-gray-100 p-4 rounded-lg hover:bg-gray-200">
+              <Link to={`/users/${request.user._id}`} key={request._id} className="block bg-gray-100 p-4 rounded-lg hover:bg-gray-200 mb-2">
               
                 <div className='flex justify-between'>
                   <h2 className="text-lg font-semibold text-gray-700">

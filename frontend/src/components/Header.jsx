@@ -47,16 +47,16 @@ const Header = () => {
       <header className="flex justify-between items-center p-4 bg-white">
         <h2 className="text-gray-600 text-sm">Pages / {getTitle(location.pathname)}</h2>
         <div className="flex items-center gap-4">
-          <input
+          {/* <input
             type="text"
             placeholder="Search"
             className="p-2 rounded-full bg-gray-100"
-          />
+          /> */}
           <div className="relative">
             <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full text-xs px-1">{unreadCount}</span>
             <button className="text-gray-600">🔔</button>
           </div>
-          <button className="text-gray-600">🌙</button>
+          {/* <button className="text-gray-600">🌙</button> */}
           <img
             src={avatar}
             alt="User Avatar"

@@ -59,11 +59,11 @@ const DoorSection = ({ doors, setDoors }) => {
                 View Details
               </button>
               
-              <select className=" px-2 py-1 border rounded">
+              {/* <select className=" px-2 py-1 border rounded">
                 <option disabled>Status</option>
                 <option>Active</option>
                 <option>Inactive</option>
-              </select>
+              </select> */}
             </div>
           </div>
         ))}
