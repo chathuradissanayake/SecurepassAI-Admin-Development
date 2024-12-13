@@ -108,11 +108,11 @@ const DoorDetails = () => {
               <div>
                 
                 <div>       
-                  <button
+                  {/* <button
                       onClick={''}
                       className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-2 w-40 ">
                       Print QR
-                  </button>
+                  </button> */}
                 </div>
                 <div> 
                   <button
