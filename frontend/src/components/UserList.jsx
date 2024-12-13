@@ -10,6 +10,7 @@ const UserList = () => {
   const [error, setError] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
   const usersPerPage = 6;
   const navigate = useNavigate();
 
@@ -18,7 +19,7 @@ const UserList = () => {
     lastName: '',
     userId: '',
     email: '',
-    password: ''
+    password: '',
   });
 
   useEffect(() => {
@@ -49,6 +50,11 @@ const UserList = () => {
     }));
   };
 
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+    setCurrentPage(1); // Reset to the first page on search
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -59,7 +65,7 @@ const UserList = () => {
         lastName: '',
         userId: '',
         email: '',
-        password: ''
+        password: '',
       });
       // Refresh the user list
       const response = await axios.get('/api/users', { withCredentials: true });
@@ -76,23 +82,37 @@ const UserList = () => {
   if (loading) return <Spinner />;
   if (error) return <p>Error: {error}</p>;
 
+  // Filter users based on search query
+  const filteredUsers = users.filter((user) => {
+    const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
+    return (
+      fullName.includes(searchQuery.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.userId.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
+
   // Calculate the indices for the current page
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="p-6 space-y-6">
-        <h2 className="text-xl font-semibold text-gray-800">
-                User Management
-              </h2>
-      <div className="flex justify-end items-center ">
-        
+      <h2 className="text-xl font-semibold text-gray-800">User Management</h2>
+      <div className="flex justify-between items-center">
+        <input
+          type="text"
+          placeholder="Search by name, email, or user ID"
+          value={searchQuery}
+          onChange={handleSearch}
+          className="w-1/3 p-2 border rounded"
+        />
         <button
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 "
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           onClick={() => setIsModalVisible(true)}
         >
           + Add User
@@ -108,26 +128,36 @@ const UserList = () => {
           </tr>
         </thead>
         <tbody>
-          {currentUsers.map(user => (
-            <tr key={user._id} className="border-b " >
+          {currentUsers.map((user) => (
+            <tr key={user._id} className="border-b">
               <td className="p-4">{user.firstName} {user.lastName}</td>
               <td className="p-4">{user.email}</td>
               <td className="p-4">{user.userId}</td>
               <td className="p-4 flex gap-2">
-              <button className="text-blue-600" onClick={() => handleRowClick(user._id)}>Manage</button>
+                <button
+                  className="text-blue-600"
+                  onClick={() => handleRowClick(user._id)}
+                >
+                  Manage
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      {filteredUsers.length === 0 && (
+        <p className="text-center text-gray-600 mt-4">No users match your search.</p>
+      )}
       <div className="flex justify-center mt-4">
         <nav>
           <ul className="flex list-none">
-            {Array.from({ length: Math.ceil(users.length / usersPerPage) }, (_, index) => (
+            {Array.from({ length: Math.ceil(filteredUsers.length / usersPerPage) }, (_, index) => (
               <li key={index} className="mx-1">
                 <button
                   onClick={() => paginate(index + 1)}
-                  className={`px-3 py-1 rounded ${currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
+                  className={`px-3 py-1 rounded ${
+                    currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
+                  }`}
                 >
                   {index + 1}
                 </button>
@@ -196,7 +226,11 @@ const UserList = () => {
             />
           </div>
           <div className="flex justify-end">
-            <button type="button" className="bg-gray-500 text-white px-4 py-2 rounded mr-2" onClick={() => setIsModalVisible(false)}>
+            <button
+              type="button"
+              className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
+              onClick={() => setIsModalVisible(false)}
+            >
               Cancel
             </button>
             <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
