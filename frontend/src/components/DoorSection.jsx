@@ -55,7 +55,7 @@ const DoorSection = ({ doors, setDoors }) => {
           placeholder="Search by Room Name or Door Code"
           value={searchQuery}
           onChange={handleSearch}
-          className="border px-4 py-2 rounded mr-2"
+          className="border px-4 py-2 rounded mr-2 w-80"
         />
         <button
           className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
