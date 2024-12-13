@@ -6,12 +6,12 @@ import Spinner from '../components/Spinner';
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState('');
-  const usersPerPage = 6;
+  const usersPerPage = 10; // Set maximum users per page
   const navigate = useNavigate();
 
   const [newUser, setNewUser] = useState({
@@ -19,16 +19,18 @@ const UserList = () => {
     lastName: '',
     userId: '',
     email: '',
-    password: '',
+    password: ''
   });
+
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get('/api/users', { withCredentials: true });
-        console.log('API response:', response.data);
         if (Array.isArray(response.data)) {
           setUsers(response.data);
+          setFilteredUsers(response.data);
         } else {
           throw new Error('API response is not an array');
         }
@@ -42,17 +44,26 @@ const UserList = () => {
     fetchUsers();
   }, []);
 
+  const handleSearch = (e) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+    const filtered = users.filter(
+      (user) =>
+        user.firstName.toLowerCase().includes(query) ||
+        user.lastName.toLowerCase().includes(query) ||
+        user.email.toLowerCase().includes(query) ||
+        user.userId.toLowerCase().includes(query)
+    );
+    setFilteredUsers(filtered);
+    setCurrentPage(1); // Reset to the first page on a new search
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewUser((prevUser) => ({
       ...prevUser,
       [name]: value,
     }));
-  };
-
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
-    setCurrentPage(1); // Reset to the first page on search
   };
 
   const handleSubmit = async (e) => {
@@ -65,11 +76,12 @@ const UserList = () => {
         lastName: '',
         userId: '',
         email: '',
-        password: '',
+        password: ''
       });
       // Refresh the user list
       const response = await axios.get('/api/users', { withCredentials: true });
       setUsers(response.data);
+      setFilteredUsers(response.data);
     } catch (err) {
       console.error(err);
     }
@@ -82,23 +94,20 @@ const UserList = () => {
   if (loading) return <Spinner />;
   if (error) return <p>Error: {error}</p>;
 
-  // Filter users based on search query
-  const filteredUsers = users.filter((user) => {
-    const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
-    return (
-      fullName.includes(searchQuery.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.userId.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  });
-
-  // Calculate the indices for the current page
+  // Calculate pagination indices
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
-  // Change page
+  // Handle pagination
+  const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const handlePrevious = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
 
   return (
     <div className="p-6 space-y-6">
@@ -130,10 +139,12 @@ const UserList = () => {
         <tbody>
           {currentUsers.map((user) => (
             <tr key={user._id} className="border-b">
-              <td className="p-4">{user.firstName} {user.lastName}</td>
+              <td className="p-4">
+                {user.firstName} {user.lastName}
+              </td>
               <td className="p-4">{user.email}</td>
               <td className="p-4">{user.userId}</td>
-              <td className="p-4 flex gap-2">
+              <td className="p-4">
                 <button
                   className="text-blue-600"
                   onClick={() => handleRowClick(user._id)}
@@ -145,26 +156,38 @@ const UserList = () => {
           ))}
         </tbody>
       </table>
-      {filteredUsers.length === 0 && (
-        <p className="text-center text-gray-600 mt-4">No users match your search.</p>
-      )}
-      <div className="flex justify-center mt-4">
-        <nav>
-          <ul className="flex list-none">
-            {Array.from({ length: Math.ceil(filteredUsers.length / usersPerPage) }, (_, index) => (
-              <li key={index} className="mx-1">
-                <button
-                  onClick={() => paginate(index + 1)}
-                  className={`px-3 py-1 rounded ${
-                    currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
-                  }`}
-                >
-                  {index + 1}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </nav>
+      <div className="flex justify-between items-center mt-4">
+        <button
+          onClick={handlePrevious}
+          disabled={currentPage === 1}
+          className={`px-4 py-2 rounded ${
+            currentPage === 1 ? 'bg-gray-300 text-gray-600' : 'bg-blue-500 text-white'
+          }`}
+        >
+          Previous
+        </button>
+        <div className="flex items-center">
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index}
+              onClick={() => paginate(index + 1)}
+              className={`px-3 py-1 mx-1 rounded ${
+                currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
+              }`}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
+        <button
+          onClick={handleNext}
+          disabled={currentPage === totalPages}
+          className={`px-4 py-2 rounded ${
+            currentPage === totalPages ? 'bg-gray-300 text-gray-600' : 'bg-blue-500 text-white'
+          }`}
+        >
+          Next
+        </button>
       </div>
 
       <Modal isVisible={isModalVisible} onClose={() => setIsModalVisible(false)}>
@@ -233,7 +256,10 @@ const UserList = () => {
             >
               Cancel
             </button>
-            <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
+            <button
+              type="submit"
+              className="bg-blue-600 text-white px-4 py-2 rounded"
+            >
               Save
             </button>
           </div>
