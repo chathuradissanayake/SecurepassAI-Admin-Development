@@ -3,14 +3,21 @@ import { useNavigate } from 'react-router-dom';
 
 const DoorSection = ({ doors, setDoors }) => {
   const [currentPage, setCurrentPage] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 6;
   const navigate = useNavigate();
 
-  // Calculate total pages
-  const totalPages = Math.ceil(doors.length / itemsPerPage);
+  // Filter doors based on the search query
+  const filteredDoors = doors.filter((door) =>
+    door.roomName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    door.doorCode.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Calculate total pages after filtering
+  const totalPages = Math.ceil(filteredDoors.length / itemsPerPage);
 
   // Get the current page doors
-  const currentDoors = doors.slice(
+  const currentDoors = filteredDoors.slice(
     currentPage * itemsPerPage,
     currentPage * itemsPerPage + itemsPerPage
   );
@@ -32,16 +39,37 @@ const DoorSection = ({ doors, setDoors }) => {
     setCurrentPage(pageIndex);
   };
 
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+    setCurrentPage(0); // Reset to the first page when searching
+  };
+
   return (
     <div>
-      {/* Door List */}
-      <div className='flex justify-between items-center mb-4'>
-        <h2 className="text-lg font-semibold">Doors</h2>
-        <button className='px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700' onClick={() => navigate('/create-door')}>
+      {/* Search and Add Button */}
+      <div className="flex justify-between items-center mb-4">
+      <h2 className="text-lg font-semibold">Doors</h2>
+      <div className=''>
+      <input
+          type="text"
+          placeholder="Search by Room Name or Door Code"
+          value={searchQuery}
+          onChange={handleSearch}
+          className="border px-4 py-2 rounded mr-2"
+        />
+        <button
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          onClick={() => navigate('/create-door')}
+        >
           Add new Door
         </button>
+
+
+      </div>
+       
       </div>
 
+      {/* Door List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {currentDoors.map((door) => (
           <div key={door._id} className="p-4 border rounded-lg shadow-sm bg-white">
@@ -104,6 +132,13 @@ const DoorSection = ({ doors, setDoors }) => {
           Next
         </button>
       </div>
+
+      {/* No Results Message */}
+      {filteredDoors.length === 0 && (
+        <div className="mt-4 text-center text-gray-500">
+          No doors found matching your search.
+        </div>
+      )}
     </div>
   );
 };
