@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const DoorSection = ({ doors, setDoors }) => {
-  // Pagination state
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 6;
   const navigate = useNavigate();
@@ -29,12 +28,18 @@ const DoorSection = ({ doors, setDoors }) => {
     }
   };
 
+  const handlePageClick = (pageIndex) => {
+    setCurrentPage(pageIndex);
+  };
+
   return (
     <div>
       {/* Door List */}
       <div className='flex justify-between items-center mb-4'>
         <h2 className="text-lg font-semibold">Doors</h2>
-        <button className='px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700' onClick={() => navigate('/create-door')}>Add new Door</button>
+        <button className='px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700' onClick={() => navigate('/create-door')}>
+          Add new Door
+        </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -58,19 +63,13 @@ const DoorSection = ({ doors, setDoors }) => {
               >
                 View Details
               </button>
-              
-              {/* <select className=" px-2 py-1 border rounded">
-                <option disabled>Status</option>
-                <option>Active</option>
-                <option>Inactive</option>
-              </select> */}
             </div>
           </div>
         ))}
       </div>
 
       {/* Pagination Controls */}
-      <div className="flex justify-end gap-4 mt-4">
+      <div className="flex justify-between items-center mt-4">
         <button
           onClick={handlePrev}
           disabled={currentPage === 0}
@@ -80,6 +79,21 @@ const DoorSection = ({ doors, setDoors }) => {
         >
           Previous
         </button>
+
+        <div className="flex gap-2">
+          {Array.from({ length: totalPages }).map((_, index) => (
+            <button
+              key={index}
+              onClick={() => handlePageClick(index)}
+              className={`px-3 py-1 rounded ${
+                index === currentPage ? 'bg-blue-700 text-white' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+              }`}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
+
         <button
           onClick={handleNext}
           disabled={currentPage === totalPages - 1}
