@@ -62,7 +62,7 @@ const QRGenerator = () => {
       <Sidebar />
       <div className="flex-1 p-4">
         <Header />
-        <h1 className="text-2xl font-bold my-5">QR Code Generator</h1>
+        <h1 className="text-2xl font-bold my-5">Create a new Door</h1>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Left Column: Form */}
           <div className="bg-white p-6 rounded shadow">
