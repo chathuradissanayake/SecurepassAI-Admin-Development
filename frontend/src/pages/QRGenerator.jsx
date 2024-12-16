@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { QRCodeCanvas } from 'qrcode.react';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 
@@ -9,6 +10,7 @@ const QRGenerator = () => {
   const [doorCode, setdoorCode] = useState('');
   const [roomName, setroomName] = useState('');
   const [qrData, setQrData] = useState('');
+  const navigate = useNavigate();
 
   // Example company list for the dropdown
   const companyList = ['SLT Colombo', 'SLT Walisara', 'SLT Trace City'];
@@ -29,7 +31,7 @@ const QRGenerator = () => {
       const canvas = document.getElementById('qrCode');
       const qrBase64 = canvas.toDataURL('image/png');
   
-      const response = await axios.post('api/doors/create/', {
+      const response = await axios.post('/api/doors/create/', {
         location,
         doorCode,
         roomName,
@@ -37,12 +39,12 @@ const QRGenerator = () => {
         qrImage: qrBase64, // Include the Base64 image
       });
       alert(response.data.message);
+      navigate('/doors'); // Navigate to the doors page after successful save
     } catch (error) {
       console.error(error);
       alert('Failed to save QR Code.');
     }
   };
-  
 
   const downloadQRCode = () => {
     const canvas = document.getElementById('qrCode');
