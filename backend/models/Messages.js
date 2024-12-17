@@ -1,27 +1,40 @@
-// models/messages.js
 const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
-const messageSchema = new mongoose.Schema({
-  userId: {
+const contactUsSchema = new Schema({ 
+  registerId: {
     type: String,
-    required: true
   },
   message: {
     type: String,
-    required: true
+    required: true,
   },
-  createdAt: {
-    type: Date,
-    required: true
+  heading: { 
+    type: String, 
+    default: null 
+  },
+  reply: { 
+    type: String, 
+    default: null 
   },
   status: { 
     type: String, 
-    enum: ["unread", "read"], 
-    default: "unread" },
+    enum: ['unread', 'read'], 
+    default: 'unread' 
+  },
+  userstatus: { 
+    type: String, 
+    enum: ['unread', 'read'], 
+    default: 'unread' 
+  },
+  user: {
+    userId: { 
+      type: Schema.Types.ObjectId, 
+      ref: 'User', required: true 
+    },
+  },
+}, { timestamps: { createdAt: true, updatedAt: true } }); // Only createdAt, no updatedAt
 
+const contactUsModel = mongoose.model('ContactUs', contactUsSchema);
 
-});
-
-const Message = mongoose.model('contactus', messageSchema);
-
-module.exports = Message;
+module.exports = contactUsModel;
