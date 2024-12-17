@@ -13,10 +13,10 @@ const getMessages = async (req, res) => {
   }
 };
 
-
+// Controller to toggle read state of a message
 const toggleReadState = async (req, res) => {
   const { id } = req.params;
-  const { status } = req.body; 
+  const { status } = req.body;
 
   try {
     const updatedMessage = await ContactUs.findByIdAndUpdate(
@@ -36,5 +36,27 @@ const toggleReadState = async (req, res) => {
   }
 };
 
+// Controller to update heading and reply of a message
+const updateMessageDetails = async (req, res) => {
+  const { id } = req.params;
+  const { reply } = req.body;
 
-module.exports = { getMessages, toggleReadState };
+  try {
+    const updatedMessage = await ContactUs.findByIdAndUpdate(
+      id,
+      { reply },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedMessage) {
+      return res.status(404).json({ error: "Message not found" });
+    }
+
+    res.status(200).json(updatedMessage);
+  } catch (error) {
+    console.error("Error updating message details:", error);
+    res.status(500).json({ error: "Failed to update message details" });
+  }
+};
+
+module.exports = { getMessages, toggleReadState, updateMessageDetails };
