@@ -57,4 +57,42 @@ const getCurrentAdminUser = async (req, res) => {
   }
 };
 
-module.exports = { registerAdminUser, loginAdminUser, getCurrentAdminUser };
+const updateCurrentAdminUser = async (req, res) => {
+  try {
+    const { firstName, lastName, email, password } = req.body;
+    const user = await AdminUser.findById(req.user.userId);
+
+    if (user.role === 'SuperAdmin') {
+      return res.status(403).json({ error: 'Super Admins are not allowed to update their profile' });
+    }
+
+    if (firstName) user.firstName = firstName;
+    if (lastName) user.lastName = lastName;
+    if (email) user.email = email;
+    if (password) user.password = await bcrypt.hash(password, 10);
+
+    await user.save();
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    const user = await AdminUser.findById(req.user.userId);
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ error: 'Current password is incorrect' });
+    }
+
+    user.password = await bcrypt.hash(newPassword, 10);
+    await user.save();
+    res.json({ message: 'Password changed successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+module.exports = { registerAdminUser, loginAdminUser, getCurrentAdminUser,updateCurrentAdminUser,changePassword };
