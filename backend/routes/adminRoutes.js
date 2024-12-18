@@ -1,5 +1,5 @@
 const express = require('express');
-const { registerAdminUser, loginAdminUser, getCurrentAdminUser } = require('../controllers/adminAuthController');
+const { registerAdminUser, loginAdminUser, getCurrentAdminUser, updateCurrentAdminUser,changePassword } = require('../controllers/adminAuthController');
 const { createCompany, createAdminUser } = require('../controllers/superAdminController');
 const { getCompaniesWithAdmins } = require('../controllers/companyController');
 const { authMiddleware, roleMiddleware } = require('../middleware/authMiddleware');
@@ -13,6 +13,12 @@ router.post('/login', loginAdminUser);
 
 // Get current admin user
 router.get('/me', authMiddleware, getCurrentAdminUser);
+
+// Update current admin user
+router.put('/me', authMiddleware, updateCurrentAdminUser);
+
+// Change password
+router.put('/change-password', authMiddleware, changePassword);
 
 // Create a new company (SuperAdmin only)
 router.post('/create-company', authMiddleware, roleMiddleware(['SuperAdmin']), createCompany);
