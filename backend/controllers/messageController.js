@@ -1,11 +1,9 @@
-const mongoose = require("mongoose");
 const ContactUs = require("../models/Messages");
 
-// Controller to fetch all messages
+// Fetch all messages
 const getMessages = async (req, res) => {
   try {
-    // Fetch all messages from the collection
-    const messages = await ContactUs.find().sort({ createdAt: -1 }); // Sorted by newest first
+    const messages = await ContactUs.find().sort({ createdAt: -1 });
     res.status(200).json(messages);
   } catch (error) {
     console.error("Error fetching messages:", error);
@@ -13,10 +11,10 @@ const getMessages = async (req, res) => {
   }
 };
 
-
+// Toggle read state
 const toggleReadState = async (req, res) => {
   const { id } = req.params;
-  const { status } = req.body; 
+  const { status } = req.body;
 
   try {
     const updatedMessage = await ContactUs.findByIdAndUpdate(
@@ -36,5 +34,27 @@ const toggleReadState = async (req, res) => {
   }
 };
 
+// Update reply and set userstatus to 'unread'
+const updateUserStatusOnReply = async (req, res) => {
+  const { id } = req.params;
+  const { reply } = req.body;
 
-module.exports = { getMessages, toggleReadState };
+  try {
+    const updatedMessage = await ContactUs.findByIdAndUpdate(
+      id,
+      { reply, userstatus: "unread" },
+      { new: true }
+    );
+
+    if (!updatedMessage) {
+      return res.status(404).json({ error: "Message not found" });
+    }
+
+    res.status(200).json(updatedMessage);
+  } catch (error) {
+    console.error("Error updating userstatus on reply:", error);
+    res.status(500).json({ error: "Failed to update userstatus on reply" });
+  }
+};
+
+module.exports = { getMessages, toggleReadState, updateUserStatusOnReply };
