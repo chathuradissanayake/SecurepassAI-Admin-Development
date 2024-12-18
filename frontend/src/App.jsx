@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes, Navigate } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import DoorDetails from './pages/DoorDetails';
 import Doors from './pages/Doors';
@@ -11,19 +11,26 @@ import QRGenerator from './pages/QRGenerator';
 import Settings from './pages/Settings';
 import UserProfile from './pages/UserProfile';
 import Users from './pages/Users';
+import Companies from './pages/Companies';
+import AdminUsers from './pages/AdminUsers';
 
 const App = () => {
+  const isAuthenticated = !!localStorage.getItem('token');
+  const userRole = localStorage.getItem('role'); 
+
   return (
     <Router>
       <Routes>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/users" element={<Users />} />
-        <Route path="/users/:id" element={<UserProfile />} />
-        <Route path="/doors" element={<Doors />} />
-        <Route path="/doors/:id" element={<DoorDetails />} />
-        <Route path="/create-door" element={<QRGenerator />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
+        <Route path="/users" element={isAuthenticated ? <Users /> : <Navigate to="/login" />} />
+        <Route path="/users/:id" element={isAuthenticated ? <UserProfile /> : <Navigate to="/login" />} />
+        <Route path="/doors" element={isAuthenticated ? <Doors /> : <Navigate to="/login" />} />
+        <Route path="/doors/:id" element={isAuthenticated ? <DoorDetails /> : <Navigate to="/login" />} />
+        <Route path="/create-door" element={isAuthenticated ? <QRGenerator /> : <Navigate to="/login" />} />
+        <Route path="/settings" element={isAuthenticated ? <Settings /> : <Navigate to="/login" />} />
+        <Route path="/profile" element={isAuthenticated ? <Profile /> : <Navigate to="/login" />} />
+        <Route path="/companies" element={isAuthenticated && userRole === 'SuperAdmin' ? <Companies /> : <Navigate to="/login" />} />
+        <Route path="/admin-users" element={isAuthenticated && userRole === 'SuperAdmin' ? <AdminUsers /> : <Navigate to="/login" />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/logout" element={<LogoutPage />} />
         <Route path="/login" element={<LoginPage />} />
