@@ -22,7 +22,7 @@ const Sidebar = () => {
   return (
     <aside className="w-64 bg-slate-200 min-h-screen p-6 flex flex-col space-y-6">
       <div className="flex justify-center mb-6">
-        <NavLink to="/">
+        <NavLink to="/dashboard">
           <img src={logo} alt="Logo" className="w-24 h-24" />
         </NavLink>
       </div>
@@ -30,7 +30,7 @@ const Sidebar = () => {
         <ul className="space-y-6">
           <li>
             <NavLink
-              to="/"
+              to="/dashboard"
               className={({ isActive }) =>
                 isActive
                   ? " text-blue-600 flex items-center gap-4"
