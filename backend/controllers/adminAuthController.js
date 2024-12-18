@@ -1,6 +1,6 @@
 const AdminUser = require('../models/AdminUser');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 
 const registerAdminUser = async (req, res) => {
   const { firstName, lastName, email, password, role, company } = req.body;
