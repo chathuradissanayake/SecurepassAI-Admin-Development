@@ -12,6 +12,7 @@ import logo from "../assets/logo.png";
 
 const Sidebar = () => {
   const navigate = useNavigate();
+  const userRole = localStorage.getItem('role'); // Assuming you store the role in localStorage
 
   const handleLogout = () => {
     // Perform any logout logic here (e.g., clearing tokens or session)
@@ -64,6 +65,34 @@ const Sidebar = () => {
               <FaDoorOpen /> Doors
             </NavLink>
           </li>
+          {userRole === 'SuperAdmin' && (
+            <>
+              <li>
+                <NavLink
+                  to="/companies"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "text-blue-600 flex items-center gap-4"
+                      : "text-gray-600 flex items-center gap-2"
+                  }
+                >
+                  <FaUserFriends /> Companies
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/admin-users"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "text-blue-600 flex items-center gap-4"
+                      : "text-gray-600 flex items-center gap-2"
+                  }
+                >
+                  <FaUser /> Admin Users
+                </NavLink>
+              </li>
+            </>
+          )}
           <li>
             <NavLink
               to="/settings"
