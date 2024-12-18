@@ -1,13 +1,18 @@
-// routes/messageRoutes.js
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { getMessages, toggleReadState, updateMessageDetails} = require('../controllers/messageController');
+const {
+  getMessages,
+  toggleReadState,
+  updateUserStatusOnReply,
+} = require("../controllers/messageController");
 
-// Route to get all messages
+// Get all messages
 router.get("/messages", getMessages);
 
-// Route to mark a message as read
+// Toggle read state
 router.patch("/messages/:id/toggle-read", toggleReadState);
-router.patch("/messages/:id/update", updateMessageDetails);
+
+// Reply and update userstatus
+router.patch("/messages/:id/reply", updateUserStatusOnReply);
 
 module.exports = router;
