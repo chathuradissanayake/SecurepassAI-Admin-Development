@@ -5,10 +5,8 @@ const Messages = () => {
   const [loading, setLoading] = useState(true);
   const [unreadCount, setUnreadCount] = useState(0);
   const [replyingTo, setReplyingTo] = useState(null);
-  // const [heading, setHeading] = useState("");
   const [reply, setReply] = useState("");
 
-  // Fetch messages from the backend
   useEffect(() => {
     const fetchMessages = async () => {
       try {
@@ -16,7 +14,6 @@ const Messages = () => {
         const data = await response.json();
         setMessages(data);
 
-        // Calculate unread count
         const unreadMessages = data.filter((message) => message.status === "unread").length;
         setUnreadCount(unreadMessages);
       } catch (error) {
@@ -34,22 +31,17 @@ const Messages = () => {
     try {
       const response = await fetch(`/api/contactus/messages/${id}/toggle-read`, {
         method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus }),
       });
 
       if (response.ok) {
         const updatedMessage = await response.json();
-
         setMessages((prevMessages) =>
           prevMessages.map((message) =>
             message._id === id ? updatedMessage : message
           )
         );
-
-        // Update unread count dynamically
         setUnreadCount((prevCount) =>
           newStatus === "read" ? prevCount - 1 : prevCount + 1
         );
@@ -63,10 +55,8 @@ const Messages = () => {
 
   const handleReply = async (message) => {
     if (replyingTo === message._id) {
-      // Undo: Hide reply section
       setReplyingTo(null);
     } else {
-      // Show reply inputs and mark message as read if unread
       if (message.status === "unread") {
         await handleToggleReadState(message._id, "unread");
       }
@@ -77,17 +67,14 @@ const Messages = () => {
 
   const handleSendReply = async (messageId) => {
     try {
-      const response = await fetch(`/api/contactus/messages/${messageId}/update`, {
+      const response = await fetch(`/api/contactus/messages/${messageId}/reply`, {
         method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ reply }),
       });
 
       if (response.ok) {
         const updatedMessage = await response.json();
-
         setMessages((prevMessages) =>
           prevMessages.map((message) =>
             message._id === messageId ? updatedMessage : message
@@ -95,9 +82,9 @@ const Messages = () => {
         );
 
         console.log("Reply sent for message ID:", messageId);
-        setReplyingTo(null); // Reset reply state
+        setReplyingTo(null);
       } else {
-        console.error("Failed to update message");
+        console.error("Failed to send reply");
       }
     } catch (error) {
       console.error("Error sending reply:", error);
@@ -122,44 +109,37 @@ const Messages = () => {
                 }`}
               >
                 <div className="my-2 ml-2 flex justify-between">
-                  <div>
-                    <p className="text-2xl text-gray-800 font-medium">
-                      {message.registerId}
-                    </p>
-                  </div>
-                  <div className="mx-2">
-                    <button
-                      onClick={() =>
-                        handleToggleReadState(message._id, message.status)
-                      }
-                      className={`px-4 py-1 text-white font-sm rounded ${
-                        message.status === "read"
-                          ? "bg-gray-500 hover:bg-gray-600"
-                          : "bg-blue-500 hover:bg-blue-600"
-                      }`}
-                    >
-                      {message.status === "read" ? "Mark" : "Read"}
-                    </button>
-                  </div>
+                  <p className="text-2xl text-gray-800 font-medium">
+                    {message.registerId}
+                  </p>
+                  <button
+                    onClick={() =>
+                      handleToggleReadState(message._id, message.status)
+                    }
+                    className={`px-4 py-1 text-white font-sm rounded ${
+                      message.status === "read"
+                        ? "bg-gray-500 hover:bg-gray-600"
+                        : "bg-blue-500 hover:bg-blue-600"
+                    }`}
+                  >
+                    {message.status === "read" ? "Read" : "Mark"}
+                  </button>
                 </div>
 
                 <div className="flex items-center justify-between">
                   <p className="text-gray-600 mx-2 mb-4">{message.message}</p>
-                  <div className="pr-2">
-                    <button
-                      onClick={() => handleReply(message)}
-                      className={`${
-                        replyingTo === message._id
-                          ? "bg-red-500 hover:bg-red-600"
-                          : "bg-orange-500 hover:bg-orange-600"
-                      } px-3.5 py-1 text-white font-sm rounded`}
-                    >
-                      {replyingTo === message._id ? "Undo" : "Reply"}
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => handleReply(message)}
+                    className={`${
+                      replyingTo === message._id
+                        ? "bg-red-500 hover:bg-red-600"
+                        : "bg-orange-500 hover:bg-orange-600"
+                    } px-3.5 py-1 text-white font-sm rounded`}
+                  >
+                    {replyingTo === message._id ? "Undo" : "Reply"}
+                  </button>
                 </div>
 
-                {/* Reply Section */}
                 {replyingTo === message._id && (
                   <div className="mt-4">
                     <textarea
@@ -179,8 +159,6 @@ const Messages = () => {
                     </div>
                   </div>
                 )}
-
-                {/* CreatedAt Timestamp */}
                 <p className="text-sm text-gray-500 mt-2 pl-2">
                   {new Date(message.createdAt).toLocaleString()}
                 </p>
