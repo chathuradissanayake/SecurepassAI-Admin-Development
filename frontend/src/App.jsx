@@ -13,10 +13,16 @@ import UserProfile from './pages/UserProfile';
 import Users from './pages/Users';
 import Companies from './pages/Companies';
 import AdminUsers from './pages/AdminUsers';
+import { isTokenExpired, getToken, getRole, clearAuthData } from './utils/auth';
 
 const App = () => {
-  const isAuthenticated = !!localStorage.getItem('token');
-  const userRole = localStorage.getItem('role'); 
+  const token = getToken();
+  const isAuthenticated = token && !isTokenExpired(token);
+  const userRole = getRole();
+
+  if (!isAuthenticated) {
+    clearAuthData();
+  }
 
   return (
     <Router>
