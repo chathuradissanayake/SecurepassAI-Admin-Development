@@ -26,7 +26,7 @@ const PendingRequests = () => {
         <div className="max-h-96 overflow-y-auto">
           <ul>
             {requests.map((request) => (
-              <Link to={`/users/${request.user._id}`} key={request._id} className="block bg-gray-100 p-4 rounded-lg hover:bg-gray-200">
+              <Link to={`/users/${request.user._id}`} key={request._id} className="block bg-gray-100 p-4 rounded-lg hover:bg-gray-200 mb-2">
               
                 <div className='flex justify-between'>
                   <h2 className="text-lg font-semibold text-gray-700">
@@ -35,17 +35,17 @@ const PendingRequests = () => {
                   <p className="text-yellow-500 font-bold mt-2">{request.status}</p>
                 </div>
                 <p>
-                  <strong>Door:</strong> {request.door.doorCode} - {request.door.roomName} 
+                  <strong>Door :</strong> {request.door.doorCode} - {request.door.roomName} 
                 </p>
                 <p>
-                  <strong>Location:</strong> {request.door.location}
+                  <strong>Location :</strong> {request.door.location}
                 </p>
                 <p>
-                  <strong>Message:</strong> {request.message}
+                  <strong>Message :</strong> {request.message}
                 </p>
                 <p>
-                  <strong>Requested Time:</strong>{' '}
-                  {new Date(request.requestTime).toLocaleString()}
+                  <strong>Requested Date :</strong>{' '}
+                  {new Date(request.requestTime).toLocaleDateString()} { request.inTime}
                 </p>
               
               </Link>
