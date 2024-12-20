@@ -80,6 +80,13 @@ const DoorDetails = () => {
               
               <p className="text-gray-600 text-4xl mb-5">
                 <strong>Door Code:</strong> {door.doorCode}
+                <span
+                className={`px-3 py-2 ml-8 rounded text-lg ${
+                  door.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                }`}
+              >
+                {door.status}
+              </span>
               </p>
               <p className="text-gray-600 mb-2">
                 <strong>Door Name:</strong> {door.roomName}
@@ -87,7 +94,46 @@ const DoorDetails = () => {
               <p className="text-gray-600 mb-2">
                 <strong>Location:</strong> {door.location}
               </p>
+
+              <select
+                className="px-2 py-1 mt-4 text-slate-800 border rounded"
+                value={door.status}
+                onChange={async (e) => {
+                  const newStatus = e.target.value;
+
+                  try {
+                    // Update the status in the backend
+                    const response = await fetch(`/api/doors/${door._id}/status`, {
+                      method: 'PUT',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({ status: newStatus }),
+                    });
+
+                    if (response.ok) {
+                      const updatedDoor = await response.json();
+
+                      // Update the door state with the new status
+                      setDoor((prevDoor) => ({
+                        ...prevDoor,
+                        status: updatedDoor.status,
+                      }));
+                    } else {
+                      console.error('Failed to update status');
+                    }
+                  } catch (error) {
+                    console.error('Error updating status:', error);
+                  }
+                }}
+              >
+                <option disabled>Status</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+
             </div>
+            
             
             {/* QR Code */}
             <div className='flex justify-between'>
@@ -108,11 +154,11 @@ const DoorDetails = () => {
               <div>
                 
                 <div>       
-                  {/* <button
+                  <button
                       onClick={''}
                       className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-2 w-40 ">
                       Print QR
-                  </button> */}
+                  </button>
                 </div>
                 <div> 
                   <button
