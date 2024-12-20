@@ -86,7 +86,7 @@ const CollectionCounts = () => {
   return (
     <div>
       {/* Metrics Section */}
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Total Users Card */}
         <div className="p-4 bg-white rounded-lg shadow-md flex items-center gap-4">
           <div className="text-blue-500 text-3xl">

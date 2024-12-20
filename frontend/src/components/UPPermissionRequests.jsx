@@ -72,7 +72,7 @@ const UPPermissionRequests = ({ pendingRequests, onRequestUpdate }) => {
   };
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-sm mb-6">
+    <div className="p-4 border rounded-lg shadow-sm bg-white">
       <h2 className="text-xl font-semibold mb-4">Permission Requests</h2>
 
       {/* Table */}

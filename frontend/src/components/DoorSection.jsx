@@ -45,7 +45,7 @@ const DoorSection = ({ doors, setDoors }) => {
   };
 
   return (
-    <div>
+    <div className="p-4 border rounded-lg shadow-sm bg-white">
       {/* Search and Add Button */}
       <div className="flex justify-between items-center mb-4">
       <h2 className="text-lg font-semibold">Doors</h2>

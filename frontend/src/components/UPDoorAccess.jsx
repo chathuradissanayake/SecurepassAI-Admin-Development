@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const UPDoorAccess = ({ accessRecords, userId, onAccessUpdate }) => {
   const itemsPerPage = 5;
@@ -58,7 +58,7 @@ const UPDoorAccess = ({ accessRecords, userId, onAccessUpdate }) => {
   };
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-sm mb-6">
+    <div className="p-4 border rounded-lg shadow-sm bg-white">
       <h2 className="text-xl font-semibold mb-4">Door Access</h2>
 
       {/* Table */}

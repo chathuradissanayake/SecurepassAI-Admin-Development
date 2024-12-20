@@ -133,11 +133,16 @@ const UserProfile = () => {
   return (
     <div className="flex">
       <Sidebar />
-      <div className="flex-1 p-4">
+      <div className="flex-1">
         <Header />
-        <h1 className="text-2xl font-bold my-5">User Profile</h1>
 
-        <div className="bg-white rounded-lg shadow p-6 mb-6">
+        <div className="p-6 space-y-4">
+        
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">
+            User Profile
+          </h2>
+
+        <div className="p-4 border rounded-lg shadow-sm bg-white">
           <div className="flex items-center justify-between">
             {/* User Profile and Details */}
             <div className="flex items-center">
@@ -258,6 +263,7 @@ const UserProfile = () => {
             </button>
           </div>
         </Modal>
+        </div>
       </div>
     </div>
   );

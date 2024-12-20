@@ -60,12 +60,13 @@ const QRGenerator = () => {
   return (
     <div className="flex">
       <Sidebar />
-      <div className="flex-1 p-4">
+      <div className="flex-1">
         <Header />
-        <h1 className="text-2xl font-bold my-5">Create a new Door</h1>
+        <div className="p-6 space-y-4">
+        <h2 className="text-xl font-semibold text-gray-800">Create a new Door</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Left Column: Form */}
-          <div className="bg-white p-6 rounded shadow">
+          <div className="p-6 border rounded-lg shadow-sm bg-white">
             <h2 className="text-xl font-semibold mb-4">Enter Details</h2>
             <form onSubmit={generateQRCode} className="space-y-4">
               <div>
@@ -116,7 +117,7 @@ const QRGenerator = () => {
           </div>
 
           {/* Middle Column: QR Code Display */}
-          <div className="flex items-center justify-center bg-white p-6 rounded shadow">
+          <div className="flex items-center justify-center p-6 border rounded-lg shadow-sm bg-white">
             {qrData ? (
               <div className="text-center">
                 <h2 className="text-xl font-semibold mb-6">Generated QR Code</h2>
@@ -144,7 +145,7 @@ const QRGenerator = () => {
           </div>
 
           {/* Right Column: QR Code Details */}
-          <div className="bg-white p-6 rounded shadow">
+          <div className="p-6 border rounded-lg shadow-sm bg-white">
             <h2 className="text-xl font-semibold mb-4">QR Code Details</h2>
             {qrData ? (
               <div  >
@@ -180,6 +181,7 @@ const QRGenerator = () => {
               <p className="text-gray-500">No details available.</p>
             )}
           </div>
+        </div>
         </div>
       </div>
     </div>

@@ -25,30 +25,24 @@ const Dashboard = () => {
   return (
     <div className="flex h-full bg-white">
       <Sidebar />
-      <div className="flex-1 p-6">
+      <div className="flex-1">
         <Header />
-
+        <div className="flex-1 p-4">
       {/* Collection Counts Section */}
       <div>
         <CollectionCounts/>
       </div>      
 
       {/* Access Requests Section */}
-      <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="p-6 bg-white border rounded-lg shadow-md">
           <h3 className="text-gray-600 text-lg mb-4">Pending Requests</h3>
           <PendingRequests/>
-
-      </div>
-
-        
+        </div>
 
         {/* Messages */}
         <div className="p-6 bg-white border rounded-lg shadow-md">
-          
-          
             <Messages/>
-          
         </div>
       </div>
 
@@ -95,6 +89,7 @@ const Dashboard = () => {
 
         
       </div>   
+      </div>
       </div>
          
   );
