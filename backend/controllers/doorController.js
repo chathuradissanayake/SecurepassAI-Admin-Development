@@ -2,7 +2,7 @@ const Door = require('../models/Door');
 const PermissionRequest = require('../models/PermissionRequest');
 
 const createDoor = async (req, res) => {
-  const { location, doorCode, roomName, qrData, qrImage} = req.body;
+  const { location, doorCode, roomName, qrData, qrImage, status} = req.body;
 
   if (!location || !doorCode || !roomName || !qrData  ) {
     return res.status(400).json({ success: false, message: "All fields are required." });
@@ -15,6 +15,7 @@ const createDoor = async (req, res) => {
       roomName,
       qrData,
       qrImage,
+      status,
     });
 
     await newDoor.save(); // Save to database
