@@ -87,10 +87,31 @@ const deleteDoor = async (req, res) => {
   }
 };
 
+const setdoorstatus = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  try {
+    const updatedDoor = await Door.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true } // Return the updated document
+    );
+    if (!updatedDoor) {
+      return res.status(404).json({ error: 'Door not found' });
+    }
+    res.json(updatedDoor);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
 module.exports = {
   createDoor,
   getDoorById,
   getAllDoors,
   updateDoor,
   deleteDoor,
+  setdoorstatus,
 };

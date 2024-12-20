@@ -17,4 +17,7 @@ router.put('/:id', doorController.updateDoor);
 // Route to delete a door by ID
 router.delete('/:id', doorController.deleteDoor);
 
+//set door status
+router.put('/:id/status', doorController.setdoorstatus);
+
 module.exports = router;
