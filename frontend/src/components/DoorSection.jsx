@@ -83,7 +83,10 @@ const DoorSection = ({ doors, setDoors }) => {
               >
                 {door.status}
               </span>
+
+              
             </div>
+            
             <div className="flex items-center justify-between">
               <button
                 onClick={() => navigate(`/doors/${door._id}`)}
@@ -91,6 +94,46 @@ const DoorSection = ({ doors, setDoors }) => {
               >
                 View Details
               </button>
+              <span>
+              <select
+                className="px-2 py-1 border rounded"
+                value={door.status}
+                onChange={async (e) => {
+                  const newStatus = e.target.value;
+
+                  try {
+                    // Update the status in the backend
+                    const response = await fetch(`/api/doors/${door._id}/status`, {
+                      method: 'PUT',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({ status: newStatus }),
+                    });
+
+                    if (response.ok) {
+                      const updatedDoor = await response.json();
+
+                      // Update the doors state
+                      setDoors((prevDoors) =>
+                        prevDoors.map((d) =>
+                          d._id === updatedDoor._id ? updatedDoor : d
+                        )
+                      );
+                    } else {
+                      console.error('Failed to update status');
+                    }
+                  } catch (error) {
+                    console.error('Error updating status:', error);
+                  }
+                }}
+              >
+                <option disabled>Status</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+
+              </span>
             </div>
           </div>
         ))}
