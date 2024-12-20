@@ -72,7 +72,9 @@ const DoorSection = ({ doors, setDoors }) => {
       {/* Door List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {currentDoors.map((door) => (
-          <div key={door._id} className="p-4 border rounded-lg shadow-sm bg-white">
+          <div key={door._id} className={`p-4 border rounded-lg shadow-sm ${
+                  door.status === "Active" ? "bg-slate-50" : "bg-red-50"
+                }`}>
             <div className="flex justify-between items-center mb-2">
               <h3 className="text-lg font-semibold">{door.roomName}</h3>
               <h3 className="text-lg font-semibold">{door.doorCode}</h3>
