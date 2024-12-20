@@ -1,5 +1,7 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { ThemeProvider } from "../context/ThemeContext"; // Import the ThemeProvider
+
 import Dashboard from './pages/Dashboard';
 import DoorDetails from './pages/DoorDetails';
 import Doors from './pages/Doors';
@@ -14,6 +16,7 @@ import Users from './pages/Users';
 
 const App = () => {
   return (
+    <ThemeProvider>
     <Router>
       <Routes>
         <Route path="/" element={<Dashboard />} />
@@ -29,6 +32,7 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
       </Routes>
     </Router>
+    </ThemeProvider>
   );
 };
 

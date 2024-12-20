@@ -45,7 +45,7 @@ const DoorSection = ({ doors, setDoors }) => {
   };
 
   return (
-    <div>
+    <div className="p-4 border rounded-lg shadow-sm bg-white">
       {/* Search and Add Button */}
       <div className="flex justify-between items-center mb-4">
       <h2 className="text-lg font-semibold">Doors</h2>
@@ -72,7 +72,9 @@ const DoorSection = ({ doors, setDoors }) => {
       {/* Door List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {currentDoors.map((door) => (
-          <div key={door._id} className="p-4 border rounded-lg shadow-sm bg-white">
+          <div key={door._id} className={`p-4 border rounded-lg shadow-sm ${
+                  door.status === "Active" ? "bg-slate-50" : "bg-red-50"
+                }`}>
             <div className="flex justify-between items-center mb-2">
               <h3 className="text-lg font-semibold">{door.roomName}</h3>
               <h3 className="text-lg font-semibold">{door.doorCode}</h3>
@@ -83,7 +85,10 @@ const DoorSection = ({ doors, setDoors }) => {
               >
                 {door.status}
               </span>
+
+              
             </div>
+            
             <div className="flex items-center justify-between">
               <button
                 onClick={() => navigate(`/doors/${door._id}`)}
@@ -91,6 +96,46 @@ const DoorSection = ({ doors, setDoors }) => {
               >
                 View Details
               </button>
+              <span>
+              <select
+                className="px-2 py-1 border rounded"
+                value={door.status}
+                onChange={async (e) => {
+                  const newStatus = e.target.value;
+
+                  try {
+                    // Update the status in the backend
+                    const response = await fetch(`/api/doors/${door._id}/status`, {
+                      method: 'PUT',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({ status: newStatus }),
+                    });
+
+                    if (response.ok) {
+                      const updatedDoor = await response.json();
+
+                      // Update the doors state
+                      setDoors((prevDoors) =>
+                        prevDoors.map((d) =>
+                          d._id === updatedDoor._id ? updatedDoor : d
+                        )
+                      );
+                    } else {
+                      console.error('Failed to update status');
+                    }
+                  } catch (error) {
+                    console.error('Error updating status:', error);
+                  }
+                }}
+              >
+                <option disabled>Status</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+
+              </span>
             </div>
           </div>
         ))}

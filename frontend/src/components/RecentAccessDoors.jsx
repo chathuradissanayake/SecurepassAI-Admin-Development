@@ -31,7 +31,7 @@ const RecentAccessDoors = ({ accessRecords }) => {
   };
 
   return (
-    <div className=" bg-white rounded-lg shadow-sm">
+    <div className="p-4 border rounded-lg shadow-sm bg-white">
       <h2 className="text-xl font-semibold mb-4">Recent Access</h2>
 
       {/* Table */}

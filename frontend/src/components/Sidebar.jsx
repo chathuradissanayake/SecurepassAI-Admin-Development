@@ -20,7 +20,7 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="w-64 bg-slate-200 min-h-screen p-6 flex flex-col space-y-6">
+    <aside className="w-64 bg-slate-200 dark:bg-slate-800 min-h-screen p-6 flex flex-col  ">
       <div className="flex justify-center mb-6">
         <NavLink to="/">
           <img src={logo} alt="Logo" className="w-24 h-24" />
@@ -33,8 +33,8 @@ const Sidebar = () => {
               to="/"
               className={({ isActive }) =>
                 isActive
-                  ? " text-blue-600 flex items-center gap-4"
-                  : "text-gray-600 flex items-center gap-2"
+                  ? " text-blue-600 flex items-center gap-4 dark:text-cyan-500"
+                  : "text-gray-600 flex items-center gap-2 dark:text-slate-400"
               }
             >
               <FaHome /> Dashboard
@@ -45,8 +45,8 @@ const Sidebar = () => {
               to="/users"
               className={({ isActive }) =>
                 isActive
-                  ? "text-blue-600 flex items-center gap-4"
-                  : "text-gray-600 flex items-center gap-2"
+                  ? " text-blue-600 flex items-center gap-4 dark:text-cyan-500"
+                  : "text-gray-600 flex items-center gap-2 dark:text-slate-400"
               }
             >
               <FaUserFriends /> Users List
@@ -57,8 +57,8 @@ const Sidebar = () => {
               to="/doors"
               className={({ isActive }) =>
                 isActive
-                  ? "text-blue-600 flex items-center gap-4"
-                  : "text-gray-600 flex items-center gap-2"
+                  ? " text-blue-600 flex items-center gap-4 dark:text-cyan-500"
+                  : "text-gray-600 flex items-center gap-2 dark:text-slate-400"
               }
             >
               <FaDoorOpen /> Doors
@@ -69,8 +69,8 @@ const Sidebar = () => {
               to="/settings"
               className={({ isActive }) =>
                 isActive
-                  ? "text-blue-600 flex items-center gap-4"
-                  : "text-gray-600 flex items-center gap-2"
+                  ? " text-blue-600 flex items-center gap-4 dark:text-cyan-500"
+                  : "text-gray-600 flex items-center gap-2 dark:text-slate-400"
               }
             >
               <FaCog /> Settings
@@ -81,8 +81,8 @@ const Sidebar = () => {
               to="/profile"
               className={({ isActive }) =>
                 isActive
-                  ? "text-blue-600 flex items-center gap-4"
-                  : "text-gray-600 flex items-center gap-2"
+                  ? " text-blue-600 flex items-center gap-4 dark:text-cyan-500"
+                  : "text-gray-600 flex items-center gap-2 dark:text-slate-400"
               }
             >
               <FaUser /> Profile
@@ -91,7 +91,7 @@ const Sidebar = () => {
           <li>
             <button
               onClick={handleLogout}
-              className="text-gray-600 flex items-center gap-2 w-full text-left"
+              className="text-gray-600 dark:text-slate-400 flex items-center gap-2 w-full text-left"
             >
               <FaSignOutAlt /> Logout
             </button>

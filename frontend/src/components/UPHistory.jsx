@@ -44,7 +44,7 @@ const UPHistory = ({ historyRecords }) => {
   };
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-sm">
+    <div className="p-4 border rounded-lg shadow-sm bg-white">
       <h2 className="text-xl font-semibold mb-4">Door Access History</h2>
 
       {/* Table */}

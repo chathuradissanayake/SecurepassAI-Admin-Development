@@ -27,7 +27,7 @@ const Profile = () => {
   return (
     <div className="flex h-full">
       <Sidebar />
-      <div className="flex-1 p-4">
+      <div className="flex-1">
         <Header />
         <div className="p-6 space-y-6">
               <h2 className="text-xl font-semibold text-gray-800">

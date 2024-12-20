@@ -40,22 +40,22 @@ const Doors = () => {
   return (
     <div className="flex h-full">
       <Sidebar />
-      <div className="flex-1 p-4">
+      <div className="flex-1">
         <Header />
 
         {/* Doors */}
-        <div className="p-6 space-y-6">
+        <div className="p-6 space-y-4">
           <h2 className="text-xl font-semibold text-gray-800">
             Door Management
           </h2>
-          <div className="p-4 border rounded-lg shadow-sm bg-white">
+          
             <DoorSection doors={doors} setDoors={setDoors} />
-          </div>
+          
 
           {/* Recent Access Records */}
-          <div className="p-4 border rounded-lg shadow-sm bg-white">
+          
             <RecentAccessDoors accessRecords={accessRecords} />
-          </div>
+          
         </div>
       </div>
     </div>
