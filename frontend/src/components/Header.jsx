@@ -52,7 +52,7 @@ const Header = () => {
 
   return (
     <div>
-      <header className="flex justify-between items-center p-5 bg-white dark:bg-slate-800">
+      <header className="flex justify-between items-center p-5 bg-white dark:bg-slate-700">
         <h2 className="text-gray-600 text-sm dark:text-slate-300">Pages / {getTitle(location.pathname)}</h2>
         <div className="flex items-center gap-4">
           {/* <input
@@ -71,7 +71,7 @@ const Header = () => {
               <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:bg-green-500 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:bg-gray-700"></div>
             </label>
             <span className="ml-3 text-sm text-gray-700 dark:text-gray-300">
-              {isDarkTheme ? 'Light' : 'Dark'} Mode
+              Switch {isDarkTheme ? 'Light' : 'Dark'} Mode
             </span>
           </div>
 
