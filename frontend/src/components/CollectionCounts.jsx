@@ -88,12 +88,12 @@ const CollectionCounts = () => {
       {/* Metrics Section */}
       <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Total Users Card */}
-        <div className="p-4 bg-white rounded-lg shadow-md flex items-center gap-4">
+        <div className="p-4 bg-white dark:bg-slate-600 dark:text-slate-200 rounded-lg shadow-md flex items-center gap-4">
           <div className="text-blue-500 text-3xl">
             <FaUsers />
           </div>
           <div>
-            <h3 className="text-gray-600 text-sm">Total Users</h3>
+            <h3 className="text-gray-600 dark:text-slate-300 text-sm">Total Users</h3>
             <p className="text-2xl font-bold">
               {usersCount !== null ? usersCount : "Loading..."}
             </p>
@@ -102,12 +102,12 @@ const CollectionCounts = () => {
         </div>
 
         {/* Active Doors Card */}
-        <div className="p-4 bg-white rounded-lg shadow-md flex items-center gap-4">
+        <div className="p-4 bg-white dark:bg-slate-600 dark:text-slate-200 rounded-lg shadow-md flex items-center gap-4">
           <div className="text-green-500 text-3xl">
             <FaDoorOpen />
           </div>
           <div>
-            <h3 className="text-gray-600 text-sm">Active Doors</h3>
+            <h3 className="text-gray-600 dark:text-slate-300 text-sm">Active Doors</h3>
             <p className="text-2xl font-bold">
               {doorsCount !== null ? doorsCount : "Loading..."}
             </p>
@@ -116,12 +116,12 @@ const CollectionCounts = () => {
         </div>
 
         {/* Access Attempts Card */}
-        <div className="p-4 bg-white rounded-lg shadow-md flex items-center gap-4">
+        <div className="p-4 bg-white dark:bg-slate-600 dark:text-slate-200 rounded-lg shadow-md flex items-center gap-4">
           <div className="text-yellow-500 text-3xl">
             <FaCheckCircle />
           </div>
           <div>
-            <h3 className="text-gray-600 text-sm">Access Attempts (24h)</h3>
+            <h3 className="text-gray-600 dark:text-slate-300 text-sm">Access Attempts (24h)</h3>
             <p className="text-2xl font-bold">
               {todayCount !== null ? todayCount : "Loading..."}
             </p>
@@ -132,12 +132,12 @@ const CollectionCounts = () => {
         </div>
 
         {/* Unread Messages Card */}
-        <div className="p-4 bg-white rounded-lg shadow-md flex items-center gap-4">
+        <div className="p-4 bg-white dark:bg-slate-600 dark:text-slate-200  rounded-lg shadow-md flex items-center gap-4">
           <div className="text-purple-500 text-3xl">
             <FaCommentAlt />
           </div>
           <div>
-            <h3 className="text-gray-600 text-sm">Unread Messages</h3>
+            <h3 className="text-gray-600 dark:text-slate-300 text-sm">Unread Messages</h3>
             <p className="text-2xl font-bold">{unreadCount !== null ? unreadCount : "Loading..."}</p>
             {/* <p className="text-purple-500 text-sm">#3 high priority</p> */}
           </div>
