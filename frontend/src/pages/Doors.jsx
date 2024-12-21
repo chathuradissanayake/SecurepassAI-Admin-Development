@@ -38,14 +38,14 @@ const Doors = () => {
   }, []);
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-full dark:bg-slate-700">
       <Sidebar />
       <div className="flex-1">
         <Header />
 
         {/* Doors */}
-        <div className="p-6 space-y-4">
-          <h2 className="text-xl font-semibold text-gray-800">
+        <div className="p-6 space-y-4 ">
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
             Door Management
           </h2>
           

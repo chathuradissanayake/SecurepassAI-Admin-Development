@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const RecentAccessDoors = ({ accessRecords }) => {
-  const itemsPerPage = 10;
+  const itemsPerPage = 8;
   const [currentPage, setCurrentPage] = useState(0);
 
   // Calculate total pages
@@ -31,35 +31,35 @@ const RecentAccessDoors = ({ accessRecords }) => {
   };
 
   return (
-    <div className="p-4 border rounded-lg shadow-sm bg-white">
-      <h2 className="text-xl font-semibold mb-4">Recent Access</h2>
+    <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
+      <h2 className="text-xl font-semibold dark:text-slate-100 mb-4">Recent Access</h2>
 
       {/* Table */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto dark:bg-slate-700">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-gray-100">
-              <th className="p-2 border">Door Code</th>
-              <th className="p-2 border">Room Name</th>
-              <th className="p-2 border">Location</th>
-              <th className="p-2 border">User</th>
-              <th className="p-2 border">Entry Time</th>
-              <th className="p-2 border">Exit Time</th>
+            <tr className="bg-gray-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+              <th className="p-3 border border-gray-300 dark:border-slate-400">Door Code</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400">Room Name</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400">Location</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400">User</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400">Entry Time</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400">Exit Time</th>
             </tr>
           </thead>
           <tbody>
             {currentRecords.map((record, index) => (
-              <tr key={index} className="hover:bg-gray-50">
-                <td className="p-2 border">{record.doorCode}</td>
-                <td className="p-2 border">{record.roomName}</td>
-                <td className="p-2 border">{record.location}</td>
-                <td className="p-2 border">
+              <tr key={index} className="hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
+                <td className="p-2 border border-gray-200 dark:border-slate-500">{record.doorCode}</td>
+                <td className="p-2 border border-gray-200 dark:border-slate-500">{record.roomName}</td>
+                <td className="p-2 border border-gray-200 dark:border-slate-500">{record.location}</td>
+                <td className="p-2 border border-gray-200 dark:border-slate-500">
                   {record.user && record.user.userId
                     ? `${record.user.userId.firstName} ${record.user.userId.lastName}`
                     : 'Unknown User'}
                 </td>
-                <td className="p-2 border">{new Date(record.entryTime).toLocaleString()}</td>
-                <td className="p-2 border">{record.exitTime ? new Date(record.exitTime).toLocaleString() : 'N/A'}</td>
+                <td className="p-2 border border-gray-200 dark:border-slate-500">{new Date(record.entryTime).toLocaleString()}</td>
+                <td className="p-2 border border-gray-200 dark:border-slate-500">{record.exitTime ? new Date(record.exitTime).toLocaleString() : 'N/A'}</td>
               </tr>
             ))}
           </tbody>
@@ -72,7 +72,7 @@ const RecentAccessDoors = ({ accessRecords }) => {
           onClick={handlePrev}
           disabled={currentPage === 0}
           className={`px-4 py-2 rounded ${
-            currentPage === 0 ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'
+            currentPage === 0 ? 'bg-gray-200 text-gray-400 dark:bg-slate-500 cursor-not-allowed' : 'bg-blue-600 dark:bg-slate-800 text-white hover:bg-blue-700'
           }`}
         >
           Previous
@@ -85,7 +85,7 @@ const RecentAccessDoors = ({ accessRecords }) => {
               key={index}
               onClick={() => handlePageClick(index)}
               className={`px-3 py-1 rounded ${
-                currentPage === index ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-blue-100'
+                currentPage === index ? 'bg-blue-700 dark:bg-slate-800 text-white' : 'bg-gray-200 dark:bg-slate-500 dark:text-gray-100 text-gray-600 hover:bg-gray-300'
               }`}
             >
               {index + 1}
@@ -97,7 +97,7 @@ const RecentAccessDoors = ({ accessRecords }) => {
           onClick={handleNext}
           disabled={currentPage === totalPages - 1}
           className={`px-4 py-2 rounded ${
-            currentPage === totalPages - 1 ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'
+            currentPage === totalPages - 1 ?  'bg-gray-200 text-gray-400 dark:bg-slate-500 cursor-not-allowed' : 'bg-blue-600 dark:bg-slate-800 text-white hover:bg-blue-700'
           }`}
         >
           Next
