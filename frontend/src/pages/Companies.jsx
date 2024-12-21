@@ -10,7 +10,7 @@ const Companies = () => {
     const fetchCompanies = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`${process.env.VITE_API_URL}/api/admin/companies-with-admins`, {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/companies-with-admins`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
