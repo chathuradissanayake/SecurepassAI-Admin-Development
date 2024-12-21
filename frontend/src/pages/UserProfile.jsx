@@ -131,18 +131,18 @@ const UserProfile = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="flex">
+    <div className="flex dark:bg-slate-700">
       <Sidebar />
       <div className="flex-1">
         <Header />
 
         <div className="p-6 space-y-4">
         
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">
+        <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
             User Profile
           </h2>
 
-        <div className="p-4 border rounded-lg shadow-sm bg-white">
+        <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
           <div className="flex items-center justify-between">
             {/* User Profile and Details */}
             <div className="flex items-center">
@@ -152,9 +152,9 @@ const UserProfile = () => {
                 className="w-32 h-32 object-cover rounded-full"
               />
               <div className="ml-4">
-                <h2 className="text-2xl font-bold mb-3"> {user.firstName} {user.lastName} </h2>
-                <p className="text-gray-600 mb-2"><strong>User ID:</strong> {user.userId}</p>
-                <p className="text-gray-600"><strong>Email:</strong> {user.email}</p>
+                <h2 className="text-2xl font-bold text-slate-700 dark:text-slate-100 mb-3"> {user.firstName} {user.lastName} </h2>
+                <p className="text-slate-700 dark:text-slate-300 mb-2"><strong>User ID:</strong> {user.userId}</p>
+                <p className="text-slate-700 dark:text-slate-300"><strong>Email:</strong> {user.email}</p>
               </div>
             </div>
 

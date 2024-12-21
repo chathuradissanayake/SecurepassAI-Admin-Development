@@ -128,7 +128,7 @@ const UserList = () => {
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           onClick={() => setIsModalVisible(true)}
         >
-          + Add User
+           Add User
         </button>
       </div>
       </div>
@@ -196,74 +196,79 @@ const UserList = () => {
       </div>
 
       <Modal isVisible={isModalVisible} onClose={() => setIsModalVisible(false)}>
-        <h2 className="text-xl font-bold mb-4">Add New User</h2>
+        <h2 className="text-xl text-slate-700 dark:text-slate-200 font-bold mb-4">Add New User</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-gray-700">First Name</label>
+            <label className="block text-slate-700 dark:text-slate-200">First Name</label>
             <input
               type="text"
               name="firstName"
               value={newUser.firstName}
+              placeholder='John'
               onChange={handleChange}
-              className="w-full p-2 border rounded"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-600 dark:text-slate-100 focus:ring-blue-400"
               required
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Last Name</label>
+            <label className="block text-gray-700 dark:text-slate-200">Last Name</label>
             <input
               type="text"
               name="lastName"
               value={newUser.lastName}
+              placeholder='Smith'
               onChange={handleChange}
-              className="w-full p-2 border rounded"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-600 dark:text-slate-100 focus:ring-blue-400"
               required
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Email</label>
+            <label className="block text-gray-700 dark:text-slate-200">Email</label>
             <input
               type="email"
               name="email"
               value={newUser.email}
+              placeholder='johnsmith@gmail.com'
               onChange={handleChange}
-              className="w-full p-2 border rounded"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-600 dark:text-slate-100 focus:ring-blue-400"
               required
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">User ID</label>
+            <label className="block text-gray-700 dark:text-slate-200">User ID</label>
             <input
               type="text"
               name="userId"
               value={newUser.userId}
+              placeholder='InSP/XXXX/XXX/XX'
               onChange={handleChange}
-              className="w-full p-2 border rounded"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-600 dark:text-slate-100 focus:ring-blue-400"
               required
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Password</label>
+            <label className="block text-gray-700 dark:text-slate-200">Password</label>
             <input
               type="password"
               name="password"
               value={newUser.password}
+              placeholder='******'
               onChange={handleChange}
-              className="w-full p-2 border rounded"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-600 dark:text-slate-100 focus:ring-blue-400"
               required
             />
           </div>
           <div className="flex justify-end">
             <button
               type="button"
-              className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
+              className="bg-gray-500 w-20 dark:bg-slate-500 text-white px-4 py-2 rounded mr-2"
               onClick={() => setIsModalVisible(false)}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="bg-blue-600 text-white px-4 py-2 rounded"
+              className="bg-blue-500 w-20 text-white px-4 py-2 rounded"
             >
               Save
             </button>

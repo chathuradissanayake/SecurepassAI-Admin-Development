@@ -93,25 +93,27 @@ const Messages = () => {
 
   return (
     <div>
-      <h3 className="text-gray-600 text-lg mb-4">
+      <h3 className="text-gray-600 dark:text-slate-200 text-lg mb-4">
         Messages &nbsp; {unreadCount}
       </h3>
       {loading ? (
-        <p className="text-gray-500">Loading messages...</p>
+        <p className="text-gray-500 dark:text-white">Loading messages...</p>
       ) : messages.length > 0 ? (
         <div className="max-h-96 overflow-y-auto">
           <ul className="divide-y divide-gray-200">
             {messages.map((message) => (
               <li
                 key={message._id}
-                className={`p-3 mb-2 border rounded-lg shadow-md ${
-                  message.status === "unread" ? "bg-blue-100" : "bg-white"
+                className={`p-3 mb-2 rounded-lg shadow-md ${
+                  message.status === "unread" ? "bg-blue-100 dark:bg-slate-800" : "bg-white dark:bg-slate-700"
                 }`}
               >
+            
                 <div className="my-2 ml-2 flex justify-between">
-                  <p className="text-2xl text-gray-800 font-medium">
+                  <p className="text-xl text-gray-800 dark:text-slate-200 font-medium">
                     {message.user ? message.user.userId : "Unknown User"} {/* Display userId */}
                   </p>
+                  
                   <button
                     onClick={() =>
                       handleToggleReadState(message._id, message.status)
@@ -122,18 +124,18 @@ const Messages = () => {
                         : "bg-blue-500 hover:bg-blue-600"
                     }`}
                   >
-                    {message.status === "read" ? "Read" : "Mark"}
+                    {message.status === "read" ? "Mark" : "Read"}
                   </button>
                 </div>
-
+                
                 <div className="flex items-center justify-between">
-                  <p className="text-gray-600 mx-2 mb-4">{message.message}</p>
+                  <p className="text-gray-600 dark:text-slate-300 mx-2 mb-4">{message.message}</p>
                   <button
                     onClick={() => handleReply(message)}
                     className={`${
                       replyingTo === message._id
                         ? "bg-red-500 hover:bg-red-600"
-                        : "bg-orange-500 hover:bg-orange-600"
+                        : "bg-purple-500 hover:bg-purple-600"
                     } px-3.5 py-1 text-white font-sm rounded`}
                   >
                     {replyingTo === message._id ? "Undo" : "Reply"}
@@ -146,7 +148,7 @@ const Messages = () => {
                       value={reply}
                       onChange={(e) => setReply(e.target.value)}
                       placeholder="Type your reply here..."
-                      className="w-full mb-2 p-2 border rounded text-sm"
+                      className="w-full dark:bg-slate-600 mb-2 p-2 border rounded text-sm"
                       rows="3"
                     ></textarea>
                     <div className="flex justify-end">
@@ -159,7 +161,7 @@ const Messages = () => {
                     </div>
                   </div>
                 )}
-                <p className="text-sm text-gray-500 mt-2 pl-2">
+                <p className="text-sm text-gray-500 dark:text-slate-300 mt-2 pl-2">
                   {new Date(message.createdAt).toLocaleString()}
                 </p>
               </li>
@@ -167,7 +169,7 @@ const Messages = () => {
           </ul>
         </div>
       ) : (
-        <p className="text-gray-500">No messages available.</p>
+        <p className="text-gray-500 dark:text-slate-200">No messages available.</p>
       )}
     </div>
   );
