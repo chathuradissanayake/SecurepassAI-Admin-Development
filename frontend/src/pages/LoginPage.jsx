@@ -20,9 +20,11 @@ const LoginPage = () => {
         password,
       });
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("role", response.data.role); 
+      localStorage.setItem("role", response.data.role);
+      console.log("Login successful, navigating to dashboard...");
       navigate("/dashboard");
     } catch (err) {
+      console.error("Login failed:", err);
       setError("Invalid email or password");
     }
   };
