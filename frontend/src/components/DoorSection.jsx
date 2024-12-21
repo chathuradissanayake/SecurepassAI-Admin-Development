@@ -98,7 +98,7 @@ const DoorSection = ({ doors, setDoors }) => {
           <div key={door._id} className={`p-4 border dark:border-none rounded-lg shadow-sm ${
                   door.status === "Active" ? "bg-slate-50 dark:bg-slate-700" : "bg-red-50 dark:bg-red-950 dark:bg-opacity-30"
                 }`}>
-            <div className="flex justify-between items-center dark:text-gray-200 mb-2">
+            <div className="flex justify-between items-center text-slate-700 dark:text-gray-200 mb-2">
               <h3 className="text-lg font-semibold">{door.roomName}</h3>
               <h3 className="text-lg font-semibold">{door.doorCode}</h3>
               <span
