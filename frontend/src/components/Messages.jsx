@@ -93,19 +93,19 @@ const Messages = () => {
 
   return (
     <div>
-      <h3 className="text-gray-600 dark:text-slate-200 text-lg mb-4">
+      <h3 className="text-slate-600 dark:text-slate-200 text-lg mb-4">
         Messages &nbsp; {unreadCount}
       </h3>
       {loading ? (
-        <p className="text-gray-500 dark:text-white">Loading messages...</p>
+        <p className="text-slate-600 dark:text-white">Loading messages...</p>
       ) : messages.length > 0 ? (
         <div className="max-h-96 overflow-y-auto">
           <ul className="divide-y divide-gray-200">
             {messages.map((message) => (
               <li
                 key={message._id}
-                className={`p-3 mb-2 rounded-lg shadow-md ${
-                  message.status === "unread" ? "bg-blue-100 dark:bg-slate-800" : "bg-white dark:bg-slate-700"
+                className={`p-3 mb-2 rounded-lg ${
+                  message.status === "unread" ? "bg-blue-100 dark:bg-slate-800" : "bg-slate-100 dark:bg-slate-700"
                 }`}
               >
             
@@ -120,7 +120,7 @@ const Messages = () => {
                     }
                     className={`px-4 py-1 text-white font-sm rounded ${
                       message.status === "read"
-                        ? "bg-gray-500 hover:bg-gray-600"
+                        ? "bg-slate-500 dark:bg-slate-800 hover:bg-slate-600 dark:hover:bg-slate-900"
                         : "bg-blue-500 hover:bg-blue-600"
                     }`}
                   >
@@ -129,13 +129,13 @@ const Messages = () => {
                 </div>
                 
                 <div className="flex items-center justify-between">
-                  <p className="text-gray-600 dark:text-slate-300 mx-2 mb-4">{message.message}</p>
+                  <p className="text-slate-600 dark:text-slate-300 mx-2 mb-4">{message.message}</p>
                   <button
                     onClick={() => handleReply(message)}
                     className={`${
                       replyingTo === message._id
-                        ? "bg-red-500 hover:bg-red-600"
-                        : "bg-purple-500 hover:bg-purple-600"
+                        ? "bg-red-500 hover:bg-red-600 opacity-80"
+                        : "bg-purple-500 hover:bg-purple-600 opacity-80"
                     } px-3.5 py-1 text-white font-sm rounded`}
                   >
                     {replyingTo === message._id ? "Undo" : "Reply"}

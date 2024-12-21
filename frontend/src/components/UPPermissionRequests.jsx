@@ -79,7 +79,7 @@ const UPPermissionRequests = ({ pendingRequests, onRequestUpdate }) => {
       <div className="overflow-x-auto  dark:bg-slate-700">
         <table className="min-w-full text-left border-collapse">
           <thead>
-            <tr className="bg-gray-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+            <tr className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
               <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/6">Door ID</th>
               <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/5">Room Name</th>
               <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/5">Date</th>
