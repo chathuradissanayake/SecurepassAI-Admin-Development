@@ -39,12 +39,12 @@ const RecentAccessDoors = ({ accessRecords }) => {
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-gray-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
-              <th className="p-2 border border-gray-300 dark:border-slate-400">Door Code</th>
-              <th className="p-2 border border-gray-300 dark:border-slate-400">Room Name</th>
-              <th className="p-2 border border-gray-300 dark:border-slate-400">Location</th>
-              <th className="p-2 border border-gray-300 dark:border-slate-400">User</th>
-              <th className="p-2 border border-gray-300 dark:border-slate-400">Entry Time</th>
-              <th className="p-2 border border-gray-300 dark:border-slate-400">Exit Time</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400">Door Code</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400">Room Name</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400">Location</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400">User</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400">Entry Time</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400">Exit Time</th>
             </tr>
           </thead>
           <tbody>
