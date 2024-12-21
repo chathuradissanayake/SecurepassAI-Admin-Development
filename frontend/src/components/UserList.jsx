@@ -110,43 +110,48 @@ const UserList = () => {
   };
 
   return (
-    <div className="p-6 space-y-6">
-      <h2 className="text-xl font-semibold text-gray-800">User Management</h2>
-      <div className="flex justify-between items-center">
+    <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
+
+      {/* Search and Add Button */}
+      <div className="flex justify-between items-center mb-4">
+      <h2 className="text-xl font-semibold dark:text-slate-100 mb-4">User List</h2>
+      
+      <div className="flex items-center gap-2">
         <input
           type="text"
           placeholder="Search by name, email, or user ID"
           value={searchQuery}
           onChange={handleSearch}
-          className="w-1/3 p-2 border rounded"
+          className="border dark:border-none px-4 py-2 rounded w-80 dark:bg-slate-700 dark:text-slate-100"
         />
         <button
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           onClick={() => setIsModalVisible(true)}
         >
           + Add User
         </button>
       </div>
-      <table className="w-full mt-4 bg-white shadow-md rounded">
+      </div>
+      <table className="w-full mt-4 bg-white dark:bg-slate-700 shadow-md rounded">
         <thead>
-          <tr className="text-left">
-            <th className="p-4">Full Name</th>
-            <th className="p-4">Email</th>
-            <th className="p-4">User ID</th>
-            <th className="p-4">Actions</th>
+          <tr className="text-left bg-gray-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+            <th className="p-4 border border-gray-300 dark:border-slate-400">Full Name</th>
+            <th className="p-4 border border-gray-300 dark:border-slate-400">Email</th>
+            <th className="p-4 border border-gray-300 dark:border-slate-400">User ID</th>
+            <th className="p-4 border border-gray-300 dark:border-slate-400">Actions</th>
           </tr>
         </thead>
         <tbody>
           {currentUsers.map((user) => (
-            <tr key={user._id} className="border-b">
-              <td className="p-4">
+            <tr key={user._id} className="hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
+              <td className="p-3 border border-gray-200 dark:border-slate-500">
                 {user.firstName} {user.lastName}
               </td>
-              <td className="p-4">{user.email}</td>
-              <td className="p-4">{user.userId}</td>
-              <td className="p-4">
+              <td className="p-3 border border-gray-200 dark:border-slate-500">{user.email}</td>
+              <td className="p-3 border border-gray-200 dark:border-slate-500">{user.userId}</td>
+              <td className="p-3 border border-gray-200 dark:border-slate-500">
                 <button
-                  className="text-blue-600"
+                  className="text-blue-400"
                   onClick={() => handleRowClick(user._id)}
                 >
                   Manage
@@ -161,7 +166,7 @@ const UserList = () => {
           onClick={handlePrevious}
           disabled={currentPage === 1}
           className={`px-4 py-2 rounded ${
-            currentPage === 1 ? 'bg-gray-300 text-gray-600' : 'bg-blue-500 text-white'
+            currentPage === 1 ? 'bg-gray-200 text-gray-400 dark:bg-slate-500 cursor-not-allowed' : 'bg-blue-600 dark:bg-slate-800 text-white hover:bg-blue-700'
           }`}
         >
           Previous
@@ -172,7 +177,7 @@ const UserList = () => {
               key={index}
               onClick={() => paginate(index + 1)}
               className={`px-3 py-1 mx-1 rounded ${
-                currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
+                currentPage === index + 1 ? 'bg-blue-700 dark:bg-slate-800 text-white' : 'bg-gray-200 dark:bg-slate-500 dark:text-gray-100 text-gray-600 hover:bg-gray-300'
               }`}
             >
               {index + 1}
@@ -183,7 +188,7 @@ const UserList = () => {
           onClick={handleNext}
           disabled={currentPage === totalPages}
           className={`px-4 py-2 rounded ${
-            currentPage === totalPages ? 'bg-gray-300 text-gray-600' : 'bg-blue-500 text-white'
+            currentPage === totalPages ?  'bg-gray-200 text-gray-400 dark:bg-slate-500 cursor-not-allowed' : 'bg-blue-600 dark:bg-slate-800 text-white hover:bg-blue-700'
           }`}
         >
           Next
