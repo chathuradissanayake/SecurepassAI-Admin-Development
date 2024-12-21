@@ -59,7 +59,7 @@ const UPDoorAccess = ({ accessRecords, userId, onAccessUpdate }) => {
 
   return (
     <div className="p-4 border rounded-lg shadow-sm bg-white">
-      <h2 className="text-xl font-semibold mb-4">Door Access</h2>
+      <h2 className="text-xl font-semibold mb-4">Permissioned Doors</h2>
 
       {/* Table */}
       <div className="overflow-x-auto">

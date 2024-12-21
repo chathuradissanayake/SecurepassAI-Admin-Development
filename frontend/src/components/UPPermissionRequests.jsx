@@ -72,20 +72,20 @@ const UPPermissionRequests = ({ pendingRequests, onRequestUpdate }) => {
   };
 
   return (
-    <div className="p-4 border rounded-lg shadow-sm bg-white">
-      <h2 className="text-xl font-semibold mb-4">Permission Requests</h2>
+    <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
+      <h2 className="text-xl font-semibold mb-4 text-slate-700 dark:text-slate-100">Permission Requests</h2>
 
       {/* Table */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto  dark:bg-slate-700">
         <table className="min-w-full text-left border-collapse">
           <thead>
-            <tr className="bg-gray-100">
-              <th className="p-2 border w-1/6">Door ID</th>
-              <th className="p-2 border w-1/5">Room Name</th>
-              <th className="p-2 border w-1/5">Date</th>
-              <th className="p-2 border w-1/6">Entry Time</th>
-              <th className="p-2 border w-1/6">Exit Time</th>
-              <th className="p-2 border text-center">Action</th>
+            <tr className="bg-gray-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/6">Door ID</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/5">Room Name</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/5">Date</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/6">Entry Time</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/6">Exit Time</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400 text-center">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -93,13 +93,13 @@ const UPPermissionRequests = ({ pendingRequests, onRequestUpdate }) => {
               const date = new Date(request.date);
               const formattedDate = date.toLocaleDateString('en-CA'); // 'en-CA' locale formats date as yyyy-mm-dd
               return (
-                <tr key={index} className="hover:bg-gray-50">
-                  <td className="p-2 border">{request.door.doorCode}</td>
-                  <td className="p-2 border">{request.door.roomName}</td>
-                  <td className="p-2 border">{formattedDate}</td>
-                  <td className="p-2 border">{request.inTime}</td>
-                  <td className="p-2 border">{request.outTime}</td>
-                  <td className="p-2 border">
+                <tr key={index} className="hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
+                  <td className="p-2 border border-gray-200 dark:border-slate-500">{request.door.doorCode}</td>
+                  <td className="p-2 border border-gray-200 dark:border-slate-500">{request.door.roomName}</td>
+                  <td className="p-2 border border-gray-200 dark:border-slate-500">{formattedDate}</td>
+                  <td className="p-2 border border-gray-200 dark:border-slate-500">{request.inTime}</td>
+                  <td className="p-2 border border-gray-200 dark:border-slate-500">{request.outTime}</td>
+                  <td className="p-2 border border-gray-200 dark:border-slate-500">
                     <div className="flex items-center gap-2">
                       {/* Action Dropdown */}
                       <select
@@ -107,7 +107,7 @@ const UPPermissionRequests = ({ pendingRequests, onRequestUpdate }) => {
                         onChange={(e) =>
                           handleSelectAction(currentPage * itemsPerPage + index, e.target.value)
                         }
-                        className="px-2 py-1 border rounded bg-white"
+                        className="border dark:border-none px-4 py-1 rounded dark:bg-slate-600 dark:text-slate-300"
                       >
                         <option value="">Select action</option>
                         <option value="Approve">Approve</option>
@@ -136,7 +136,7 @@ const UPPermissionRequests = ({ pendingRequests, onRequestUpdate }) => {
           onClick={handlePrev}
           disabled={currentPage === 0}
           className={`px-4 py-2 rounded ${
-            currentPage === 0 ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'
+            currentPage === 0 ? 'bg-gray-200 text-gray-400 dark:bg-slate-500 cursor-not-allowed' : 'bg-blue-600 dark:bg-slate-800 text-white hover:bg-blue-700'
           }`}
         >
           Previous
@@ -149,7 +149,7 @@ const UPPermissionRequests = ({ pendingRequests, onRequestUpdate }) => {
               key={index}
               onClick={() => handlePageClick(index)}
               className={`px-3 py-1 rounded ${
-                currentPage === index ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-blue-100'
+                currentPage === index ? 'bg-blue-700 dark:bg-slate-800 text-white' : 'bg-gray-200 dark:bg-slate-500 dark:text-gray-100 text-gray-600 hover:bg-gray-300'
               }`}
             >
               {index + 1}
@@ -161,7 +161,7 @@ const UPPermissionRequests = ({ pendingRequests, onRequestUpdate }) => {
           onClick={handleNext}
           disabled={currentPage === totalPages - 1}
           className={`px-4 py-2 rounded ${
-            currentPage === totalPages - 1 ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'
+            currentPage === totalPages - 1 ? 'bg-gray-200 text-gray-400 dark:bg-slate-500 cursor-not-allowed' : 'bg-blue-600 dark:bg-slate-800 text-white hover:bg-blue-700'
           }`}
         >
           Next
