@@ -187,57 +187,57 @@ const UserProfile = () => {
 
         {/* Edit User Modal */}
         <Modal isVisible={isEditModalOpen} onClose={handleCloseEditModal}>
-          <h2 className="text-xl font-semibold mb-4">Edit User</h2>
+          <h2 className="text-xl text-slate-700 dark:text-slate-200 font-bold mb-4">Edit User</h2>
           <div className="mb-4">
-            <label className="block text-gray-700">First Name</label>
+            <label className="block text-slate-700 dark:text-slate-200">First Name</label>
             <input
               type="text"
               name="firstName"
               value={formData.firstName}
               onChange={handleChange}
-              className="p-2 border rounded w-full"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-600 dark:text-slate-100 focus:ring-blue-400"
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Last Name</label>
+            <label className="block text-slate-700 dark:text-slate-200">Last Name</label>
             <input
               type="text"
               name="lastName"
               value={formData.lastName}
               onChange={handleChange}
-              className="p-2 border rounded w-full"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-600 dark:text-slate-100 focus:ring-blue-400"
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Email</label>
+            <label className="block text-slate-700 dark:text-slate-200">Email</label>
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="p-2 border rounded w-full"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-600 dark:text-slate-100 focus:ring-blue-400"
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">User ID</label>
+            <label className="block text-slate-700 dark:text-slate-200">User ID</label>
             <input
               type="text"
               name="userId"
               value={formData.userId}
               onChange={handleChange}
-              className="p-2 border rounded w-full"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-600 dark:text-slate-100 focus:ring-blue-400"
             />
           </div>
-          <div className="flex justify-end gap-4">
+          <div className="flex justify-end gap-2">
             <button
               onClick={handleCloseEditModal}
-              className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+              className="bg-gray-500 w-20 dark:bg-slate-500 text-white px-4 py-2 rounded"
             >
               Cancel
             </button>
             <button
               onClick={handleSave}
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              className="bg-blue-500 w-20 text-white px-4 py-2 rounded"
             >
               Save
             </button>
