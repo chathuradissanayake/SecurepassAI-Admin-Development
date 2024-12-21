@@ -13,6 +13,7 @@ import UserProfile from './pages/UserProfile';
 import Users from './pages/Users';
 import Companies from './pages/Companies';
 import AdminUsers from './pages/AdminUsers';
+import CreateAdmin from './pages/CreateAdmin';
 import { isTokenExpired, getToken, getRole, clearAuthData } from './utils/auth';
 
 const App = () => {
@@ -37,6 +38,7 @@ const App = () => {
         <Route path="/profile" element={isAuthenticated ? <Profile /> : <Navigate to="/login" />} />
         <Route path="/companies" element={isAuthenticated && userRole === 'SuperAdmin' ? <Companies /> : <Navigate to="/login" />} />
         <Route path="/admin-users" element={isAuthenticated && userRole === 'SuperAdmin' ? <AdminUsers /> : <Navigate to="/login" />} />
+        <Route path="/create-admin" element={isAuthenticated && userRole === 'SuperAdmin' ? <CreateAdmin /> : <Navigate to="/login" />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/logout" element={<LogoutPage />} />
         <Route path="/login" element={<LoginPage />} />
