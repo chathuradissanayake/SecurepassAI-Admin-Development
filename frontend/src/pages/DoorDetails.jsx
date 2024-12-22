@@ -91,13 +91,13 @@ const DoorDetails = () => {
         <div className='p-6 space-y-4'>
         <div className='flex justify-between'>
         <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Door Details</h2>
-        <div className=" ">
+        {/* <div className=" ">
               <button
                 onClick={() => navigate(-1)}
                 className="bg-slate-600 dark:bg-slate-800 text-white py-2 px-8 rounded hover:bg-slate-700">
                 Back
               </button>
-        </div>   
+        </div>    */}
         </div>
 
         <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
