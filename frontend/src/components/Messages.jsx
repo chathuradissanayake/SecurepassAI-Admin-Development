@@ -99,7 +99,13 @@ const Messages = () => {
       {loading ? (
         <p className="text-slate-600 dark:text-white">Loading messages...</p>
       ) : messages.length > 0 ? (
-        <div className="max-h-96 overflow-y-auto">
+        <div className="max-h-96 overflow-y-auto  [&::-webkit-scrollbar]:w-2
+                      [&::-webkit-scrollbar-track]:rounded-full
+                      [&::-webkit-scrollbar-track]:bg-gray-100
+                      [&::-webkit-scrollbar-thumb]:rounded-full
+                      [&::-webkit-scrollbar-thumb]:bg-gray-300
+                      dark:[&::-webkit-scrollbar-track]:bg-slate-800
+                      dark:[&::-webkit-scrollbar-thumb]:bg-slate-500">
           <ul className="divide-y divide-gray-200">
             {messages.map((message) => (
               <li
