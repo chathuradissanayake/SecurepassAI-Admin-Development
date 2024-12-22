@@ -7,6 +7,7 @@ const CollectionCounts = () => {
   const [historiesCount, setHistoriesCount] = useState(null);
   const [todayCount, setTodayCount] = useState(null);
 
+  const [messagesCount, setMessagesCount] = useState(null);
   const [unreadCount, setUnreadCount] = useState(null);
   const [activeDoorsCount, setActiveDoorsCount] = useState(null);
 
@@ -39,6 +40,7 @@ const CollectionCounts = () => {
         setDoorsCount(doorsCollection ? doorsCollection.count : 0);
         setUsersCount(usersCollection ? usersCollection.count : 0);
         setHistoriesCount(historiesCollection ? historiesCollection.count : 0);
+        setMessagesCount(messagesCollection ? messagesCollection.count : 0);
       } catch (error) {
         console.error("Error fetching collection counts:", error);
       }
@@ -156,7 +158,7 @@ const CollectionCounts = () => {
           <div>
             <h3 className="text-gray-600 dark:text-slate-300 text-sm">Unread Messages</h3>
             <p className="text-2xl font-bold">{unreadCount !== null ? unreadCount : "Loading..."}</p>
-            {/* <p className="text-purple-500 text-sm">#3 high priority</p> */}
+            <p className="text-purple-500 text-sm">{messagesCount !== null ? messagesCount : "Loading..."} of total Messages</p>
           </div>
         </div>
       </div>
