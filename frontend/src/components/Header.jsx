@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { FaBell } from "react-icons/fa";
 import { useLocation, useNavigate } from 'react-router-dom'; // Import useNavigate
 import { useTheme } from "../../context/ThemeContext";
 import avatar from "../assets/avatar.png";
@@ -75,9 +76,9 @@ const Header = () => {
             </span>
           </div>
 
-          <div className="relative">
+          <div className="relative mr-2">
             <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full text-xs px-1">{unreadCount}</span>
-            <button className="text-gray-600">🔔</button>
+            <button className="text-yellow-400 text-3xl mt-1  "><FaBell /></button>
           </div>
           {/* <button className="text-gray-600">🌙</button> */}
           <img
