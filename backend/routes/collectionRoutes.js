@@ -1,5 +1,5 @@
 const express = require("express");
-const { getCollectionCounts,getFilteredHistoriesCount, getUnreadMessageCount } = require("../controllers/collectionController");
+const { getCollectionCounts,getFilteredHistoriesCount, getUnreadMessageCount, getActiveDoorsCount } = require("../controllers/collectionController");
 
 const router = express.Router();
 
@@ -11,6 +11,9 @@ router.get("/history", getFilteredHistoriesCount);
 
 // Route to fetch unread message counts
 router.get('/unread-count' , getUnreadMessageCount);
+
+//Active Doors
+router.get('/active-doors' , getActiveDoorsCount);
 
 
 
