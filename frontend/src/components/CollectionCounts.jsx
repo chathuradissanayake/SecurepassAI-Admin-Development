@@ -7,7 +7,8 @@ const CollectionCounts = () => {
   const [historiesCount, setHistoriesCount] = useState(null);
   const [todayCount, setTodayCount] = useState(null);
 
-  const [unreadCount, setUnreadCount] = useState(0);
+  const [unreadCount, setUnreadCount] = useState(null);
+  const [activeDoorsCount, setActiveDoorsCount] = useState(null);
 
 
 
@@ -33,6 +34,7 @@ const CollectionCounts = () => {
         const doorsCollection = data.find((collection) => collection.name === "doors");
         const usersCollection = data.find((collection) => collection.name === "users");
         const historiesCollection = data.find((collection) => collection.name === "histories");
+        const messagesCollection = data.find((collection) => collection.name === "contactus");
 
         setDoorsCount(doorsCollection ? doorsCollection.count : 0);
         setUsersCount(usersCollection ? usersCollection.count : 0);
@@ -79,7 +81,21 @@ const CollectionCounts = () => {
       fetchUnreadMessagesCount();
     }, []);
 
- 
+ // Fetch Active doors count
+ useEffect(() => {
+  const fetchActiveDoorsCount = async () => {
+    try {
+      const response = await fetch(`/api/collections/active-doors`);
+      const data = await response.json();
+  
+      console.log("Active Doors:", data.count); // Log the count
+      setActiveDoorsCount(data.count || 0); // Update the state with the count
+    } catch (error) {
+      console.error("Error fetching Active doors count:", error);
+    }
+  };
+  fetchActiveDoorsCount();
+  }, []);
 
  
 
@@ -109,9 +125,10 @@ const CollectionCounts = () => {
           <div>
             <h3 className="text-gray-600 dark:text-slate-300 text-sm">Active Doors</h3>
             <p className="text-2xl font-bold">
-              {doorsCount !== null ? doorsCount : "Loading..."}
+            {activeDoorsCount !== null ? activeDoorsCount : "Loading..."}
             </p>
-            {/* <p className="text-blue-500 text-sm">#72% rooms in use</p> */}
+            
+            <p className="text-green-500 text-sm">{doorsCount !== null ? doorsCount : "Loading..."} of totel doors</p>
           </div>
         </div>
 
@@ -125,7 +142,7 @@ const CollectionCounts = () => {
             <p className="text-2xl font-bold">
               {todayCount !== null ? todayCount : "Loading..."}
             </p>
-            <p className="text-green-500 text-sm">
+            <p className="text-yellow-500 text-sm">
               {historiesCount !== null ? historiesCount : "Loading..."} of total Attempts
             </p>
           </div>
