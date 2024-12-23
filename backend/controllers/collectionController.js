@@ -64,7 +64,7 @@ const getUnreadMessageCount = async (req, res) => {
 const getActiveDoorsCount = async (req, res) => {
   try {
     const companyId = req.companyId;
-    const activeDoorsCount = await Door.countDocuments({ company: companyId, isActive: true });
+    const activeDoorsCount = await Door.countDocuments({ company: companyId, status: "Active" });
 
     res.json({ count: activeDoorsCount });
   } catch (error) {
