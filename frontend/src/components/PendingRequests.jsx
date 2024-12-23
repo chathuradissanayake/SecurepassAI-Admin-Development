@@ -8,7 +8,13 @@ const PendingRequests = () => {
   useEffect(() => {
     const fetchPendingRequests = async () => {
       try {
-        const response = await axios.get('/api/permission-requests/pending-requests');
+        const token = localStorage.getItem('token');
+        const response = await axios.get('/api/permission-requests/pending-requests', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
         // Sort the requests by requestTime in descending order
         const sortedRequests = response.data.sort(
           (a, b) => new Date(b.requestTime) - new Date(a.requestTime)
