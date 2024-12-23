@@ -59,13 +59,12 @@ const getCurrentAdminUser = async (req, res) => {
 
 const getAllAdminUsers = async (req, res) => {
   try {
-    const adminUsers = await AdminUser.find().select('-password');
+    const adminUsers = await AdminUser.find().populate('company', 'name address').select('-password');
     res.json(adminUsers);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }
 };
-
 const updateCurrentAdminUser = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
