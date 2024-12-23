@@ -29,9 +29,13 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        console.log(`Fetching user with id: ${id}`);
-        const response = await axios.get(`/api/users/${id}`, { withCredentials: true });
-        console.log('API response:', response.data);
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`/api/users/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
         setUser(response.data);
         setFormData({
           firstName: response.data.firstName,
@@ -50,9 +54,13 @@ const UserProfile = () => {
 
     const fetchHistory = async () => {
       try {
-        console.log(`Fetching history for user with id: ${id}`);
-        const response = await axios.get(`/api/users/${id}/history`, { withCredentials: true });
-        console.log('History API response:', response.data);
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`/api/users/${id}/history`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
         setHistoryRecords(response.data);
       } catch (err) {
         console.error('Error fetching history:', err);
@@ -69,7 +77,13 @@ const UserProfile = () => {
 
   const handleSave = async () => {
     try {
-      await axios.put(`/api/users/${id}`, formData, { withCredentials: true });
+      const token = localStorage.getItem('token');
+      await axios.put(`/api/users/${id}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
       setUser(formData);
       setIsEditModalOpen(false);
     } catch (err) {
@@ -88,7 +102,13 @@ const UserProfile = () => {
 
   const handleConfirmDelete = async () => {
     try {
-      await axios.delete(`/api/users/${id}`, { withCredentials: true });
+      const token = localStorage.getItem('token');
+      await axios.delete(`/api/users/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
       navigate('/users'); // Redirect to the users list page after deletion
     } catch (err) {
       console.error('Error deleting user:', err);
@@ -110,7 +130,13 @@ const UserProfile = () => {
 
   const handleRequestUpdate = async () => {
     try {
-      const response = await axios.get(`/api/users/${id}`, { withCredentials: true });
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`/api/users/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
       setUser(response.data);
       setPendingRequests(response.data.pendingRequests);
     } catch (err) {
@@ -120,7 +146,13 @@ const UserProfile = () => {
 
   const handleAccessUpdate = async () => {
     try {
-      const response = await axios.get(`/api/users/${id}`, { withCredentials: true });
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`/api/users/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
       setUser(response.data);
     } catch (err) {
       console.error('Error fetching updated user data:', err);
