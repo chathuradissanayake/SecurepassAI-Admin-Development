@@ -30,7 +30,13 @@ const Header = () => {
   useEffect(() => {
     const fetchUnreadMessagesCount = async () => {
       try {
-        const response = await fetch(`/api/collections/unread-count`);
+        const token = localStorage.getItem('token');
+        const response = await fetch(`/api/collections/unread-count`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
         const data = await response.json();
     
         console.log("Unread Messages Count:", data.count); // Log the count
@@ -41,7 +47,6 @@ const Header = () => {
     };
       fetchUnreadMessagesCount();
     }, []);
-
   return (
     <div>
       <header className="flex justify-between items-center p-4 bg-white">
