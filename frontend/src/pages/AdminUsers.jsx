@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 
 const AdminUsers = () => {
   const [adminUsers, setAdminUsers] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAdminUsers = async () => {
@@ -15,7 +17,9 @@ const AdminUsers = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setAdminUsers(response.data);
+        // Filter out SuperAdmin accounts
+        const filteredAdminUsers = response.data.filter(user => user.role !== 'SuperAdmin');
+        setAdminUsers(filteredAdminUsers);
       } catch (err) {
         console.error("Failed to fetch admin users", err);
       }
@@ -30,7 +34,15 @@ const AdminUsers = () => {
       <div className="flex-1 p-4">
         <Header />
         <div className="p-6 space-y-6">
-          <h2 className="text-xl font-semibold text-gray-800">Admin Users</h2>
+          <div className="flex justify-between items-center">
+            <h2 className="text-xl font-semibold text-gray-800">Admin Users</h2>
+            <button
+              onClick={() => navigate('/create-admin')}
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+            >
+              Create Admin
+            </button>
+          </div>
           <div className="overflow-hidden shadow-md sm:rounded-lg">
             <table className="min-w-full bg-white border border-gray-200">
               <thead className="bg-gray-100">
@@ -64,6 +76,9 @@ const AdminUsers = () => {
                       <p className="text-sm text-gray-900">
                         {admin.company ? admin.company.name : 'N/A'}
                       </p>
+                      <p className="text-sm text-gray-500">
+                        {admin.company ? admin.company.address : ''}
+                      </p>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <button
@@ -84,4 +99,4 @@ const AdminUsers = () => {
   );
 };
 
-export default AdminUsers
+export default AdminUsers;
