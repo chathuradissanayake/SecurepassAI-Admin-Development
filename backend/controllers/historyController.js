@@ -6,8 +6,8 @@ const getRecentAccessDoors = async (req, res) => {
   try {
     console.log('Fetching recent access doors'); // Log the action
 
-    // Find the recent access records and populate user details
-    const recentAccess = await History.find()
+    // Find the recent access records for the admin's company and populate user details
+    const recentAccess = await History.find({ company: req.companyId })
       .sort({ entryTime: -1 })
       .limit(50)
       .populate('user.userId', 'firstName lastName email');
@@ -23,5 +23,4 @@ const getRecentAccessDoors = async (req, res) => {
     res.status(500).json({ error: 'Error fetching recent access doors' });
   }
 };
-
 module.exports = { getRecentAccessDoors };

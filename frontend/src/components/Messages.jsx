@@ -10,7 +10,13 @@ const Messages = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await fetch("/api/contactus/messages");
+        const token = localStorage.getItem('token');
+        const response = await fetch("/api/contactus/messages", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
         const data = await response.json();
         setMessages(data);
 
@@ -29,10 +35,14 @@ const Messages = () => {
   const handleToggleReadState = async (id, currentStatus) => {
     const newStatus = currentStatus === "unread" ? "read" : "unread";
     try {
+      const token = localStorage.getItem('token');
       const response = await fetch(`/api/contactus/messages/${id}/toggle-read`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStatus }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status: newStatus }), 
       });
 
       if (response.ok) {

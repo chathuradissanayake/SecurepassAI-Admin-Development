@@ -21,7 +21,7 @@ const Header = () => {
       return 'User Profile';
     }
     switch (path) {
-      case '/':
+      case '/dashboard':
         return 'Dashboard';
       case '/users':
         return 'Users';
@@ -31,6 +31,10 @@ const Header = () => {
         return 'Settings';
       case '/profile':
         return 'Profile';
+      case '/admin-users':
+        return 'Admins';
+      case '/companies':
+        return 'Companies';
       default:
         return '';
     }
@@ -39,7 +43,13 @@ const Header = () => {
   useEffect(() => {
     const fetchUnreadMessagesCount = async () => {
       try {
-        const response = await fetch(`/api/collections/unread-count`);
+        const token = localStorage.getItem('token');
+        const response = await fetch(`/api/collections/unread-count`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
         const data = await response.json();
     
         console.log("Unread Messages Count:", data.count); // Log the count
@@ -50,7 +60,6 @@ const Header = () => {
     };
       fetchUnreadMessagesCount();
     }, []);
-
   return (
     <div>
       <header className="flex justify-between items-center p-5 bg-white dark:bg-slate-700">
