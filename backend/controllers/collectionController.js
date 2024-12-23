@@ -1,7 +1,7 @@
 const Door = require('../models/Door');
 const User = require('../models/User');
 const History = require('../models/History');
-const Message = require('../models/Messages'); 
+const Message = require('../models/Messages');
 
 // Fetch document counts for all collections
 const getCollectionCounts = async (req, res) => {
@@ -60,23 +60,16 @@ const getUnreadMessageCount = async (req, res) => {
   }
 };
 
-
+// Fetch active doors count
 const getActiveDoorsCount = async (req, res) => {
   try {
-    const db = mongoose.connection;
+    const companyId = req.companyId;
+    const activeDoorsCount = await Door.countDocuments({ company: companyId, isActive: true });
 
-    // Count documents where the status is "unread"
-    const count = await db.collection("doors").countDocuments({ status: "Active" });
-
-    res.json({ count });
+    res.json({ count: activeDoorsCount });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-
 };
-
-
-
-
 
 module.exports = { getCollectionCounts, getFilteredHistoriesCount, getUnreadMessageCount, getActiveDoorsCount };
