@@ -8,7 +8,7 @@ import Spinner from '../components/Spinner';
 import UPDoorAccess from "../components/UPDoorAccess";
 import UPHistory from "../components/UPHistory";
 import UPPermissionRequests from "../components/UPPermissionRequests";
-
+import avatar from "../assets/avatar.png"
 const UserProfile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -174,8 +174,8 @@ const UserProfile = () => {
             {/* User Profile and Details */}
             <div className="flex items-center">
               <img
-                src={user.profilePicture} 
-                alt="Profile"
+                src={user.profilePicture || avatar} 
+                alt=""
                 className="w-32 h-32 object-cover rounded-full"
               />
               <div className="ml-4">
