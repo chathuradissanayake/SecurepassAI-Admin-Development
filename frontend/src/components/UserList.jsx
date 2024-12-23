@@ -27,7 +27,13 @@ const UserList = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('/api/users', { withCredentials: true });
+        const token = localStorage.getItem('token');
+        const response = await axios.get('/api/users', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
         if (Array.isArray(response.data)) {
           setUsers(response.data);
           setFilteredUsers(response.data);
@@ -69,7 +75,13 @@ const UserList = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/users/register', newUser, { withCredentials: true });
+      const token = localStorage.getItem('token');
+      await axios.post('/api/users/register', newUser, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
       setIsModalVisible(false);
       setNewUser({
         firstName: '',
@@ -79,7 +91,12 @@ const UserList = () => {
         password: ''
       });
       // Refresh the user list
-      const response = await axios.get('/api/users', { withCredentials: true });
+      const response = await axios.get('/api/users', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
       setUsers(response.data);
       setFilteredUsers(response.data);
     } catch (err) {
@@ -101,7 +118,6 @@ const UserList = () => {
 
   // Handle pagination
   const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const handlePrevious = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
@@ -170,7 +186,7 @@ const UserList = () => {
           {Array.from({ length: totalPages }, (_, index) => (
             <button
               key={index}
-              onClick={() => paginate(index + 1)}
+              onClick={() => setCurrentPage(index + 1)}
               className={`px-3 py-1 mx-1 rounded ${
                 currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
               }`}
@@ -189,7 +205,6 @@ const UserList = () => {
           Next
         </button>
       </div>
-
       <Modal isVisible={isModalVisible} onClose={() => setIsModalVisible(false)}>
         <h2 className="text-xl font-bold mb-4">Add New User</h2>
         <form onSubmit={handleSubmit}>
