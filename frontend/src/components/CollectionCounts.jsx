@@ -158,7 +158,7 @@ const CollectionCounts = () => {
           <div>
             <h3 className="text-gray-600 dark:text-slate-300 text-sm">Unread Messages</h3>
             <p className="text-2xl font-bold">{unreadCount !== null ? unreadCount : "Loading..."}</p>
-            <p className="text-purple-500 text-sm">{messagesCount !== null ? messagesCount : "Loading..."} of total Messages</p>
+            <p className="text-cyan-400 text-sm">{messagesCount !== null ? messagesCount : "Loading..."} of total Messages</p>
           </div>
         </div>
       </div>
