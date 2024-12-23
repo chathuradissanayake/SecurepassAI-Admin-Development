@@ -103,18 +103,6 @@ const Sidebar = () => {
                   <FaUser /> Admin Users
                 </NavLink>
               </li>
-              <li>
-                <NavLink
-                  to="/create-admin"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "text-blue-600 flex items-center gap-4"
-                      : "text-gray-600 flex items-center gap-2"
-                  }
-                >
-                  <FaUser /> Create Admin
-                </NavLink>
-              </li>
             </>
           )}
           <li>
