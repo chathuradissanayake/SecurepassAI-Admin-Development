@@ -9,33 +9,50 @@ const Doors = () => {
   const [doors, setDoors] = useState([]);
   const [accessRecords, setAccessRecords] = useState([]);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchDoors = async () => {
       try {
+        const token = localStorage.getItem('token');
         const response = await axios.get("/api/doors", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
           withCredentials: true,
         });
         setDoors(response.data);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching doors:", error);
+        setError(error.message);
+        setLoading(false);
       }
     };
 
     const fetchRecentAccess = async () => {
       try {
+        const token = localStorage.getItem('token');
         const response = await axios.get("/api/history/recent-access", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
           withCredentials: true,
         });
         setAccessRecords(response.data);
       } catch (error) {
         console.error("Error fetching recent access records:", error);
+        setError(error.message);
       }
     };
 
     fetchDoors();
     fetchRecentAccess();
   }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <div className="flex h-full dark:bg-slate-700">
