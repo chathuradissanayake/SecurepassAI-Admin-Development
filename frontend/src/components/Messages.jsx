@@ -9,7 +9,13 @@ const Messages = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await fetch("/api/contactus/messages");
+        const token = localStorage.getItem('token');
+        const response = await fetch("/api/contactus/messages", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
         const data = await response.json();
         setMessages(data);
       } catch (error) {
@@ -22,14 +28,15 @@ const Messages = () => {
     fetchMessages();
   }, []);
 
-  
   const handleToggleReadState = async (id, currentStatus) => {
     const newStatus = currentStatus === "unread" ? "read" : "unread";
     try {
+      const token = localStorage.getItem('token');
       const response = await fetch(`/api/contactus/messages/${id}/toggle-read`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ status: newStatus }), 
       });
@@ -52,7 +59,13 @@ const Messages = () => {
   useEffect(() => {
     const fetchUnreadMessagesCount = async () => {
       try {
-        const response = await fetch(`/api/collections/unread-count`);
+        const token = localStorage.getItem('token');
+        const response = await fetch(`/api/collections/unread-count`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
         const data = await response.json();
     
         console.log("Unread Messages Count:", data.count); // Log the count
@@ -61,13 +74,12 @@ const Messages = () => {
         console.error("Error fetching unread messages count:", error);
       }
     };
-      fetchUnreadMessagesCount();
-    }, []);
+    fetchUnreadMessagesCount();
+  }, []);
 
   return (
     <div>
-      
-      <h3 className="text-gray-600 text-lg mb-4">Messages &nbsp;   {unreadCount} </h3>
+      <h3 className="text-gray-600 text-lg mb-4">Messages &nbsp; {unreadCount} </h3>
       <span></span>
       {loading ? (
         <p className="text-gray-500">Loading messages...</p>
@@ -82,31 +94,28 @@ const Messages = () => {
                 }`}
               >
                 <div className="my-2 ml-2 flex justify-between">
-                <div>
-                <p className="text-gray-800 font-medium">
-                  {message.userId}
-                </p>
-                <p className="text-sm text-gray-500 mb-2">
-                  {new Date(message.createdAt).toLocaleString()}
-                </p>
+                  <div>
+                    <p className="text-gray-800 font-medium">
+                      {message.userId}
+                    </p>
+                    <p className="text-sm text-gray-500 mb-2">
+                      {new Date(message.createdAt).toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="mx-2">
+                    <button
+                      onClick={() => handleToggleReadState(message._id, message.status)}
+                      className={` px-4 py-1 text-white font-sm rounded ${
+                        message.status === "read"
+                          ? "bg-gray-500 hover:bg-gray-600"
+                          : "bg-blue-500 hover:bg-blue-600"
+                      }`}
+                    >
+                      {message.status === "read" ? "Mark" : "Read"}
+                    </button>
+                  </div>
                 </div>
-                <div className="mx-2">
-                <button
-                  onClick={() => handleToggleReadState(message._id, message.status)}
-                  className={` px-4 py-1 text-white font-sm rounded ${
-                    message.status === "read"
-                      ? "bg-gray-500 hover:bg-gray-600"
-                      : "bg-blue-500 hover:bg-blue-600"
-                      
-                  }`}
-                >
-                  {message.status === "read" ? "Mark" : "Read"}
-                </button>
-                </div>
-                </div>
-                
                 <p className="text-gray-600 mx-2 mb-4">{message.message}</p>
-                
               </li>
             ))}
           </ul>
