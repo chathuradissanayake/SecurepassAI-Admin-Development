@@ -60,4 +60,23 @@ const getUnreadMessageCount = async (req, res) => {
   }
 };
 
-module.exports = { getCollectionCounts, getFilteredHistoriesCount, getUnreadMessageCount };
+
+const getActiveDoorsCount = async (req, res) => {
+  try {
+    const db = mongoose.connection;
+
+    // Count documents where the status is "unread"
+    const count = await db.collection("doors").countDocuments({ status: "Active" });
+
+    res.json({ count });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+
+};
+
+
+
+
+
+module.exports = { getCollectionCounts, getFilteredHistoriesCount, getUnreadMessageCount, getActiveDoorsCount };

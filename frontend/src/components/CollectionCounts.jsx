@@ -6,7 +6,12 @@ const CollectionCounts = () => {
   const [usersCount, setUsersCount] = useState(null);
   const [historiesCount, setHistoriesCount] = useState(null);
   const [todayCount, setTodayCount] = useState(null);
-  const [unreadCount, setUnreadCount] = useState(0);
+
+  const [messagesCount, setMessagesCount] = useState(null);
+  const [unreadCount, setUnreadCount] = useState(null);
+  const [activeDoorsCount, setActiveDoorsCount] = useState(null);
+
+
 
   // Helper function to get today's date in "YYYY-MM-DD" format
   const getTodayDate = () => {
@@ -33,10 +38,12 @@ const CollectionCounts = () => {
         const doorsCollection = data.find((collection) => collection.name === "doors");
         const usersCollection = data.find((collection) => collection.name === "users");
         const historiesCollection = data.find((collection) => collection.name === "histories");
+        const messagesCollection = data.find((collection) => collection.name === "contactus");
 
         setDoorsCount(doorsCollection ? doorsCollection.count : 0);
         setUsersCount(usersCollection ? usersCollection.count : 0);
         setHistoriesCount(historiesCollection ? historiesCollection.count : 0);
+        setMessagesCount(messagesCollection ? messagesCollection.count : 0);
       } catch (error) {
         console.error("Error fetching collection counts:", error);
       }
@@ -89,17 +96,35 @@ const CollectionCounts = () => {
     fetchUnreadMessagesCount();
   }, []);
 
+ // Fetch Active doors count
+ useEffect(() => {
+  const fetchActiveDoorsCount = async () => {
+    try {
+      const response = await fetch(`/api/collections/active-doors`);
+      const data = await response.json();
+  
+      console.log("Active Doors:", data.count); // Log the count
+      setActiveDoorsCount(data.count || 0); // Update the state with the count
+    } catch (error) {
+      console.error("Error fetching Active doors count:", error);
+    }
+  };
+  fetchActiveDoorsCount();
+  }, []);
+
+ 
+
   return (
     <div>
       {/* Metrics Section */}
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Total Users Card */}
-        <div className="p-4 bg-white rounded-lg shadow-md flex items-center gap-4">
+        <div className="p-4 bg-white dark:bg-slate-600 dark:text-slate-200 rounded-lg shadow-md flex items-center gap-4">
           <div className="text-blue-500 text-3xl">
             <FaUsers />
           </div>
           <div>
-            <h3 className="text-gray-600 text-sm">Total Users</h3>
+            <h3 className="text-gray-600 dark:text-slate-300 text-sm">Total Users</h3>
             <p className="text-2xl font-bold">
               {usersCount !== null ? usersCount : "Loading..."}
             </p>
@@ -108,44 +133,45 @@ const CollectionCounts = () => {
         </div>
 
         {/* Active Doors Card */}
-        <div className="p-4 bg-white rounded-lg shadow-md flex items-center gap-4">
+        <div className="p-4 bg-white dark:bg-slate-600 dark:text-slate-200 rounded-lg shadow-md flex items-center gap-4">
           <div className="text-green-500 text-3xl">
             <FaDoorOpen />
           </div>
           <div>
-            <h3 className="text-gray-600 text-sm">Active Doors</h3>
+            <h3 className="text-gray-600 dark:text-slate-300 text-sm">Active Doors</h3>
             <p className="text-2xl font-bold">
-              {doorsCount !== null ? doorsCount : "Loading..."}
+            {activeDoorsCount !== null ? activeDoorsCount : "Loading..."}
             </p>
-            {/* <p className="text-blue-500 text-sm">#72% rooms in use</p> */}
+            
+            <p className="text-green-500 text-sm">{doorsCount !== null ? doorsCount : "Loading..."} of totel doors</p>
           </div>
         </div>
 
         {/* Access Attempts Card */}
-        <div className="p-4 bg-white rounded-lg shadow-md flex items-center gap-4">
+        <div className="p-4 bg-white dark:bg-slate-600 dark:text-slate-200 rounded-lg shadow-md flex items-center gap-4">
           <div className="text-yellow-500 text-3xl">
             <FaCheckCircle />
           </div>
           <div>
-            <h3 className="text-gray-600 text-sm">Access Attempts (24h)</h3>
+            <h3 className="text-gray-600 dark:text-slate-300 text-sm">Access Attempts (24h)</h3>
             <p className="text-2xl font-bold">
               {todayCount !== null ? todayCount : "Loading..."}
             </p>
-            <p className="text-green-500 text-sm">
+            <p className="text-yellow-500 text-sm">
               {historiesCount !== null ? historiesCount : "Loading..."} of total Attempts
             </p>
           </div>
         </div>
 
         {/* Unread Messages Card */}
-        <div className="p-4 bg-white rounded-lg shadow-md flex items-center gap-4">
+        <div className="p-4 bg-white dark:bg-slate-600 dark:text-slate-200  rounded-lg shadow-md flex items-center gap-4">
           <div className="text-purple-500 text-3xl">
             <FaCommentAlt />
           </div>
           <div>
-            <h3 className="text-gray-600 text-sm">Unread Messages</h3>
+            <h3 className="text-gray-600 dark:text-slate-300 text-sm">Unread Messages</h3>
             <p className="text-2xl font-bold">{unreadCount !== null ? unreadCount : "Loading..."}</p>
-            {/* <p className="text-purple-500 text-sm">#3 high priority</p> */}
+            <p className="text-purple-500 text-sm">{messagesCount !== null ? messagesCount : "Loading..."} of total Messages</p>
           </div>
         </div>
       </div>

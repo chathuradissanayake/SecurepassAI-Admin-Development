@@ -18,4 +18,7 @@ router.put('/:id', authMiddleware, roleMiddleware(['Admin']), doorController.upd
 // Route to delete a door by ID
 router.delete('/:id', authMiddleware, roleMiddleware(['Admin']), doorController.deleteDoor);
 
+//set door status
+router.put('/:id/status', doorController.setdoorstatus);
+
 module.exports = router;

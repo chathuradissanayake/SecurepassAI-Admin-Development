@@ -3,7 +3,7 @@ const AdminUser = require('../models/AdminUser');
 const PermissionRequest = require('../models/PermissionRequest');
 
 const createDoor = async (req, res) => {
-  const { doorCode, roomName, qrData, qrImage } = req.body;
+  const { location, doorCode, roomName, qrData, qrImage, status} = req.body;
 
   if (!doorCode || !roomName || !qrData) {
     return res.status(400).json({ success: false, message: "All fields are required." });
@@ -25,6 +25,7 @@ const createDoor = async (req, res) => {
       qrData,
       qrImage,
       company: adminUser.company._id, // Attach company ID to the new door
+      status,
     });
 
     await newDoor.save(); // Save to database
@@ -95,10 +96,31 @@ const deleteDoor = async (req, res) => {
   }
 };
 
+const setdoorstatus = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  try {
+    const updatedDoor = await Door.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true } // Return the updated document
+    );
+    if (!updatedDoor) {
+      return res.status(404).json({ error: 'Door not found' });
+    }
+    res.json(updatedDoor);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
 module.exports = {
   createDoor,
   getDoorById,
   getAllDoors,
   updateDoor,
   deleteDoor,
+  setdoorstatus,
 };

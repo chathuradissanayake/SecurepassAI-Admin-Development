@@ -1,5 +1,7 @@
 import React from 'react';
-import { Route, BrowserRouter as Router, Routes, Navigate } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { ThemeProvider } from "../context/ThemeContext"; // Import the ThemeProvider
+
 import Dashboard from './pages/Dashboard';
 import DoorDetails from './pages/DoorDetails';
 import Doors from './pages/Doors';
@@ -26,6 +28,7 @@ const App = () => {
   }
 
   return (
+    <ThemeProvider>
     <Router>
       <Routes>
         <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
@@ -44,6 +47,7 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
       </Routes>
     </Router>
+    </ThemeProvider>
   );
 };
 
