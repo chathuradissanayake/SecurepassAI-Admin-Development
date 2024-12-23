@@ -6,12 +6,9 @@ const CollectionCounts = () => {
   const [usersCount, setUsersCount] = useState(null);
   const [historiesCount, setHistoriesCount] = useState(null);
   const [todayCount, setTodayCount] = useState(null);
-
   const [messagesCount, setMessagesCount] = useState(null);
   const [unreadCount, setUnreadCount] = useState(null);
   const [activeDoorsCount, setActiveDoorsCount] = useState(null);
-
-
 
   // Helper function to get today's date in "YYYY-MM-DD" format
   const getTodayDate = () => {
@@ -96,23 +93,27 @@ const CollectionCounts = () => {
     fetchUnreadMessagesCount();
   }, []);
 
- // Fetch Active doors count
- useEffect(() => {
-  const fetchActiveDoorsCount = async () => {
-    try {
-      const response = await fetch(`/api/collections/active-doors`);
-      const data = await response.json();
-  
-      console.log("Active Doors:", data.count); // Log the count
-      setActiveDoorsCount(data.count || 0); // Update the state with the count
-    } catch (error) {
-      console.error("Error fetching Active doors count:", error);
-    }
-  };
-  fetchActiveDoorsCount();
-  }, []);
+  // Fetch Active doors count
+  useEffect(() => {
+    const fetchActiveDoorsCount = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`/api/collections/active-doors`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
+        const data = await response.json();
 
- 
+        console.log("Active Doors:", data.count); // Log the count
+        setActiveDoorsCount(data.count || 0); // Update the state with the count
+      } catch (error) {
+        console.error("Error fetching Active doors count:", error);
+      }
+    };
+    fetchActiveDoorsCount();
+  }, []);
 
   return (
     <div>
@@ -140,10 +141,9 @@ const CollectionCounts = () => {
           <div>
             <h3 className="text-gray-600 dark:text-slate-300 text-sm">Active Doors</h3>
             <p className="text-2xl font-bold">
-            {activeDoorsCount !== null ? activeDoorsCount : "Loading..."}
+              {activeDoorsCount !== null ? activeDoorsCount : "Loading..."}
             </p>
-            
-            <p className="text-green-500 text-sm">{doorsCount !== null ? doorsCount : "Loading..."} of totel doors</p>
+            <p className="text-green-500 text-sm">{doorsCount !== null ? doorsCount : "Loading..."} of total doors</p>
           </div>
         </div>
 
