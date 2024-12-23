@@ -33,7 +33,7 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="w-64 bg-slate-200 dark:bg-slate-800 min-h-screen p-6 flex flex-col  ">
+    <aside className="w-64 bg-slate-200 dark:bg-slate-800 min-h-screen p-6 flex flex-col">
       <div className="flex justify-center mb-6">
         <NavLink to="/dashboard">
           <img src={logo} alt="Logo" className="w-24 h-24" />
@@ -53,30 +53,34 @@ const Sidebar = () => {
               <FaHome /> Dashboard
             </NavLink>
           </li>
-          <li>
-            <NavLink
-              to="/users"
-              className={({ isActive }) =>
-                isActive
-                  ? " text-blue-600 flex items-center gap-4 dark:text-cyan-500"
-                  : "text-gray-600 flex items-center gap-2 dark:text-slate-400"
-              }
-            >
-              <FaUserFriends /> Users List
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/doors"
-              className={({ isActive }) =>
-                isActive
-                  ? " text-blue-600 flex items-center gap-4 dark:text-cyan-500"
-                  : "text-gray-600 flex items-center gap-2 dark:text-slate-400"
-              }
-            >
-              <FaDoorOpen /> Doors
-            </NavLink>
-          </li>
+          {userRole !== 'SuperAdmin' && (
+            <>
+              <li>
+                <NavLink
+                  to="/users"
+                  className={({ isActive }) =>
+                    isActive
+                      ? " text-blue-600 flex items-center gap-4 dark:text-cyan-500"
+                      : "text-gray-600 flex items-center gap-2 dark:text-slate-400"
+                  }
+                >
+                  <FaUserFriends /> Users List
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/doors"
+                  className={({ isActive }) =>
+                    isActive
+                      ? " text-blue-600 flex items-center gap-4 dark:text-cyan-500"
+                      : "text-gray-600 flex items-center gap-2 dark:text-slate-400"
+                  }
+                >
+                  <FaDoorOpen /> Doors
+                </NavLink>
+              </li>
+            </>
+          )}
           {userRole === 'SuperAdmin' && (
             <>
               <li>
