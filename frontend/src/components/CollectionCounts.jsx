@@ -6,10 +6,7 @@ const CollectionCounts = () => {
   const [usersCount, setUsersCount] = useState(null);
   const [historiesCount, setHistoriesCount] = useState(null);
   const [todayCount, setTodayCount] = useState(null);
-
   const [unreadCount, setUnreadCount] = useState(0);
-
-
 
   // Helper function to get today's date in "YYYY-MM-DD" format
   const getTodayDate = () => {
@@ -20,14 +17,17 @@ const CollectionCounts = () => {
     return `${yyyy}-${mm}-${dd}`;
   };
 
-
- 
-
   // Fetch counts for collections: doors, users, histories
   useEffect(() => {
     const fetchCollectionsCount = async () => {
       try {
-        const response = await fetch("/api/collections/counts");
+        const token = localStorage.getItem('token');
+        const response = await fetch("/api/collections/counts", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
         const data = await response.json();
 
         const doorsCollection = data.find((collection) => collection.name === "doors");
@@ -49,9 +49,14 @@ const CollectionCounts = () => {
   useEffect(() => {
     const fetchTodayCount = async () => {
       try {
+        const token = localStorage.getItem('token');
         const todayDate = getTodayDate();
-        const response = await fetch(`/api/collections/history?entryTime=${todayDate}`
-        );
+        const response = await fetch(`/api/collections/history?entryTime=${todayDate}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
         const data = await response.json();
         setTodayCount(data.count || 0);
       } catch (error) {
@@ -62,26 +67,27 @@ const CollectionCounts = () => {
     fetchTodayCount();
   }, []);
 
-
-  // Fetch unreaded messages count
+  // Fetch unread messages count
   useEffect(() => {
     const fetchUnreadMessagesCount = async () => {
       try {
-        const response = await fetch(`/api/collections/unread-count`);
+        const token = localStorage.getItem('token');
+        const response = await fetch(`/api/collections/unread-count`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
         const data = await response.json();
-    
+
         console.log("Unread Messages Count:", data.count); // Log the count
         setUnreadCount(data.count || 0); // Update the state with the count
       } catch (error) {
         console.error("Error fetching unread messages count:", error);
       }
     };
-      fetchUnreadMessagesCount();
-    }, []);
-
- 
-
- 
+    fetchUnreadMessagesCount();
+  }, []);
 
   return (
     <div>
@@ -143,10 +149,6 @@ const CollectionCounts = () => {
           </div>
         </div>
       </div>
-
-
-      
-
     </div>
   );
 };
