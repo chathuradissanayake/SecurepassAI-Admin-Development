@@ -44,38 +44,38 @@ const UPHistory = ({ historyRecords }) => {
   };
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-sm">
-      <h2 className="text-xl font-semibold mb-4">Door Access History</h2>
+    <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
+      <h2 className="text-xl font-semibold mb-4 text-slate-700 dark:text-slate-100">Door Accessed History</h2>
 
       {/* Table */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto dark:bg-slate-700">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-gray-100">
-              <th className="p-2 border w-1/8">Door ID</th>
-              <th className="p-2 border w-1/5">Room Name</th>
-              <th className="p-2 border w-1/5">Entry Time</th>
-              <th className="p-2 border w-1/5">Exit Time</th>
-              <th className="p-2 border w-1/6">Duration</th>
-              <th className="p-2 border ">Status</th>
+            <tr className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/8">Door Code</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/5">Room Name</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/5">Entry Time</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/5">Exit Time</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/6">Duration</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400 ">Status</th>
             </tr>
           </thead>
           <tbody>
             {currentRecords.map((record, index) => (
-              <tr key={index} className="hover:bg-gray-50">
-                <td className="p-2 border">{record.doorCode}</td>
-                <td className="p-2 border">{record.roomName}</td>
-                <td className="p-2 border">{record.entryTime}</td>
-                <td className="p-2 border">{record.exitTime || 'N/A'}</td>
-                <td className="p-2 border">
+              <tr key={index} className="hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
+                <td className="p-2 border  border-gray-200 dark:border-slate-500">{record.doorCode}</td>
+                <td className="p-2 border  border-gray-200 dark:border-slate-500">{record.roomName}</td>
+                <td className="p-2 border  border-gray-200 dark:border-slate-500">{new Date(record.entryTime).toLocaleString()}</td>
+                <td className="p-2 border  border-gray-200 dark:border-slate-500">{record.exitTime ? new Date(record.exitTime).toLocaleString() : 'N/A'}</td>
+                <td className="p-2 border  border-gray-200 dark:border-slate-500">
                   {calculateDuration(record.entryTime, record.exitTime)}
                 </td>
-                <td className="p-2 border">
+                <td className="p-2 border text-center  border-gray-200 dark:border-slate-500">
                   <span
                     className={`px-2 py-1 rounded text-sm ${
                       record.exitTime
-                        ? 'bg-red-100 text-red-700'
-                        : 'bg-green-100 text-green-700'
+                        ? 'bg-red-100 dark:bg-red-400 text-red-700 dark:text-red-100'
+                        : 'bg-green-100 dark:bg-green-400 text-green-700 dark:text-green-100'
                     }`}
                   >
                     {record.exitTime ? 'Exited' : 'Active'}
@@ -93,7 +93,7 @@ const UPHistory = ({ historyRecords }) => {
           onClick={handlePrev}
           disabled={currentPage === 0}
           className={`px-4 py-2 rounded ${
-            currentPage === 0 ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'
+            currentPage === 0 ? 'bg-gray-200 text-gray-400 dark:bg-slate-500 cursor-not-allowed' : 'bg-blue-600 dark:bg-slate-800 text-white hover:bg-blue-700'
           }`}
         >
           Previous
@@ -106,7 +106,7 @@ const UPHistory = ({ historyRecords }) => {
               key={index}
               onClick={() => handlePageClick(index)}
               className={`px-3 py-1 rounded ${
-                currentPage === index ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-blue-100'
+                currentPage === index ? 'bg-blue-700 dark:bg-slate-800 text-white' : 'bg-gray-200 dark:bg-slate-500 dark:text-gray-100 text-gray-600 hover:bg-gray-300'
               }`}
             >
               {index + 1}
@@ -118,7 +118,7 @@ const UPHistory = ({ historyRecords }) => {
           onClick={handleNext}
           disabled={currentPage === totalPages - 1}
           className={`px-4 py-2 rounded ${
-            currentPage === totalPages - 1 ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'
+            currentPage === totalPages - 1 ? 'bg-gray-200 text-gray-400 dark:bg-slate-500 cursor-not-allowed' : 'bg-blue-600 dark:bg-slate-800 text-white hover:bg-blue-700'
           }`}
         >
           Next

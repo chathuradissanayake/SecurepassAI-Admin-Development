@@ -6,11 +6,12 @@ import Spinner from '../components/Spinner';
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const usersPerPage = 6;
+  const usersPerPage = 10; // Set maximum users per page
   const navigate = useNavigate();
 
   const [newUser, setNewUser] = useState({
@@ -21,13 +22,15 @@ const UserList = () => {
     password: ''
   });
 
+  const [searchQuery, setSearchQuery] = useState('');
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get('/api/users', { withCredentials: true });
-        console.log('API response:', response.data);
         if (Array.isArray(response.data)) {
           setUsers(response.data);
+          setFilteredUsers(response.data);
         } else {
           throw new Error('API response is not an array');
         }
@@ -40,6 +43,20 @@ const UserList = () => {
 
     fetchUsers();
   }, []);
+
+  const handleSearch = (e) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+    const filtered = users.filter(
+      (user) =>
+        user.firstName.toLowerCase().includes(query) ||
+        user.lastName.toLowerCase().includes(query) ||
+        user.email.toLowerCase().includes(query) ||
+        user.userId.toLowerCase().includes(query)
+    );
+    setFilteredUsers(filtered);
+    setCurrentPage(1); // Reset to the first page on a new search
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,6 +81,7 @@ const UserList = () => {
       // Refresh the user list
       const response = await axios.get('/api/users', { withCredentials: true });
       setUsers(response.data);
+      setFilteredUsers(response.data);
     } catch (err) {
       console.error(err);
     }
@@ -76,130 +94,182 @@ const UserList = () => {
   if (loading) return <Spinner />;
   if (error) return <p>Error: {error}</p>;
 
-  // Calculate the indices for the current page
+  // Calculate pagination indices
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
-  // Change page
+  // Handle pagination
+  const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const handlePrevious = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
 
   return (
-    <div className="p-6 space-y-6">
-        <h2 className="text-xl font-semibold text-gray-800">
-                User Management
-              </h2>
-      <div className="flex justify-end items-center ">
-        
+    <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
+
+      {/* Search and Add Button */}
+      <div className="flex justify-between items-center mb-4">
+      <h2 className="text-xl font-semibold dark:text-slate-100 mb-4">User List</h2>
+      
+      <div className="flex items-center gap-2">
+        <input
+          type="text"
+          placeholder="Search by name, email, or user ID"
+          value={searchQuery}
+          onChange={handleSearch}
+          className="border dark:border-none px-4 py-2 rounded w-80 dark:bg-slate-700 dark:text-slate-100"
+        />
         <button
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 "
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           onClick={() => setIsModalVisible(true)}
         >
-          + Add User
+           Add User
         </button>
       </div>
-      <table className="w-full mt-4 bg-white shadow-md rounded">
+      </div>
+      <table className="w-full mt-4 bg-white dark:bg-slate-700 shadow-md rounded">
         <thead>
-          <tr className="text-left">
-            <th className="p-4">Full Name</th>
-            <th className="p-4">Email</th>
-            <th className="p-4">User ID</th>
-            <th className="p-4">Actions</th>
+          <tr className="text-left bg-gray-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+            <th className="p-4 border border-gray-300 dark:border-slate-400">Full Name</th>
+            <th className="p-4 border border-gray-300 dark:border-slate-400">Email</th>
+            <th className="p-4 border border-gray-300 dark:border-slate-400">User ID</th>
+            <th className="p-4 border border-gray-300 dark:border-slate-400">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {currentUsers.map(user => (
-            <tr key={user._id} className="border-b " >
-              <td className="p-4">{user.firstName} {user.lastName}</td>
-              <td className="p-4">{user.email}</td>
-              <td className="p-4">{user.userId}</td>
-              <td className="p-4 flex gap-2">
-              <button className="text-blue-600" onClick={() => handleRowClick(user._id)}>Manage</button>
+          {currentUsers.map((user) => (
+            <tr key={user._id} className="hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
+              <td className="p-3 border border-gray-200 dark:border-slate-500">
+                {user.firstName} {user.lastName}
+              </td>
+              <td className="p-3 border border-gray-200 dark:border-slate-500">{user.email}</td>
+              <td className="p-3 border border-gray-200 dark:border-slate-500">{user.userId}</td>
+              <td className="p-3 border border-gray-200 dark:border-slate-500">
+                <button
+                  className="text-blue-400"
+                  onClick={() => handleRowClick(user._id)}
+                >
+                  Manage
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <div className="flex justify-center mt-4">
-        <nav>
-          <ul className="flex list-none">
-            {Array.from({ length: Math.ceil(users.length / usersPerPage) }, (_, index) => (
-              <li key={index} className="mx-1">
-                <button
-                  onClick={() => paginate(index + 1)}
-                  className={`px-3 py-1 rounded ${currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
-                >
-                  {index + 1}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </nav>
+      <div className="flex justify-between items-center mt-4">
+        <button
+          onClick={handlePrevious}
+          disabled={currentPage === 1}
+          className={`px-4 py-2 rounded ${
+            currentPage === 1 ? 'bg-gray-200 text-gray-400 dark:bg-slate-500 cursor-not-allowed' : 'bg-blue-600 dark:bg-slate-800 text-white hover:bg-blue-700'
+          }`}
+        >
+          Previous
+        </button>
+        <div className="flex items-center">
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index}
+              onClick={() => paginate(index + 1)}
+              className={`px-3 py-1 mx-1 rounded ${
+                currentPage === index + 1 ? 'bg-blue-700 dark:bg-slate-800 text-white' : 'bg-gray-200 dark:bg-slate-500 dark:text-gray-100 text-gray-600 hover:bg-gray-300'
+              }`}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
+        <button
+          onClick={handleNext}
+          disabled={currentPage === totalPages}
+          className={`px-4 py-2 rounded ${
+            currentPage === totalPages ?  'bg-gray-200 text-gray-400 dark:bg-slate-500 cursor-not-allowed' : 'bg-blue-600 dark:bg-slate-800 text-white hover:bg-blue-700'
+          }`}
+        >
+          Next
+        </button>
       </div>
 
       <Modal isVisible={isModalVisible} onClose={() => setIsModalVisible(false)}>
-        <h2 className="text-xl font-bold mb-4">Add New User</h2>
+        <h2 className="text-xl text-slate-700 dark:text-slate-200 font-bold mb-4">Add New User</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-gray-700">First Name</label>
+            <label className="block text-slate-700 dark:text-slate-200">First Name</label>
             <input
               type="text"
               name="firstName"
               value={newUser.firstName}
+              placeholder='John'
               onChange={handleChange}
-              className="w-full p-2 border rounded"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-600 dark:text-slate-100 focus:ring-blue-400"
               required
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Last Name</label>
+            <label className="block text-gray-700 dark:text-slate-200">Last Name</label>
             <input
               type="text"
               name="lastName"
               value={newUser.lastName}
+              placeholder='Smith'
               onChange={handleChange}
-              className="w-full p-2 border rounded"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-600 dark:text-slate-100 focus:ring-blue-400"
               required
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Email</label>
+            <label className="block text-gray-700 dark:text-slate-200">Email</label>
             <input
               type="email"
               name="email"
               value={newUser.email}
+              placeholder='johnsmith@gmail.com'
               onChange={handleChange}
-              className="w-full p-2 border rounded"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-600 dark:text-slate-100 focus:ring-blue-400"
               required
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">User ID</label>
+            <label className="block text-gray-700 dark:text-slate-200">User ID</label>
             <input
               type="text"
               name="userId"
               value={newUser.userId}
+              placeholder='InSP/XXXX/XXX/XX'
               onChange={handleChange}
-              className="w-full p-2 border rounded"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-600 dark:text-slate-100 focus:ring-blue-400"
               required
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Password</label>
+            <label className="block text-gray-700 dark:text-slate-200">Password</label>
             <input
               type="password"
               name="password"
               value={newUser.password}
+              placeholder='******'
               onChange={handleChange}
-              className="w-full p-2 border rounded"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-600 dark:text-slate-100 focus:ring-blue-400"
               required
             />
           </div>
           <div className="flex justify-end">
-            <button type="button" className="bg-gray-500 text-white px-4 py-2 rounded mr-2" onClick={() => setIsModalVisible(false)}>
+            <button
+              type="button"
+              className="bg-gray-500 w-20 dark:bg-slate-500 text-white px-4 py-2 rounded mr-2"
+              onClick={() => setIsModalVisible(false)}
+            >
               Cancel
             </button>
-            <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
+            <button
+              type="submit"
+              className="bg-blue-500 w-20 text-white px-4 py-2 rounded"
+            >
               Save
             </button>
           </div>
