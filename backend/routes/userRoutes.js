@@ -1,12 +1,13 @@
 const express = require('express');
 const { registerUser, getAllUsers, getUserById, updateUserById, deleteUserById,removeDoorAccess, getUserHistoryById } = require('../controllers/authController');
+const { authMiddleware, roleMiddleware } = require('../middleware/authMiddleware');
 const router = express.Router();
 
 // Create a new user
-router.post('/register', registerUser);
+router.post('/register', authMiddleware, roleMiddleware(['Admin']), registerUser);
 
 // Get all users
-router.get('/', getAllUsers);
+router.get('/', authMiddleware, roleMiddleware(['SuperAdmin', 'Admin']), getAllUsers);
 
 // Get user by _id
 router.get('/:id', getUserById);
