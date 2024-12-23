@@ -5,8 +5,10 @@ const {
   getPermissionRequestsByUserId,
   approvePermissionRequest,
   rejectPermissionRequest,
-  pendingRequest,
+  getPendingRequests,
 } = require('../controllers/permissionRequestController');
+const { authMiddleware, roleMiddleware } = require('../middleware/authMiddleware');
+
 
 // Route to create a new permission request
 router.post('/create', createPermissionRequest);
@@ -20,6 +22,8 @@ router.put('/:id/approve', approvePermissionRequest);
 // Route to reject a permission request
 router.put('/:id/reject', rejectPermissionRequest);
 
-router.get('/pending-requests', pendingRequest);
+// Route to fetch pending requests
+router.get('/pending-requests', authMiddleware, roleMiddleware(['Admin']), getPendingRequests);
+
 
 module.exports = router;
