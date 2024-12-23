@@ -115,14 +115,19 @@ const rejectPermissionRequest = async (req, res) => {
 };
 
 
-const pendingRequest = async (req, res) => {
+// Fetch pending requests filtered by company ID
+const getPendingRequests = async (req, res) => {
   try {
-    const pendingRequests = await PermissionRequest.find({ status: 'Pending' })
+    const companyId = req.companyId;
+    const pendingRequests = await PermissionRequest.find({ company: companyId, status: 'pending' })
       .populate('user', 'firstName lastName userId')
-      .populate('door', 'doorCode roomName location');
+      .populate('door', 'doorCode roomName location')
+      .sort({ requestTime: -1 });
+
     res.json(pendingRequests);
   } catch (error) {
-    res.status(500).json({ error: 'Server error' });
+    console.error('Error fetching pending requests:', error);
+    res.status(500).json({ error: 'Error fetching pending requests' });
   }
 };
 
@@ -134,5 +139,5 @@ module.exports = {
   getAllPermissionRequests,
   approvePermissionRequest,
   rejectPermissionRequest,
-  pendingRequest,
+  getPendingRequests,
 };

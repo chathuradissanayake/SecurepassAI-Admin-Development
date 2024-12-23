@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const UPDoorAccess = ({ accessRecords, userId, onAccessUpdate }) => {
   const itemsPerPage = 5;
@@ -58,43 +58,43 @@ const UPDoorAccess = ({ accessRecords, userId, onAccessUpdate }) => {
   };
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-sm mb-6">
-      <h2 className="text-xl font-semibold mb-4">Door Access</h2>
+    <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
+      <h2 className="text-xl font-semibold mb-4 text-slate-700 dark:text-slate-100">Permissioned Doors</h2>
 
       {/* Table */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto dark:bg-slate-700">
         <table className="min-w-full text-left border-collapse">
           <thead>
-            <tr className="bg-gray-100">
-              <th className="p-2 border">Door Code</th>
-              <th className="p-2 border">Room Name</th>
-              <th className="p-2 border">Location</th>
-              <th className="p-2 border">Date</th>
-              <th className="p-2 border">Entry Time</th>
-              <th className="p-2 border">Exit Time</th>
-              <th className="p-2 border text-center">Action</th>
+            <tr className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+              <th className="p-3 border border-gray-300 dark:border-slate-400">Door Code</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400">Room Name</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400">Location</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400">Date</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400">Entry Time</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400">Exit Time</th>
+              <th className="p-3 border text-center border-gray-300 dark:border-slate-400">Action</th>
             </tr>
           </thead>
           <tbody>
             {currentRecords.map((record, index) => (
-              <tr key={index} className="hover:bg-gray-50">
-                <td className="p-2 border">{record.door?.doorCode || 'N/A'}</td>
-                <td className="p-2 border">
+              <tr key={index} className="hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
+                <td className="p-2 border border-gray-200 dark:border-slate-500">{record.door?.doorCode || 'N/A'}</td>
+                <td className="p-2 border border-gray-200 dark:border-slate-500">
                   <button
                     onClick={() => navigate(`/doors/${record.door?._id}`)}
-                    className="text-blue-600 hover:underline"
+                    className="p-2 text-blue-600 dark:text-blue-400 hover:underline"
                   >
                     {record.door?.roomName || 'N/A'}
                   </button>
                 </td>
-                <td className="p-2 border">{record.door?.location || 'N/A'}</td>
-                <td className="p-2 border">{new Date(record.date).toLocaleDateString('en-CA')}</td>
-                <td className="p-2 border">{record.inTime}</td>
-                <td className="p-2 border">{record.outTime}</td>
-                <td className="p-2 border text-center">
+                <td className="p-2 border border-gray-200 dark:border-slate-500">{record.door?.location || 'N/A'}</td>
+                <td className="p-2 border border-gray-200 dark:border-slate-500">{new Date(record.date).toLocaleDateString('en-CA')}</td>
+                <td className="p-2 border border-gray-200 dark:border-slate-500">{record.inTime}</td>
+                <td className="p-2 border border-gray-200 dark:border-slate-500">{record.outTime}</td>
+                <td className="p-2 border text-center border-gray-200 dark:border-slate-500">
                   <button
                     onClick={() => handleRemovePermission(currentPage * itemsPerPage + index, record._id)}
-                    className="bg-red-400 text-white py-1 px-3 rounded hover:bg-red-500"
+                    className="bg-red-400 text-white py-1 px-3 rounded hover:bg-red-500 "
                   >
                     Remove Permission
                   </button>
@@ -111,7 +111,7 @@ const UPDoorAccess = ({ accessRecords, userId, onAccessUpdate }) => {
           onClick={handlePrev}
           disabled={currentPage === 0}
           className={`px-4 py-2 rounded ${
-            currentPage === 0 ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'
+            currentPage === 0 ? 'bg-gray-200 text-gray-400 dark:bg-slate-500 cursor-not-allowed' : 'bg-blue-600 dark:bg-slate-800 text-white hover:bg-blue-700'
           }`}
         >
           Previous
@@ -124,7 +124,7 @@ const UPDoorAccess = ({ accessRecords, userId, onAccessUpdate }) => {
               key={index}
               onClick={() => handlePageClick(index)}
               className={`px-3 py-1 rounded ${
-                currentPage === index ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-blue-100'
+                currentPage === index ? 'bg-blue-700 dark:bg-slate-800 text-white' : 'bg-gray-200 dark:bg-slate-500 dark:text-gray-100 text-gray-600 hover:bg-gray-300'
               }`}
             >
               {index + 1}
@@ -136,7 +136,7 @@ const UPDoorAccess = ({ accessRecords, userId, onAccessUpdate }) => {
           onClick={handleNext}
           disabled={currentPage === totalPages - 1}
           className={`px-4 py-2 rounded ${
-            currentPage === totalPages - 1 ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'
+            currentPage === totalPages - 1 ? 'bg-gray-200 text-gray-400 dark:bg-slate-500 cursor-not-allowed' : 'bg-blue-600 dark:bg-slate-800 text-white hover:bg-blue-700'
           }`}
         >
           Next

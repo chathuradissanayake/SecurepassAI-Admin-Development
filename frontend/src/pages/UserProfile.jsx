@@ -8,7 +8,7 @@ import Spinner from '../components/Spinner';
 import UPDoorAccess from "../components/UPDoorAccess";
 import UPHistory from "../components/UPHistory";
 import UPPermissionRequests from "../components/UPPermissionRequests";
-
+import avatar from "../assets/avatar.png"
 const UserProfile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -29,9 +29,13 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        console.log(`Fetching user with id: ${id}`);
-        const response = await axios.get(`/api/users/${id}`, { withCredentials: true });
-        console.log('API response:', response.data);
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`/api/users/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
         setUser(response.data);
         setFormData({
           firstName: response.data.firstName,
@@ -50,9 +54,13 @@ const UserProfile = () => {
 
     const fetchHistory = async () => {
       try {
-        console.log(`Fetching history for user with id: ${id}`);
-        const response = await axios.get(`/api/users/${id}/history`, { withCredentials: true });
-        console.log('History API response:', response.data);
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`/api/users/${id}/history`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
         setHistoryRecords(response.data);
       } catch (err) {
         console.error('Error fetching history:', err);
@@ -69,7 +77,13 @@ const UserProfile = () => {
 
   const handleSave = async () => {
     try {
-      await axios.put(`/api/users/${id}`, formData, { withCredentials: true });
+      const token = localStorage.getItem('token');
+      await axios.put(`/api/users/${id}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
       setUser(formData);
       setIsEditModalOpen(false);
     } catch (err) {
@@ -88,7 +102,13 @@ const UserProfile = () => {
 
   const handleConfirmDelete = async () => {
     try {
-      await axios.delete(`/api/users/${id}`, { withCredentials: true });
+      const token = localStorage.getItem('token');
+      await axios.delete(`/api/users/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
       navigate('/users'); // Redirect to the users list page after deletion
     } catch (err) {
       console.error('Error deleting user:', err);
@@ -110,7 +130,13 @@ const UserProfile = () => {
 
   const handleRequestUpdate = async () => {
     try {
-      const response = await axios.get(`/api/users/${id}`, { withCredentials: true });
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`/api/users/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
       setUser(response.data);
       setPendingRequests(response.data.pendingRequests);
     } catch (err) {
@@ -120,7 +146,13 @@ const UserProfile = () => {
 
   const handleAccessUpdate = async () => {
     try {
-      const response = await axios.get(`/api/users/${id}`, { withCredentials: true });
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`/api/users/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
       setUser(response.data);
     } catch (err) {
       console.error('Error fetching updated user data:', err);
@@ -131,25 +163,30 @@ const UserProfile = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="flex">
+    <div className="flex dark:bg-slate-700">
       <Sidebar />
-      <div className="flex-1 p-4">
+      <div className="flex-1">
         <Header />
-        <h1 className="text-2xl font-bold my-5">User Profile</h1>
 
-        <div className="bg-white rounded-lg shadow p-6 mb-6">
+        <div className="p-6 space-y-4">
+        
+        <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
+            User Profile
+          </h2>
+
+        <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
           <div className="flex items-center justify-between">
             {/* User Profile and Details */}
             <div className="flex items-center">
               <img
-                src={user.profilePicture} 
-                alt="Profile"
+                src={user.profilePicture || avatar} 
+                alt=""
                 className="w-32 h-32 object-cover rounded-full"
               />
               <div className="ml-4">
-                <h2 className="text-2xl font-bold mb-3"> {user.firstName} {user.lastName} </h2>
-                <p className="text-gray-600 mb-2"><strong>User ID:</strong> {user.userId}</p>
-                <p className="text-gray-600"><strong>Email:</strong> {user.email}</p>
+                <h2 className="text-2xl font-bold text-slate-700 dark:text-slate-100 mb-3"> {user.firstName} {user.lastName} </h2>
+                <p className="text-slate-700 dark:text-slate-300 mb-2"><strong>User ID:</strong> {user.userId}</p>
+                <p className="text-slate-700 dark:text-slate-300"><strong>Email:</strong> {user.email}</p>
               </div>
             </div>
 
@@ -182,57 +219,57 @@ const UserProfile = () => {
 
         {/* Edit User Modal */}
         <Modal isVisible={isEditModalOpen} onClose={handleCloseEditModal}>
-          <h2 className="text-xl font-semibold mb-4">Edit User</h2>
+          <h2 className="text-xl text-slate-700 dark:text-slate-200 font-bold mb-4">Edit User</h2>
           <div className="mb-4">
-            <label className="block text-gray-700">First Name</label>
+            <label className="block text-slate-700 dark:text-slate-200">First Name</label>
             <input
               type="text"
               name="firstName"
               value={formData.firstName}
               onChange={handleChange}
-              className="p-2 border rounded w-full"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-600 dark:text-slate-100 focus:ring-blue-400"
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Last Name</label>
+            <label className="block text-slate-700 dark:text-slate-200">Last Name</label>
             <input
               type="text"
               name="lastName"
               value={formData.lastName}
               onChange={handleChange}
-              className="p-2 border rounded w-full"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-600 dark:text-slate-100 focus:ring-blue-400"
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Email</label>
+            <label className="block text-slate-700 dark:text-slate-200">Email</label>
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="p-2 border rounded w-full"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-600 dark:text-slate-100 focus:ring-blue-400"
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">User ID</label>
+            <label className="block text-slate-700 dark:text-slate-200">User ID</label>
             <input
               type="text"
               name="userId"
               value={formData.userId}
               onChange={handleChange}
-              className="p-2 border rounded w-full"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-600 dark:text-slate-100 focus:ring-blue-400"
             />
           </div>
-          <div className="flex justify-end gap-4">
+          <div className="flex justify-end gap-2">
             <button
               onClick={handleCloseEditModal}
-              className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+              className="bg-gray-500 w-20 dark:bg-slate-500 text-white px-4 py-2 rounded"
             >
               Cancel
             </button>
             <button
               onClick={handleSave}
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              className="bg-blue-500 w-20 text-white px-4 py-2 rounded"
             >
               Save
             </button>
@@ -258,6 +295,7 @@ const UserProfile = () => {
             </button>
           </div>
         </Modal>
+        </div>
       </div>
     </div>
   );
