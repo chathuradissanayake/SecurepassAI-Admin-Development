@@ -10,6 +10,7 @@ const historySchema = new Schema({
   user: {
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   },
+  company: { type: Schema.Types.ObjectId, ref: 'Company', required: true }, // Add company field
 });
 
 const History = mongoose.model("History", historySchema);
