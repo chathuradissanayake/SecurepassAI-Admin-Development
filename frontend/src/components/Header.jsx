@@ -31,6 +31,10 @@ const Header = () => {
         return 'Settings';
       case '/profile':
         return 'Profile';
+      case '/admin-users':
+        return 'Admins';
+      case '/companies':
+        return 'Companies';
       default:
         return '';
     }
