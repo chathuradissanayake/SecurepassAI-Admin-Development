@@ -7,9 +7,9 @@ const doorSchema = new mongoose.Schema({
     roomName: { type: String, required: true },
     qrData: { type: String, required: true },  // QR code data (location-doorCode-roomName)
     qrImage: { type: String}, // Base64 string for the QR image
-    approvedUsers: [{ type: Schema.Types.ObjectId, ref: 'User' }] 
+    approvedUsers: [{ type: Schema.Types.ObjectId, ref: 'User' }] ,
+    company: { type: Schema.Types.ObjectId, ref: 'Company', required: true }
 }, { timestamps: true });
-
 
 const Door = mongoose.model('Door', doorSchema); 
 
