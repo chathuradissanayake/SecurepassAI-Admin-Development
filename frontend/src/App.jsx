@@ -1,7 +1,9 @@
 import React from 'react';
-import { Route, BrowserRouter as Router, Routes, Navigate } from 'react-router-dom';
+import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { ThemeProvider } from "../context/ThemeContext"; // Import the ThemeProvider
 
+import AdminUsers from './pages/AdminUsers';
+import Companies from './pages/Companies';
 import Dashboard from './pages/Dashboard';
 import DoorDetails from './pages/DoorDetails';
 import Doors from './pages/Doors';
@@ -13,10 +15,7 @@ import QRGenerator from './pages/QRGenerator';
 import Settings from './pages/Settings';
 import UserProfile from './pages/UserProfile';
 import Users from './pages/Users';
-import Companies from './pages/Companies';
-import AdminUsers from './pages/AdminUsers';
-import CreateAdmin from './pages/CreateAdmin';
-import { isTokenExpired, getToken, getRole, clearAuthData } from './utils/auth';
+import { clearAuthData, getRole, getToken, isTokenExpired } from './utils/auth';
 
 const App = () => {
   const token = getToken();
@@ -41,7 +40,6 @@ const App = () => {
         <Route path="/profile" element={isAuthenticated ? <Profile /> : <Navigate to="/login" />} />
         <Route path="/companies" element={isAuthenticated && userRole === 'SuperAdmin' ? <Companies /> : <Navigate to="/login" />} />
         <Route path="/admin-users" element={isAuthenticated && userRole === 'SuperAdmin' ? <AdminUsers /> : <Navigate to="/login" />} />
-        <Route path="/create-admin" element={isAuthenticated && userRole === 'SuperAdmin' ? <CreateAdmin /> : <Navigate to="/login" />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/logout" element={<LogoutPage />} />
         <Route path="/login" element={<LoginPage />} />
