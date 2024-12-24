@@ -4,6 +4,7 @@ import DoorSection from "../components/DoorSection";
 import Header from "../components/Header";
 import RecentAccessDoors from "../components/RecentAccessDoors";
 import Sidebar from "../components/Sidebar";
+import Spinner from '../components/Spinner';
 
 const Doors = () => {
   const [doors, setDoors] = useState([]);
@@ -51,7 +52,7 @@ const Doors = () => {
     fetchRecentAccess();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Spinner />;
   if (error) return <p>Error: {error}</p>;
 
   return (
