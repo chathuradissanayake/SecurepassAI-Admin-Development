@@ -63,6 +63,16 @@ const AdminList = () => {
 
       // Optionally, navigate to another page or reset the form
       setIsModalVisible(false);
+
+      // Refresh the user list
+      const response3 = await axios.get('/api/admin/admin-users', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
+      setAdminUsers(response3.data);
+      setFilteredAdminUsers(response3.data);
       
     } catch (err) {
       setError('Failed to create admin user');
