@@ -79,6 +79,18 @@ const Sidebar = () => {
                   <FaDoorOpen /> Doors
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  to="/settings"
+                  className={({ isActive }) =>
+                    isActive
+                      ? " text-blue-600 flex items-center gap-4 dark:text-cyan-500"
+                      : "text-gray-600 flex items-center gap-2 dark:text-slate-400"
+                  }
+                >
+                  <FaCog /> Settings
+                </NavLink>
+              </li>
             </>
           )}
           {userRole === 'SuperAdmin' && (
@@ -104,23 +116,11 @@ const Sidebar = () => {
                       : "text-gray-600 flex items-center gap-2"
                   }
                 >
-                  <FaUser /> Admin Users
+                  <FaUser /> Admins
                 </NavLink>
               </li>
             </>
           )}
-          <li>
-            <NavLink
-              to="/settings"
-              className={({ isActive }) =>
-                isActive
-                  ? " text-blue-600 flex items-center gap-4 dark:text-cyan-500"
-                  : "text-gray-600 flex items-center gap-2 dark:text-slate-400"
-              }
-            >
-              <FaCog /> Settings
-            </NavLink>
-          </li>
           <li>
             <NavLink
               to="/profile"
