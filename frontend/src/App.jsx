@@ -17,6 +17,7 @@ import Companies from './pages/Companies';
 import AdminUsers from './pages/AdminUsers';
 import CreateAdmin from './pages/CreateAdmin';
 import { isTokenExpired, getToken, getRole, clearAuthData } from './utils/auth';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const App = () => {
   const token = getToken();
@@ -29,24 +30,24 @@ const App = () => {
 
   return (
     <ThemeProvider>
-    <Router>
-      <Routes>
-        <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
-        <Route path="/users" element={isAuthenticated ? <Users /> : <Navigate to="/login" />} />
-        <Route path="/users/:id" element={isAuthenticated ? <UserProfile /> : <Navigate to="/login" />} />
-        <Route path="/doors" element={isAuthenticated ? <Doors /> : <Navigate to="/login" />} />
-        <Route path="/doors/:id" element={isAuthenticated ? <DoorDetails /> : <Navigate to="/login" />} />
-        <Route path="/create-door" element={isAuthenticated ? <QRGenerator /> : <Navigate to="/login" />} />
-        <Route path="/settings" element={isAuthenticated ? <Settings /> : <Navigate to="/login" />} />
-        <Route path="/profile" element={isAuthenticated ? <Profile /> : <Navigate to="/login" />} />
-        <Route path="/companies" element={isAuthenticated && userRole === 'SuperAdmin' ? <Companies /> : <Navigate to="/login" />} />
-        <Route path="/admin-users" element={isAuthenticated && userRole === 'SuperAdmin' ? <AdminUsers /> : <Navigate to="/login" />} />
-        <Route path="/create-admin" element={isAuthenticated && userRole === 'SuperAdmin' ? <CreateAdmin /> : <Navigate to="/login" />} />
-        <Route path="*" element={<NotFound />} />
-        <Route path="/logout" element={<LogoutPage />} />
-        <Route path="/login" element={<LoginPage />} />
-      </Routes>
-    </Router>
+      <Router>
+        <Routes>
+          <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
+          <Route path="/users" element={isAuthenticated ? <ProtectedRoute allowedRoles={['Admin']}><Users /></ProtectedRoute> : <Navigate to="/login" />} />
+          <Route path="/users/:id" element={isAuthenticated ? <ProtectedRoute allowedRoles={['Admin']}><UserProfile /></ProtectedRoute> : <Navigate to="/login" />} />
+          <Route path="/doors" element={isAuthenticated ? <ProtectedRoute allowedRoles={['Admin']}><Doors /></ProtectedRoute> : <Navigate to="/login" />} />
+          <Route path="/doors/:id" element={isAuthenticated ? <ProtectedRoute allowedRoles={['Admin']}><DoorDetails /></ProtectedRoute> : <Navigate to="/login" />} />
+          <Route path="/create-door" element={isAuthenticated ? <ProtectedRoute allowedRoles={['Admin']}><QRGenerator /></ProtectedRoute> : <Navigate to="/login" />} />
+          <Route path="/settings" element={isAuthenticated ? <ProtectedRoute allowedRoles={['Admin']}><Settings /></ProtectedRoute> : <Navigate to="/login" />} />
+          <Route path="/profile" element={isAuthenticated ? <Profile /> : <Navigate to="/login" />} />
+          <Route path="/companies" element={isAuthenticated ? <ProtectedRoute allowedRoles={['SuperAdmin']}><Companies /></ProtectedRoute> : <Navigate to="/login" />} />
+          <Route path="/admin-users" element={isAuthenticated ? <ProtectedRoute allowedRoles={['SuperAdmin']}><AdminUsers /></ProtectedRoute> : <Navigate to="/login" />} />
+          <Route path="/create-admin" element={isAuthenticated ? <ProtectedRoute allowedRoles={['SuperAdmin']}><CreateAdmin /></ProtectedRoute> : <Navigate to="/login" />} />
+          <Route path="*" element={<NotFound />} />
+          <Route path="/logout" element={<LogoutPage />} />
+          <Route path="/login" element={<LoginPage />} />
+        </Routes>
+      </Router>
     </ThemeProvider>
   );
 };
