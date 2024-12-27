@@ -4,7 +4,7 @@ import DoorSection from "../components/DoorSection";
 import Header from "../components/Header";
 import RecentAccessDoors from "../components/RecentAccessDoors";
 import Sidebar from "../components/Sidebar";
-import Spinner from "../components/Spinner"; // Import the Spinner component
+import Spinner from "../components/Spinner"; 
 
 const Doors = () => {
   const [doors, setDoors] = useState([]);

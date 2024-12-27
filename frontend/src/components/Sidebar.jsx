@@ -100,8 +100,8 @@ const Sidebar = () => {
                   to="/companies"
                   className={({ isActive }) =>
                     isActive
-                      ? "text-blue-600 flex items-center gap-4"
-                      : "text-gray-600 flex items-center gap-2"
+                      ? " text-blue-600 flex items-center gap-4 dark:text-cyan-500"
+                  : "text-gray-600 flex items-center gap-2 dark:text-slate-400"
                   }
                 >
                   <FaUserFriends /> Companies
@@ -112,8 +112,8 @@ const Sidebar = () => {
                   to="/admin-users"
                   className={({ isActive }) =>
                     isActive
-                      ? "text-blue-600 flex items-center gap-4"
-                      : "text-gray-600 flex items-center gap-2"
+                      ? " text-blue-600 flex items-center gap-4 dark:text-cyan-500"
+                  : "text-gray-600 flex items-center gap-2 dark:text-slate-400"
                   }
                 >
                   <FaUser /> Admins
@@ -136,7 +136,7 @@ const Sidebar = () => {
           <li>
             <button
               onClick={confirmLogout}
-              className="text-gray-600 flex items-center gap-2 w-full text-left"
+              className="text-gray-600 flex items-center gap-2 dark:text-slate-400"
             >
               <FaSignOutAlt /> Logout
             </button>
@@ -145,14 +145,14 @@ const Sidebar = () => {
       </nav>
 
       {showLogoutModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 ">
+          <div className="bg-white  dark:bg-slate-900 dark:text-slate-200 p-6 rounded-lg shadow-lg">
             <h2 className="text-xl font-bold mb-4">Confirm Logout</h2>
             <p className="mb-4">Are you sure you want to logout?</p>
-            <div className="flex justify-end space-x-4">
+            <div className="flex justify-center space-x-4">
               <button
                 onClick={cancelLogout}
-                className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
+                className="px-4 py-2 bg-gray-300 text-gray-700 dark:bg-slate-600 dark:text-slate-200  rounded-lg hover:bg-gray-400"
               >
                 Cancel
               </button>
