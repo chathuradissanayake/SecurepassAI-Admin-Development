@@ -3,7 +3,7 @@ import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-d
 import { ThemeProvider } from "../context/ThemeContext"; // Import the ThemeProvider
 
 import AdminUsers from './pages/AdminUsers';
-import Companies from './pages/Companies';
+import Companies from './pages/Companies'
 import Dashboard from './pages/Dashboard';
 import DoorDetails from './pages/DoorDetails';
 import Doors from './pages/Doors';
@@ -15,9 +15,6 @@ import QRGenerator from './pages/QRGenerator';
 import Settings from './pages/Settings';
 import UserProfile from './pages/UserProfile';
 import Users from './pages/Users';
-import Companies from './pages/Companies';
-import AdminUsers from './pages/AdminUsers';
-import CreateAdmin from './pages/CreateAdmin';
 import { isTokenExpired, getToken, getRole, clearAuthData } from './utils/auth';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -44,7 +41,6 @@ const App = () => {
           <Route path="/profile" element={isAuthenticated ? <Profile /> : <Navigate to="/login" />} />
           <Route path="/companies" element={isAuthenticated ? <ProtectedRoute allowedRoles={['SuperAdmin']}><Companies /></ProtectedRoute> : <Navigate to="/login" />} />
           <Route path="/admin-users" element={isAuthenticated ? <ProtectedRoute allowedRoles={['SuperAdmin']}><AdminUsers /></ProtectedRoute> : <Navigate to="/login" />} />
-          <Route path="/create-admin" element={isAuthenticated ? <ProtectedRoute allowedRoles={['SuperAdmin']}><CreateAdmin /></ProtectedRoute> : <Navigate to="/login" />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/logout" element={<LogoutPage />} />
           <Route path="/login" element={<LoginPage />} />
