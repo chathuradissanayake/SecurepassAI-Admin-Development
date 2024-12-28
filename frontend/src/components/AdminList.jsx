@@ -223,9 +223,21 @@ const AdminList = () => {
               ))}
             </select>
           </div>
-          <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-            Create Admin
-          </button>
+          <div className="flex justify-end">
+            <button
+              type="button"
+              className="bg-gray-500 w-20 dark:bg-slate-500 text-white px-4 py-2 rounded mr-2"
+              onClick={() => setIsModalVisible(false)}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="bg-blue-500 w-20 text-white px-4 py-2 rounded"
+            >
+              Save
+            </button>
+          </div>
         </form>
       </Modal>
     </div>
