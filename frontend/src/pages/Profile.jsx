@@ -13,6 +13,7 @@ const Profile = () => {
   });
 
   const [error, setError] = useState("");
+  const userRole = localStorage.getItem('role'); // Assuming you store the role in localStorage
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -89,9 +90,11 @@ const Profile = () => {
               />
 
               {/* Edit Button */}
-              <button className="absolute bottom-2 right-2 bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 shadow-lg">
-                <FaPencilAlt className="w-4 h-4" />
-              </button>
+              {userRole !== 'SuperAdmin' && (
+                <button className="absolute bottom-2 right-2 bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 shadow-lg">
+                  <FaPencilAlt className="w-4 h-4" />
+                </button>
+              )}
             </div>
           </div>
 
@@ -106,6 +109,7 @@ const Profile = () => {
                 value={profile.firstName}
                 onChange={handleChange}
                 className="w-full mt-2 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+                disabled={userRole === 'SuperAdmin'}
               />
 
               <label className="block text-gray-700 font-semibold mt-6">Email</label>
@@ -115,6 +119,7 @@ const Profile = () => {
                 value={profile.email}
                 onChange={handleChange}
                 className="w-full mt-2 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+                disabled={userRole === 'SuperAdmin'}
               />
             </div>
 
@@ -127,19 +132,22 @@ const Profile = () => {
                 value={profile.lastName}
                 onChange={handleChange}
                 className="w-full mt-2 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+                disabled={userRole === 'SuperAdmin'}
               />
             </div>
           </div>
 
           {/* Save Button */}
-          <div className="mt-8">
-            <button
-              onClick={handleSave}
-              className="bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            >
-              Save
-            </button>
-          </div>
+          {userRole !== 'SuperAdmin' && (
+            <div className="mt-8">
+              <button
+                onClick={handleSave}
+                className="bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                Save
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

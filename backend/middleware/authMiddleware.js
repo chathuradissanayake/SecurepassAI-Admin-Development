@@ -16,10 +16,14 @@ const authMiddleware = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
 
-    // Attach company ID to the request
-    const adminUser = await AdminUser.findById(req.user.userId);
-    if (adminUser) {
-      req.companyId = adminUser.company;
+    // Attach company ID to the request for admin users
+    if (req.user.role === 'Admin') {
+      const adminUser = await AdminUser.findById(req.user.userId).populate('company');
+      if (adminUser) {
+        req.companyId = adminUser.company._id;
+      } else {
+        return res.status(401).json({ error: 'User not found' });
+      }
     }
 
     next();
