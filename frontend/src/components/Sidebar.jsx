@@ -34,9 +34,9 @@ const Sidebar = () => {
 
   return (
     <aside className="w-64 bg-slate-200 dark:bg-slate-800 min-h-screen p-6 flex flex-col">
-      <div className="flex justify-center mb-6">
+      <div className="flex justify-center mb-2">
         <NavLink to="/dashboard">
-          <img src={logo} alt="Logo" className="w-24 h-24" />
+          <img src={logo} alt="Logo" className="w-60 h-60" />
         </NavLink>
       </div>
       <nav className="flex-1">
@@ -136,7 +136,7 @@ const Sidebar = () => {
           <li>
             <button
               onClick={confirmLogout}
-              className="text-gray-600 flex items-center gap-2 dark:text-slate-400"
+              className="text-gray-600 flex items-center gap-2 dark:text-slate-400 hover:text-blue-600 dark:hover:text-cyan-500"
             >
               <FaSignOutAlt /> Logout
             </button>
