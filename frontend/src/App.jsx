@@ -1,7 +1,9 @@
 import React from 'react';
-import { Route, BrowserRouter as Router, Routes, Navigate } from 'react-router-dom';
+import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { ThemeProvider } from "../context/ThemeContext"; // Import the ThemeProvider
 
+import AdminUsers from './pages/AdminUsers';
+import Companies from './pages/Companies';
 import Dashboard from './pages/Dashboard';
 import DoorDetails from './pages/DoorDetails';
 import Doors from './pages/Doors';

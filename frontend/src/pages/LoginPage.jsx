@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { FaPhone, FaThumbsUp } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
+import React, { useState } from "react";
+import { FaEye, FaEyeSlash, FaPhone, FaThumbsUp } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
+import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 
 const LoginPage = () => {
@@ -33,7 +32,7 @@ const LoginPage = () => {
     <div className="h-screen w-screen flex items-center justify-center bg-gray-800">
       <div className="h-full w-full flex bg-white overflow-hidden">
         <div className="w-1/2 bg-gray-100 flex flex-col justify-center items-center p-6">
-          <img src={logo} alt="Logo" className="w-32 h-32 mb-6" />
+          <img src={logo} alt="Logo" className="w-60 h-60 " />
           <h1 className="text-3xl font-bold text-gray-800 mb-2">Welcome Back</h1>
           <p className="text-gray-500 mb-6">Login into your account</p>
 
