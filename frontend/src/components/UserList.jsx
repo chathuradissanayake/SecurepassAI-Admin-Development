@@ -148,24 +148,29 @@ const UserList = () => {
         </button>
       </div>
       </div>
-      <table className="w-full mt-4 bg-white dark:bg-slate-700 shadow-md rounded">
+      <table className="w-full mt-4 bg-white dark:bg-slate-700 shadow-md rounded-lg overflow-hidden">
         <thead>
           <tr className="text-left bg-gray-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
-            <th className="p-4 border border-gray-300 dark:border-slate-400">Full Name</th>
-            <th className="p-4 border border-gray-300 dark:border-slate-400">Email</th>
-            <th className="p-4 border border-gray-300 dark:border-slate-400">User ID</th>
-            <th className="p-4 border border-gray-300 dark:border-slate-400">Actions</th>
+            <th className="p-4 border-b border-gray-300 dark:border-slate-400">Full Name</th>
+            <th className="p-4 border-b border-gray-300 dark:border-slate-400">Email</th>
+            <th className="p-4 border-b border-gray-300 dark:border-slate-400">User ID</th>
+            <th className="p-4 border-b border-gray-300 dark:border-slate-400">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {currentUsers.map((user) => (
-            <tr key={user._id} className="hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
-              <td className="p-3 border border-gray-200 dark:border-slate-500">
+          {currentUsers.map((user, index) => (
+            <tr
+              key={user._id}
+              className={`hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 ${
+                index === currentUsers.length - 1 ? "rounded-b-md" : ""
+              }`}
+            >
+              <td className="p-3 border-t border-gray-200 dark:border-slate-500">
                 {user.firstName} {user.lastName}
               </td>
-              <td className="p-3 border border-gray-200 dark:border-slate-500">{user.email}</td>
-              <td className="p-3 border border-gray-200 dark:border-slate-500">{user.userId}</td>
-              <td className="p-3 border border-gray-200 dark:border-slate-500">
+              <td className="p-3 border-t border-gray-200 dark:border-slate-500">{user.email}</td>
+              <td className="p-3 border-t border-gray-200 dark:border-slate-500">{user.userId}</td>
+              <td className="p-3 border-t border-gray-200 dark:border-slate-500">
                 <button
                   className="text-blue-400"
                   onClick={() => handleRowClick(user._id)}
@@ -177,6 +182,7 @@ const UserList = () => {
           ))}
         </tbody>
       </table>
+
       <div className="flex justify-between items-center mt-4">
         <button
           onClick={handlePrevious}
