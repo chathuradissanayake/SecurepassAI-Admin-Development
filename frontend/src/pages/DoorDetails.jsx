@@ -37,8 +37,6 @@ const DoorDetails = () => {
   const startIndex = currentPage * itemsPerPage;
   const currentItems = approvedRequests.slice(startIndex, startIndex + itemsPerPage);
 
-
-
   const downloadQRCode = () => {
     if (!door || !door.qrImage) {
       alert('No QR Code available to download.');
@@ -53,7 +51,13 @@ const DoorDetails = () => {
   
   const handleDeleteDoor = async () => {
     try {
-      await axios.delete(`/api/doors/${id}`, { withCredentials: true });
+      const token = localStorage.getItem('token');
+      await axios.delete(`/api/doors/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
       navigate('/doors'); // Redirect to the doors list page after deletion
     } catch (err) {
       console.error('Error deleting door:', err);
@@ -64,9 +68,13 @@ const DoorDetails = () => {
   useEffect(() => {
     const fetchDoor = async () => {
       try {
-        console.log(`Fetching door with id: ${id}`);
-        const response = await axios.get(`/api/doors/${id}`, { withCredentials: true });
-        console.log('API response:', response.data);
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`/api/doors/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
         setDoor(response.data.door);
         setApprovedRequests(response.data.approvedRequests);
         setLoading(false);
@@ -89,202 +97,187 @@ const DoorDetails = () => {
       <div className="flex-1">
         <Header />
         <div className='p-6 space-y-4'>
-        <div className='flex justify-between'>
-        <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Door Details</h2>
-        {/* <div className=" ">
-              <button
-                onClick={() => navigate(-1)}
-                className="bg-slate-600 dark:bg-slate-800 text-white py-2 px-8 rounded hover:bg-slate-700">
-                Back
-              </button>
-        </div>    */}
-        </div>
+          <div className='flex justify-between'>
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Door Details</h2>
+          </div>
 
-        <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Door Details */}
-            <div className="flex-1">
-              
-              <p className="text-slate-600 dark:text-slate-100 text-4xl mb-5">
-                <strong>Door Code:</strong> {door.doorCode}
-                <span
-                className={`px-3 py-2 ml-8 rounded text-lg ${
-                  door.status === 'Active' ? 'bg-green-700 text-green-100 dark:bg-green-600 dark:text-green-100' : 'bg-red-600 bg-opacity-80 text-red-100 dark:bg-red-600 dark:text-red-100'
-                }`}
-              >
-                {door.status}
-              </span>
-              </p>
-              <p className="text-slate-600 dark:text-slate-200 mb-2">
-                <strong>Door Name:</strong> {door.roomName}
-              </p>
-              <p className="text-slate-600 dark:text-slate-200 mb-2">
-                <strong>Location:</strong> {door.location}
-              </p>
+          <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Door Details */}
+              <div className="flex-1">
+                <p className="text-slate-600 dark:text-slate-100 text-4xl mb-5">
+                  <strong>Door Code:</strong> {door.doorCode}
+                  <span
+                    className={`px-3 py-2 ml-8 rounded text-lg ${
+                      door.status === 'Active' ? 'bg-green-700 text-green-100 dark:bg-green-600 dark:text-green-100' : 'bg-red-600 bg-opacity-80 text-red-100 dark:bg-red-600 dark:text-red-100'
+                    }`}
+                  >
+                    {door.status}
+                  </span>
+                </p>
+                <p className="text-slate-600 dark:text-slate-200 mb-2">
+                  <strong>Door Name:</strong> {door.roomName}
+                </p>
+                <p className="text-slate-600 dark:text-slate-200 mb-2">
+                  <strong>Location:</strong> {door.location}
+                </p>
 
-              <select
-                className="px-2 py-2 mt-4 border dark:border-none dark:bg-slate-800 dark:text-slate-300 rounded"
-                value={door.status}
-                onChange={async (e) => {
-                  const newStatus = e.target.value;
+                <select
+                  className="px-2 py-2 mt-4 border dark:border-none dark:bg-slate-800 dark:text-slate-300 rounded"
+                  value={door.status}
+                  onChange={async (e) => {
+                    const newStatus = e.target.value;
 
-                  try {
-                    // Update the status in the backend
-                    const response = await fetch(`/api/doors/${door._id}/status`, {
-                      method: 'PUT',
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      body: JSON.stringify({ status: newStatus }),
-                    });
+                    try {
+                      // Update the status in the backend
+                      const response = await fetch(`/api/doors/${door._id}/status`, {
+                        method: 'PUT',
+                        headers: {
+                          'Content-Type': 'application/json',
+                          Authorization: `Bearer ${localStorage.getItem('token')}`,
+                        },
+                        body: JSON.stringify({ status: newStatus }),
+                      });
 
-                    if (response.ok) {
-                      const updatedDoor = await response.json();
+                      if (response.ok) {
+                        const updatedDoor = await response.json();
 
-                      // Update the door state with the new status
-                      setDoor((prevDoor) => ({
-                        ...prevDoor,
-                        status: updatedDoor.status,
-                      }));
-                    } else {
-                      console.error('Failed to update status');
+                        // Update the door state with the new status
+                        setDoor((prevDoor) => ({
+                          ...prevDoor,
+                          status: updatedDoor.status,
+                        }));
+                      } else {
+                        console.error('Failed to update status');
+                      }
+                    } catch (error) {
+                      console.error('Error updating status:', error);
                     }
-                  } catch (error) {
-                    console.error('Error updating status:', error);
-                  }
-                }}
-              >
-                <option disabled>Status</option>
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
-              </select>
+                  }}
+                >
+                  <option disabled>Status</option>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
 
-            </div>
-            
-            
-            {/* QR Code */}
-            <div className='flex justify-between'>
-              {door.qrImage ? (
-                <div className="">
-                  <img
-                    src={door.qrImage}
-                    alt={`QR Code for ${door.roomName}`}
-                    className=" w-48 h-48 p-4 bg-white object-contain"
-                  />
-                </div>
-              ) : (
-                <p className="text-gray-500">No QR Code available.</p>
-              )}
+              {/* QR Code */}
+              <div className='flex justify-between'>
+                {door.qrImage ? (
+                  <div className="">
+                    <img
+                      src={door.qrImage}
+                      alt={`QR Code for ${door.roomName}`}
+                      className=" w-48 h-48 p-4 bg-white object-contain"
+                    />
+                  </div>
+                ) : (
+                  <p className="text-gray-500">No QR Code available.</p>
+                )}
 
-
-
-              <div>
-                
-                <div>       
-                  <button
+                <div>
+                  <div>
+                    <button
                       onClick={''}
                       className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-2 w-40 ">
                       Print QR
-                  </button>
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      type="button"
+                      onClick={downloadQRCode}
+                      className="bg-green-500 dark:bg-green-600 text-white px-4 py-2 rounded hover:bg-green-600 dark:hover:bg-green-700 mb-2 w-40">
+                      Download QR
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      type="button"
+                      onClick={handleDeleteDoor}
+                      className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 mb-2 w-40">
+                      Delete Door
+                    </button>
+                  </div>
                 </div>
-                <div> 
-                  <button
-                    type="button"
-                    onClick={downloadQRCode}
-                    
-                    className="bg-green-500 dark:bg-green-600 text-white px-4 py-2 rounded hover:bg-green-600 dark:hover:bg-green-700 mb-2 w-40">
-                    Download QR
-                  </button>
-                </div>
-                <div>
-                  <button
-                    type="button"
-                    onClick={handleDeleteDoor}
-                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 mb-2 w-40">
-                    Delete Door
-                  </button>
-                </div>
-                </div>
+              </div>
             </div>
           </div>
-          
-        </div>
 
-        {/* Approved Permission Requests */}
-      <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
-      <h2 className="text-xl font-semibold mb-4 text-slate-700 dark:text-slate-100">Approved Permission Requests</h2>
-        <div className="overflow-x-auto dark:bg-slate-700">
-          <table className="min-w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
-                <th className="p-3 border border-gray-300 dark:border-slate-400">User Name</th>
-                <th className="p-3 border border-gray-300 dark:border-slate-400">Date</th>
-                <th className="p-3 border border-gray-300 dark:border-slate-400 ">In Time</th>
-                <th className="p-3 border border-gray-300 dark:border-slate-400 ">Out Time</th>
-                <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/3">Message</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentItems.map((request) => (
-                <tr key={request._id} className="hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
-                  <td className="p-2 border border-gray-200 dark:border-slate-500">
-                    {request.user.firstName} {request.user.lastName}
-                  </td>
-                  <td className="p-2 border border-gray-200 dark:border-slate-500">
-                    {new Date(request.date).toLocaleDateString('en-CA')}
-                  </td>
-                  <td className="p-2 border border-gray-200 dark:border-slate-500">{request.inTime}</td>
-                  <td className="p-2 border border-gray-200 dark:border-slate-500">{request.outTime}</td>
-                  <td className="p-2 border border-gray-200 dark:border-slate-500">{request.message}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {/* Pagination Controls */}
-        <div className="flex justify-between items-center mt-4">
-          <button
-            onClick={handlePrev}
-            disabled={currentPage === 0}
-            className={`px-4 py-2 rounded ${
-              currentPage === 0
-                ? 'bg-gray-200 text-gray-400 dark:bg-slate-500 cursor-not-allowed': 'bg-blue-600 dark:bg-slate-800 text-white hover:bg-blue-700'
-            }`}
-          >
-            Previous
-          </button>
-
-          <div className="flex gap-2">
-            {Array.from({ length: totalPages }).map((_, index) => (
+          {/* Approved Permission Requests */}
+          <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
+            <h2 className="text-xl font-semibold mb-4 text-slate-700 dark:text-slate-100">Approved Permission Requests</h2>
+            <div className="overflow-x-auto dark:bg-slate-700">
+              <table className="min-w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+                    <th className="p-3 border border-gray-300 dark:border-slate-400">User Name</th>
+                    <th className="p-3 border border-gray-300 dark:border-slate-400">Date</th>
+                    <th className="p-3 border border-gray-300 dark:border-slate-400 ">In Time</th>
+                    <th className="p-3 border border-gray-300 dark:border-slate-400 ">Out Time</th>
+                    <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/3">Message</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentItems.map((request) => (
+                    <tr key={request._id} className="hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
+                      <td className="p-2 border border-gray-200 dark:border-slate-500">
+                        {request.user.firstName} {request.user.lastName}
+                      </td>
+                      <td className="p-2 border border-gray-200 dark:border-slate-500">
+                        {new Date(request.date).toLocaleDateString('en-CA')}
+                      </td>
+                      <td className="p-2 border border-gray-200 dark:border-slate-500">{request.inTime}</td>
+                      <td className="p-2 border border-gray-200 dark:border-slate-500">{request.outTime}</td>
+                      <td className="p-2 border border-gray-200 dark:border-slate-500">{request.message}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {/* Pagination Controls */}
+            <div className="flex justify-between items-center mt-4">
               <button
-                key={index}
-                onClick={() => handlePageClick(index)}
-                className={`px-3 py-1 rounded ${
-                  currentPage === index
-                    ? 'bg-blue-700 dark:bg-slate-800 text-white': 'bg-gray-200 dark:bg-slate-500 dark:text-gray-100 text-gray-600 hover:bg-gray-300'
+                onClick={handlePrev}
+                disabled={currentPage === 0}
+                className={`px-4 py-2 rounded ${
+                  currentPage === 0
+                    ? 'bg-gray-200 text-gray-400 dark:bg-slate-500 cursor-not-allowed': 'bg-blue-600 dark:bg-slate-800 text-white hover:bg-blue-700'
                 }`}
               >
-                {index + 1}
+                Previous
               </button>
-            ))}
-          </div>
 
-          <button
-            onClick={handleNext}
-            disabled={currentPage === totalPages - 1}
-            className={`px-4 py-2 rounded ${
-              currentPage === totalPages - 1
-                ? 'bg-gray-200 text-gray-400 dark:bg-slate-500 cursor-not-allowed': 'bg-blue-600 dark:bg-slate-800 text-white hover:bg-blue-700'
-            }`}
-          >
-            Next
-          </button>
+              <div className="flex gap-2">
+                {Array.from({ length: totalPages }).map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handlePageClick(index)}
+                    className={`px-3 py-1 rounded ${
+                      currentPage === index
+                        ? 'bg-blue-700 dark:bg-slate-800 text-white': 'bg-gray-200 dark:bg-slate-500 dark:text-gray-100 text-gray-600 hover:bg-gray-300'
+                    }`}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+              </div>
+
+              <button
+                onClick={handleNext}
+                disabled={currentPage === totalPages - 1}
+                className={`px-4 py-2 rounded ${
+                  currentPage === totalPages - 1
+                    ? 'bg-gray-200 text-gray-400 dark:bg-slate-500 cursor-not-allowed': 'bg-blue-600 dark:bg-slate-800 text-white hover:bg-blue-700'
+                }`}
+              >
+                Next
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-      </div>
     </div>
-  </div>
-    
   );
 };
 
