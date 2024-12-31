@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import Spinner from '../components/Spinner';
+import ConfirmationModal from '../components/ConfirmationModal'; 
 
 const DoorDetails = () => {
   const { id } = useParams();
@@ -12,6 +13,7 @@ const DoorDetails = () => {
   const [approvedRequests, setApprovedRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); 
 
   const itemsPerPage = 8;
   const [currentPage, setCurrentPage] = useState(0);
@@ -44,11 +46,11 @@ const DoorDetails = () => {
     }
 
     const link = document.createElement('a');
-    link.href = door.qrImage; // Base64 string
+    link.href = door.qrImage; 
     link.download = `${door.doorCode}_${door.roomName}_${door.location}_QR.png`; // Name of the downloaded file
     link.click();
   };
-  
+
   const handleDeleteDoor = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -194,7 +196,7 @@ const DoorDetails = () => {
                   <div>
                     <button
                       type="button"
-                      onClick={handleDeleteDoor}
+                      onClick={() => setIsDeleteModalOpen(true)} // Open the confirmation modal
                       className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 mb-2 w-40">
                       Delete Door
                     </button>
@@ -277,6 +279,14 @@ const DoorDetails = () => {
           </div>
         </div>
       </div>
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleDeleteDoor}
+        message="Are you sure you want to delete this door? This action cannot be undone."
+      />
     </div>
   );
 };
