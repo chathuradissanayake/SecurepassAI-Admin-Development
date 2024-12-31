@@ -8,7 +8,9 @@ import Spinner from '../components/Spinner';
 import UPDoorAccess from "../components/UPDoorAccess";
 import UPHistory from "../components/UPHistory";
 import UPPermissionRequests from "../components/UPPermissionRequests";
-import avatar from "../assets/avatar.png"
+import avatar from "../assets/avatar.png";
+import ConfirmationModal from '../components/ConfirmationModal'; // Import the ConfirmationModal component
+
 const UserProfile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -180,7 +182,7 @@ const UserProfile = () => {
             <div className="flex items-center">
               <img
                 src={user.profilePicture || avatar} 
-                alt=""
+                alt="User Avatar"
                 className="w-32 h-32 object-cover rounded-full"
               />
               <div className="ml-4">
@@ -212,7 +214,7 @@ const UserProfile = () => {
         <UPPermissionRequests pendingRequests={pendingRequests} onRequestUpdate={handleRequestUpdate} />
 
         {/* Door Access Table */}
-        <UPDoorAccess accessRecords={user.doorAccess} userId={user._id} onAccessUpdate={handleAccessUpdate} />
+        <UPDoorAccess accessRecords={user.doorAccess || []} userId={user._id} onAccessUpdate={handleAccessUpdate} />
 
         {/* Door Access History */}
         <UPHistory historyRecords={historyRecords} />
@@ -277,24 +279,12 @@ const UserProfile = () => {
         </Modal>
 
         {/* Delete User Modal */}
-        <Modal isVisible={isDeleteModalOpen} onClose={handleCloseDeleteModal}>
-          <h2 className="text-xl font-semibold mb-4">Confirm Delete</h2>
-          <p className="mb-4">Are you sure you want to delete this user? This action cannot be undone.</p>
-          <div className="flex justify-end gap-4">
-            <button
-              onClick={handleCloseDeleteModal}
-              className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={handleConfirmDelete}
-              className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-            >
-              Delete
-            </button>
-          </div>
-        </Modal>
+        <ConfirmationModal
+          isOpen={isDeleteModalOpen}
+          onClose={handleCloseDeleteModal}
+          onConfirm={handleConfirmDelete}
+          message="Are you sure you want to delete this user? This action cannot be undone."
+        />
         </div>
       </div>
     </div>
