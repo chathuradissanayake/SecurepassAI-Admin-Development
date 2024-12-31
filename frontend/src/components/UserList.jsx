@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Modal from '../components/Modal';
 import Spinner from '../components/Spinner';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
@@ -50,6 +52,7 @@ const UserList = () => {
       } catch (err) {
         setError(err.message);
         setLoading(false);
+        toast.error('Error fetching users');
       }
     };
 
@@ -91,6 +94,7 @@ const UserList = () => {
         setEmailError(response.data.isUnique ? '' : 'Email already taken');
       } catch (error) {
         console.error('Error checking email uniqueness', error);
+        toast.error('Error checking email uniqueness');
       }
     }
 
@@ -106,6 +110,7 @@ const UserList = () => {
         setUserIdError(response.data.isUnique ? '' : 'User ID already in use');
       } catch (error) {
         console.error('Error checking user ID uniqueness', error);
+        toast.error('Error checking user ID uniqueness');
       }
     }
   };
@@ -137,8 +142,10 @@ const UserList = () => {
       });
       setUsers(response.data);
       setFilteredUsers(response.data);
+      toast.success('User created successfully');
     } catch (err) {
       console.error(err);
+      toast.error('Error creating user');
     }
   };
 
@@ -165,7 +172,7 @@ const UserList = () => {
 
   return (
     <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
-
+      <ToastContainer />
       {/* Search and Add Button */}
       <div className="flex justify-between items-center mb-4">
       <h2 className="text-xl font-semibold dark:text-slate-100 mb-4">User List</h2>
