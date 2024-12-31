@@ -20,6 +20,9 @@ const LoginPage = () => {
       });
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", response.data.role);
+      if (response.data.company) {
+        localStorage.setItem("companyName", response.data.company); 
+      }
       console.log("Login successful, navigating to dashboard...");
       navigate("/dashboard");
     } catch (err) {
