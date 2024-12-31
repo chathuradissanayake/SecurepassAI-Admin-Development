@@ -18,4 +18,18 @@ const getCompaniesWithAdmins = async (req, res) => {
   }
 };
 
-module.exports = { getCompaniesWithAdmins,getCompanies };
+const addLocation = async (req, res) => {
+  const { companyId, location } = req.body;
+  try {
+    const company = await Company.findById(companyId);
+    if (!company) {
+      return res.status(404).json({ message: 'Company not found' });
+    }
+    company.locations.push(location);
+    await company.save();
+    res.status(200).json({ message: 'Location added successfully', company });
+  } catch (error) {
+    res.status(500).json({ message: 'Error adding location', error });
+  }
+};
+module.exports = { getCompaniesWithAdmins,getCompanies,addLocation };
