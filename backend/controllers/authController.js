@@ -62,6 +62,48 @@ const registerUser = async (req, res) => {
   }
 };
 
+
+// Check email uniqueness
+const checkEmailUnique = async (req, res) => {
+  const { email } = req.query;
+  try {
+    const user = await User.findOne({ email });
+    if (user) {
+      return res.status(200).json({ isUnique: false });
+    }
+    res.status(200).json({ isUnique: true });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Check userId uniqueness
+const checkUserIdUnique = async (req, res) => {
+  const { userId } = req.query;
+  try {
+    const user = await User.findOne({ userId });
+    if (user) {
+      return res.status(200).json({ isUnique: false });
+    }
+    res.status(200).json({ isUnique: true });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+const checkEmailUniqueForUpdate = async (req, res) => {
+  const { email, userId } = req.query;
+  try {
+    const user = await User.findOne({ email });
+    if (user && user.userId !== userId) {
+      return res.status(200).json({ isUnique: false });
+    }
+    res.status(200).json({ isUnique: true });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 // Get all users
 const getAllUsers = async (req, res) => {
   try {
@@ -201,4 +243,4 @@ const getUserHistoryById = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, getAllUsers, getUserById, updateUserById, deleteUserById,removeDoorAccess, getUserHistoryById };
+module.exports = { registerUser, getAllUsers, getUserById, updateUserById, deleteUserById,removeDoorAccess, getUserHistoryById, checkEmailUnique, checkUserIdUnique,checkEmailUniqueForUpdate };
