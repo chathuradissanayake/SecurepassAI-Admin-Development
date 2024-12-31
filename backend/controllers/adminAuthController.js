@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const loginAdminUser = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await AdminUser.findOne({ email });
+    const user = await AdminUser.findOne({ email }).populate('company');
     if (!user) {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
@@ -16,7 +16,7 @@ const loginAdminUser = async (req, res) => {
     }
 
     const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token, role: user.role });
+    res.json({ token, role: user.role, company: user.company ? user.company.name : null });
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }
@@ -78,4 +78,5 @@ const changePassword = async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 };
-module.exports = { loginAdminUser, getCurrentAdminUser,updateCurrentAdminUser,changePassword, getAllAdminUsers };
+
+module.exports = { loginAdminUser, getCurrentAdminUser, updateCurrentAdminUser, changePassword, getAllAdminUsers };
