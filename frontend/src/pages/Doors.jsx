@@ -4,6 +4,7 @@ import DoorSection from "../components/DoorSection";
 import Header from "../components/Header";
 import RecentAccessDoors from "../components/RecentAccessDoors";
 import Sidebar from "../components/Sidebar";
+import Spinner from "../components/Spinner"; 
 
 const Doors = () => {
   const [doors, setDoors] = useState([]);
@@ -51,28 +52,25 @@ const Doors = () => {
     fetchRecentAccess();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
-
   return (
     <div className="flex h-full dark:bg-slate-700">
       <Sidebar />
       <div className="flex-1">
         <Header />
-
-        {/* Doors */}
-        <div className="p-6 space-y-4 ">
+        <div className="p-6 space-y-4">
           <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
             Door Management
           </h2>
-          
-            <DoorSection doors={doors} setDoors={setDoors} />
-          
-
-          {/* Recent Access Records */}
-          
-            <RecentAccessDoors accessRecords={accessRecords} />
-          
+          {loading ? (
+            <Spinner /> // Show the spinner while loading
+          ) : error ? (
+            <p>Error: {error}</p>
+          ) : (
+            <>
+              <DoorSection doors={doors} setDoors={setDoors} />
+              <RecentAccessDoors accessRecords={accessRecords} />
+            </>
+          )}
         </div>
       </div>
     </div>

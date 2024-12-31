@@ -15,6 +15,7 @@ const Header = () => {
     toggleTheme(); // Switch the theme when toggled
   };
 
+  const userRole = localStorage.getItem('role'); // Assuming you store the role in localStorage
 
   const getTitle = (path) => {
     if (path.startsWith('/users/') && path.split('/').length === 3) {
@@ -41,25 +42,28 @@ const Header = () => {
   };
 
   useEffect(() => {
-    const fetchUnreadMessagesCount = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`/api/collections/unread-count`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          withCredentials: true,
-        });
-        const data = await response.json();
-    
-        console.log("Unread Messages Count:", data.count); // Log the count
-        setUnreadCount(data.count || 0); // Update the state with the count
-      } catch (error) {
-        console.error("Error fetching unread messages count:", error);
-      }
-    };
+    if (userRole === 'Admin') {
+      const fetchUnreadMessagesCount = async () => {
+        try {
+          const token = localStorage.getItem('token');
+          const response = await fetch(`/api/collections/unread-count`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            withCredentials: true,
+          });
+          const data = await response.json();
+      
+          console.log("Unread Messages Count:", data.count); // Log the count
+          setUnreadCount(data.count || 0); // Update the state with the count
+        } catch (error) {
+          console.error("Error fetching unread messages count:", error);
+        }
+      };
       fetchUnreadMessagesCount();
-    }, []);
+    }
+  }, [userRole]);
+
   return (
     <div>
       <header className="flex justify-between items-center p-5 bg-white dark:bg-slate-700">
@@ -85,10 +89,12 @@ const Header = () => {
             </span>
           </div>
 
-          <div className="relative mr-2">
-            <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full text-xs px-1">{unreadCount}</span>
-            <button className="text-yellow-400 text-3xl mt-1  "><FaBell /></button>
-          </div>
+          {userRole === 'Admin' && (
+            <div className="relative mr-2">
+              <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full text-xs px-1">{unreadCount}</span>
+              <button className="text-yellow-400 text-3xl mt-1"><FaBell /></button>
+            </div>
+          )}
           {/* <button className="text-gray-600">🌙</button> */}
           <img
             src={avatar}
