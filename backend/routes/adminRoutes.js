@@ -1,7 +1,7 @@
 const express = require('express');
 const { loginAdminUser, getCurrentAdminUser, updateCurrentAdminUser, changePassword, getAllAdminUsers } = require('../controllers/adminAuthController');
 const { createCompany, createAdminUser } = require('../controllers/superAdminController');
-const { getCompaniesWithAdmins, getCompanies } = require('../controllers/companyController');
+const { getCompaniesWithAdmins, getCompanies, addLocation } = require('../controllers/companyController');
 const { authMiddleware, roleMiddleware } = require('../middleware/authMiddleware');
 const router = express.Router();
 
@@ -28,6 +28,9 @@ router.get('/companies-with-admins', authMiddleware, getCompaniesWithAdmins);
 
 // Get all companies
 router.get('/companies', authMiddleware, getCompanies);
+
+// Add a location to a company
+router.post('/add-location', authMiddleware, addLocation);
 
 // Create a new admin user (SuperAdmin only)
 router.post('/create-admin', authMiddleware, roleMiddleware(['SuperAdmin']), createAdminUser);
