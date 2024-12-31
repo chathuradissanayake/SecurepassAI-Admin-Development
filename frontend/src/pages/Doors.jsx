@@ -62,7 +62,7 @@ const Doors = () => {
             Door Management
           </h2>
           {loading ? (
-            <Spinner /> // Show the spinner while loading
+            <Spinner /> 
           ) : error ? (
             <p>Error: {error}</p>
           ) : (
