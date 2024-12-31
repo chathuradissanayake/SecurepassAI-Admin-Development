@@ -21,6 +21,9 @@ const Header = () => {
     if (path.startsWith('/users/') && path.split('/').length === 3) {
       return 'User Profile';
     }
+    if (path.startsWith('/doors/') && path.split('/').length === 3) {
+      return 'Door Details';
+    }
     switch (path) {
       case '/dashboard':
         return 'Dashboard';
@@ -28,6 +31,8 @@ const Header = () => {
         return 'Users';
       case '/doors':
         return 'Doors';
+      case '/create-door':
+        return 'Create Door';
       case '/settings':
         return 'Settings';
       case '/profile':
@@ -69,11 +74,6 @@ const Header = () => {
       <header className="flex justify-between items-center p-5 bg-white dark:bg-slate-700">
         <h2 className="text-gray-600 text-sm dark:text-slate-300">Pages / {getTitle(location.pathname)}</h2>
         <div className="flex items-center gap-4">
-          {/* <input
-            type="text"
-            placeholder="Search"
-            className="p-2 rounded-full bg-gray-100"
-          /> */}
           <div className="flex items-center mr-4">
             <label className="relative inline-flex items-center cursor-pointer">
               <input
@@ -95,7 +95,6 @@ const Header = () => {
               <button className="text-yellow-400 text-3xl mt-1"><FaBell /></button>
             </div>
           )}
-          {/* <button className="text-gray-600">🌙</button> */}
           <img
             src={avatar}
             alt="User Avatar"
