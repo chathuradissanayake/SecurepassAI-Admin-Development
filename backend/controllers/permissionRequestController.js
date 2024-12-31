@@ -136,7 +136,6 @@ const getPendingRequests = async (req, res) => {
 module.exports = {
   createPermissionRequest,
   getPermissionRequestsByUserId,
-  getAllPermissionRequests,
   approvePermissionRequest,
   rejectPermissionRequest,
   getPendingRequests,

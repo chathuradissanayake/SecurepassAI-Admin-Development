@@ -16,8 +16,6 @@ router.post('/create', createPermissionRequest);
 // Route to get permission requests by user ID
 router.get('/user/:userId', getPermissionRequestsByUserId);
 
-router.get("/", getAllPermissionRequests); // New route to fetch all requests
-
 // Route to approve a permission request
 router.put('/:id/approve', approvePermissionRequest);
 
