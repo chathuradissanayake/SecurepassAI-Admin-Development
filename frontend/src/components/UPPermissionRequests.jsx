@@ -94,8 +94,8 @@ const UPPermissionRequests = ({ pendingRequests, onRequestUpdate }) => {
               const formattedDate = date.toLocaleDateString('en-CA'); // 'en-CA' locale formats date as yyyy-mm-dd
               return (
                 <tr key={index} className="hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
-                  <td className="p-2 border border-gray-200 dark:border-slate-500">{request.door.doorCode}</td>
-                  <td className="p-2 border border-gray-200 dark:border-slate-500">{request.door.roomName}</td>
+                  <td className="p-2 border border-gray-200 dark:border-slate-500">{request.door?.doorCode || 'N/A'}</td>
+                  <td className="p-2 border border-gray-200 dark:border-slate-500">{request.door?.roomName || 'N/A'}</td>
                   <td className="p-2 border border-gray-200 dark:border-slate-500">{formattedDate}</td>
                   <td className="p-2 border border-gray-200 dark:border-slate-500">{request.inTime}</td>
                   <td className="p-2 border border-gray-200 dark:border-slate-500">{request.outTime}</td>
