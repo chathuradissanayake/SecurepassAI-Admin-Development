@@ -1,9 +1,9 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { FaList, FaTh } from 'react-icons/fa'; // Import icons
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { FaTh, FaList } from 'react-icons/fa'; // Import icons
 
 const CompanyList = () => {
   const [companies, setCompanies] = useState([]);
@@ -108,11 +108,11 @@ const CompanyList = () => {
           {companies.map((company) => (
             <div
               key={company._id}
-              className="p-6 rounded-lg shadow-md bg-slate-100 cursor-pointer"
+              className="p-6 rounded-lg shadow-md bg-slate-100 dark:bg-slate-700 cursor-pointer hover:dark:bg-slate-800 hover:bg-slate-300"
               onClick={() => handleTileClick(company._id)}
             >
-              <h3 className="text-xl font-semibold text-gray-900">{company.name}</h3>
-              <p className="text-gray-600">{company.address}</p>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-slate-100">{company.name}</h3>
+              <p className="text-gray-600 dark:text-gray-400">{company.address}</p>
             </div>
           ))}
         </div>
