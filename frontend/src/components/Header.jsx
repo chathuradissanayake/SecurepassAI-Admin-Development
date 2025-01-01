@@ -32,6 +32,9 @@ const Header = () => {
     if (path.startsWith('/doors/') && path.split('/').length === 3) {
       return 'Door Details';
     }
+    if (path.startsWith('/companies/') && path.split('/').length === 3) {
+      return 'Company Profile';
+    }
     switch (path) {
       case '/dashboard':
         return 'Dashboard';
