@@ -40,6 +40,54 @@ const getAllAdminUsers = async (req, res) => {
   }
 };
 
+const getAdminUserById = async (req, res) => {
+  try {
+    const user = await AdminUser.findById(req.params.id).populate('company').select('-password');
+    if (!user) {
+      return res.status(404).json({ error: 'Admin user not found' });
+    }
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+const updateAdminUserById = async (req, res) => {
+  try {
+    const { firstName, lastName, email, companyId } = req.body;
+    const user = await AdminUser.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ error: 'Admin user not found' });
+    }
+
+    if (firstName) user.firstName = firstName;
+    if (lastName) user.lastName = lastName;
+    if (email) user.email = email;
+    if (companyId) user.company = companyId;
+
+    await user.save();
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+const deleteAdminUserById = async (req, res) => {
+  try {
+    const user = await AdminUser.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ error: 'Admin user not found' });
+    }
+
+    await user.remove();
+    res.json({ message: 'Admin user deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
 const updateCurrentAdminUser = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
@@ -79,4 +127,4 @@ const changePassword = async (req, res) => {
   }
 };
 
-module.exports = { loginAdminUser, getCurrentAdminUser, updateCurrentAdminUser, changePassword, getAllAdminUsers };
+module.exports = { loginAdminUser, getCurrentAdminUser, updateCurrentAdminUser, changePassword, getAllAdminUsers, getAdminUserById, updateAdminUserById, deleteAdminUserById };
