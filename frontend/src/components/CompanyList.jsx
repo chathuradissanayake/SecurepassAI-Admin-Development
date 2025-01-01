@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -9,6 +10,7 @@ const CompanyList = () => {
   const [newCompany, setNewCompany] = useState({ name: '', address: '' });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -46,12 +48,16 @@ const CompanyList = () => {
       setNewCompany({ name: '', address: '' });
       setShowModal(false);
       setError('');
-      toast.success('Company created successfully'); // Display success message
+      toast.success('Company created successfully'); 
     } catch (err) {
       setError('Failed to create company');
       setSuccess('');
-      toast.error('Failed to create company'); // Display error message
+      toast.error('Failed to create company');
     }
+  };
+
+  const handleTileClick = (id) => {
+    navigate(`/companies/${id}`);
   };
 
   return (
@@ -71,7 +77,11 @@ const CompanyList = () => {
       {success && <p className="text-green-500">{success}</p>}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {companies.map((company) => (
-          <div key={company._id} className="bg-white p-6 rounded-lg shadow-md">
+          <div
+            key={company._id}
+            className="p-6 rounded-lg shadow-md bg-slate-100 cursor-pointer"
+            onClick={() => handleTileClick(company._id)}
+          >
             <h3 className="text-xl font-semibold text-gray-900">{company.name}</h3>
             <p className="text-gray-600">{company.address}</p>
             <h4 className="mt-4 text-lg font-medium text-gray-800">Admins</h4>
