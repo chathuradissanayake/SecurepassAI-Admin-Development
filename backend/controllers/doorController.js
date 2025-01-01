@@ -3,7 +3,7 @@ const AdminUser = require('../models/AdminUser');
 const PermissionRequest = require('../models/PermissionRequest');
 
 const createDoor = async (req, res) => {
-  const { location, doorCode, roomName, qrData, qrImage, status} = req.body;
+  const { location, doorCode, roomName, qrData, qrImage, status } = req.body;
 
   if (!doorCode || !roomName || !qrData) {
     return res.status(400).json({ success: false, message: "All fields are required." });
@@ -16,10 +16,8 @@ const createDoor = async (req, res) => {
       return res.status(400).json({ success: false, message: "Admin user or company not found." });
     }
 
-    const location = adminUser.company.name; // Set the location with the company name
-
     const newDoor = new Door({
-      location,
+      location, // Use the provided location
       doorCode,
       roomName,
       qrData,
@@ -36,6 +34,7 @@ const createDoor = async (req, res) => {
     res.status(500).json({ success: false, message: "Error saving QR Code." });
   }
 };
+
 
 const getDoorById = async (req, res) => {
   const { id } = req.params;
@@ -86,11 +85,22 @@ const deleteDoor = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const deletedDoor = await Door.findOneAndDelete({ _id: id, company: req.companyId });
-    if (!deletedDoor) {
+    // Find the door to be deleted
+    const door = await Door.findOneAndDelete({ _id: id, company: req.companyId });
+    if (!door) {
       return res.status(404).json({ error: 'Door not found' });
     }
-    res.status(200).json({ message: 'Door deleted successfully' });
+
+    // Remove references to the door in permission requests
+    await PermissionRequest.deleteMany({ door: id });
+
+    // Remove references to the door in users' approved doors
+    await User.updateMany(
+      { 'doorAccess.door': id },
+      { $pull: { doorAccess: { door: id } } }
+    );
+
+    res.status(200).json({ message: 'Door and related references deleted successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

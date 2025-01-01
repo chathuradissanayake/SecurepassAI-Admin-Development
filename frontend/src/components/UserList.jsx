@@ -1,8 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Modal from '../components/Modal';
 import Spinner from '../components/Spinner';
+import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import { BiError } from "react-icons/bi";
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -23,6 +27,10 @@ const UserList = () => {
   });
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [emailUnique, setEmailUnique] = useState(null);
+  const [userIdUnique, setUserIdUnique] = useState(null);
+  const [emailError, setEmailError] = useState('');
+  const [userIdError, setUserIdError] = useState('');
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -44,6 +52,7 @@ const UserList = () => {
       } catch (err) {
         setError(err.message);
         setLoading(false);
+        toast.error('Error fetching users');
       }
     };
 
@@ -64,12 +73,46 @@ const UserList = () => {
     setCurrentPage(1); // Reset to the first page on a new search
   };
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const { name, value } = e.target;
     setNewUser((prevUser) => ({
       ...prevUser,
       [name]: value,
     }));
+
+    const token = localStorage.getItem('token');
+
+    if (name === 'email') {
+      try {
+        const response = await axios.get(`/api/users/check-email?email=${value}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
+        setEmailUnique(response.data.isUnique);
+        setEmailError(response.data.isUnique ? '' : 'Email already taken');
+      } catch (error) {
+        console.error('Error checking email uniqueness', error);
+        toast.error('Error checking email uniqueness');
+      }
+    }
+
+    if (name === 'userId') {
+      try {
+        const response = await axios.get(`/api/users/check-userId?userId=${value}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
+        setUserIdUnique(response.data.isUnique);
+        setUserIdError(response.data.isUnique ? '' : 'User ID already in use');
+      } catch (error) {
+        console.error('Error checking user ID uniqueness', error);
+        toast.error('Error checking user ID uniqueness');
+      }
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -99,8 +142,10 @@ const UserList = () => {
       });
       setUsers(response.data);
       setFilteredUsers(response.data);
+      toast.success('User created successfully');
     } catch (err) {
       console.error(err);
+      toast.error('Error creating user');
     }
   };
 
@@ -127,7 +172,7 @@ const UserList = () => {
 
   return (
     <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
-
+      <ToastContainer />
       {/* Search and Add Button */}
       <div className="flex justify-between items-center mb-4">
       <h2 className="text-xl font-semibold dark:text-slate-100 mb-4">User List</h2>
@@ -237,7 +282,7 @@ const UserList = () => {
               required
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <label className="block text-gray-700 dark:text-slate-200">Email</label>
             <input
               type="email"
@@ -248,18 +293,38 @@ const UserList = () => {
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-600 dark:text-slate-100 focus:ring-blue-400"
               required
             />
+            {emailUnique !== null && (
+              <span className="absolute right-3 top-10 transform -translate-y-1/2 text-lg">
+                {emailUnique ? <FaCheckCircle className="text-green-500" /> : <FaTimesCircle className="text-red-500" />}
+              </span>
+            )}
+            {emailError && (
+              <p className="text-red-500 mt-1 flex items-center">
+                <BiError className="mr-1" /> {emailError}
+              </p>
+            )}
           </div>
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <label className="block text-gray-700 dark:text-slate-200">User ID</label>
             <input
               type="text"
               name="userId"
               value={newUser.userId}
-              placeholder='InSP/XXXX/XXX/XX'
+              placeholder='InSP/yyyy/xxx/xxx'
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-600 dark:text-slate-100 focus:ring-blue-400"
               required
             />
+            {userIdUnique !== null && (
+              <span className="absolute right-3 top-10 transform -translate-y-1/2 text-lg">
+                {userIdUnique ? <FaCheckCircle className="text-green-500" /> : <FaTimesCircle className="text-red-500" />}
+              </span>
+            )}
+            {userIdError && (
+              <p className="text-red-500 mt-1 flex items-center">
+                <BiError className="mr-1" /> {userIdError}
+              </p>
+            )}
           </div>
           <div className="mb-4">
             <label className="block text-gray-700 dark:text-slate-200">Password</label>
@@ -283,9 +348,10 @@ const UserList = () => {
             </button>
             <button
               type="submit"
-              className="bg-blue-500 w-20 text-white px-4 py-2 rounded"
+              className={`w-20 px-4 py-2 rounded ${!emailUnique || !userIdUnique ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 text-white'}`}
+              disabled={!emailUnique || !userIdUnique} // Disable submit if email or userId is not unique
             >
-              Save
+              Create
             </button>
           </div>
         </form>

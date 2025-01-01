@@ -1,11 +1,14 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ConfirmationModal from './ConfirmationModal'; // Import the ConfirmationModal component
 
-const UPDoorAccess = ({ accessRecords, userId, onAccessUpdate }) => {
+const UPDoorAccess = ({ accessRecords = [], userId, onAccessUpdate }) => {
   const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(0);
   const [records, setRecords] = useState(accessRecords);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // State for delete confirmation modal
+  const [recordToDelete, setRecordToDelete] = useState(null); // State to store the record to delete
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,10 +42,16 @@ const UPDoorAccess = ({ accessRecords, userId, onAccessUpdate }) => {
   };
 
   // Handler for removing a record
-  const handleRemovePermission = async (indexToRemove, doorAccessId) => {
+  const handleRemovePermission = async () => {
     try {
-      await axios.delete(`/api/users/${userId}/doorAccess/${doorAccessId}`, { withCredentials: true });
-      const updatedRecords = records.filter((_, index) => index !== indexToRemove);
+      const token = localStorage.getItem('token');
+      await axios.delete(`/api/users/${userId}/doorAccess/${recordToDelete._id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
+      const updatedRecords = records.filter((record) => record._id !== recordToDelete._id);
       setRecords(updatedRecords);
 
       // Adjust current page if it goes out of range after removal
@@ -52,6 +61,7 @@ const UPDoorAccess = ({ accessRecords, userId, onAccessUpdate }) => {
 
       // Trigger the state update in the UserProfile component
       onAccessUpdate();
+      setIsDeleteModalOpen(false); // Close the confirmation modal
     } catch (error) {
       console.error('Error removing door access:', error);
     }
@@ -59,7 +69,7 @@ const UPDoorAccess = ({ accessRecords, userId, onAccessUpdate }) => {
 
   return (
     <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
-      <h2 className="text-xl font-semibold mb-4 text-slate-700 dark:text-slate-100">Permissioned Doors</h2>
+      <h2 className="text-xl font-semibold mb-4 text-slate-700 dark:text-slate-100">Approved Doors</h2>
 
       {/* Table */}
       <div className="overflow-x-auto dark:bg-slate-700">
@@ -93,7 +103,10 @@ const UPDoorAccess = ({ accessRecords, userId, onAccessUpdate }) => {
                 <td className="p-2 border border-gray-200 dark:border-slate-500">{record.outTime}</td>
                 <td className="p-2 border text-center border-gray-200 dark:border-slate-500">
                   <button
-                    onClick={() => handleRemovePermission(currentPage * itemsPerPage + index, record._id)}
+                    onClick={() => {
+                      setRecordToDelete(record);
+                      setIsDeleteModalOpen(true);
+                    }}
                     className="bg-red-400 text-white py-1 px-3 rounded hover:bg-red-500 "
                   >
                     Remove Permission
@@ -142,6 +155,14 @@ const UPDoorAccess = ({ accessRecords, userId, onAccessUpdate }) => {
           Next
         </button>
       </div>
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleRemovePermission}
+        message="Are you sure you want to remove this door access? This action cannot be undone."
+      />
     </div>
   );
 };
