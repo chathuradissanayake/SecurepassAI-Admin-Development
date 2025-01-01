@@ -206,7 +206,7 @@ const CompanyProfile = () => {
                     </td>
                     <td className="py-2 px-4 border-b dark:border-slate-500">
                       <button
-                        onClick={() => navigate(`/admin/manage/${admin._id}`)}
+                        onClick={() => navigate(`/admin-users/${admin._id}`)}
                         className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600"
                       >
                         Manage
