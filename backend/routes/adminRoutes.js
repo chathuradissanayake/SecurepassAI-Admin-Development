@@ -1,5 +1,5 @@
 const express = require('express');
-const { loginAdminUser, getCurrentAdminUser, updateCurrentAdminUser, changePassword, getAllAdminUsers } = require('../controllers/adminAuthController');
+const { loginAdminUser, getCurrentAdminUser, updateCurrentAdminUser, changePassword, getAllAdminUsers, getAdminUserById, updateAdminUserById, deleteAdminUserById } = require('../controllers/adminAuthController');
 const { createCompany, createAdminUser } = require('../controllers/superAdminController');
 const { getCompaniesWithAdmins, getCompanies, getCompanyById, updateCompany, deleteCompany, addLocation, checkCompanyNameAndAddressUnique } = require('../controllers/companyController');
 const { authMiddleware, roleMiddleware } = require('../middleware/authMiddleware');
@@ -13,6 +13,15 @@ router.get('/me', authMiddleware, getCurrentAdminUser);
 
 // Get all admin users (SuperAdmin only)
 router.get('/admin-users', authMiddleware, roleMiddleware(['SuperAdmin']), getAllAdminUsers);
+
+// Get an admin user by ID
+router.get('/admin-users/:id', authMiddleware, getAdminUserById);
+
+// Update an admin user by ID
+router.put('/admin-users/:id', authMiddleware, updateAdminUserById);
+
+// Delete an admin user by ID
+router.delete('/admin-users/:id', authMiddleware, deleteAdminUserById);
 
 // Update current admin user
 router.put('/me', authMiddleware, updateCurrentAdminUser);
