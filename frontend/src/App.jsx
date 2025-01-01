@@ -17,6 +17,7 @@ import UserProfile from './pages/UserProfile';
 import Users from './pages/Users';
 import { isTokenExpired, getToken, getRole, clearAuthData } from './utils/auth';
 import ProtectedRoute from './components/ProtectedRoute';
+import CompanyProfile from './pages/CompanyProfile';
 
 const App = () => {
   const token = getToken();
@@ -40,6 +41,7 @@ const App = () => {
           <Route path="/settings" element={isAuthenticated ? <ProtectedRoute allowedRoles={['Admin']}><Settings /></ProtectedRoute> : <Navigate to="/login" />} />
           <Route path="/profile" element={isAuthenticated ? <Profile /> : <Navigate to="/login" />} />
           <Route path="/companies" element={isAuthenticated ? <ProtectedRoute allowedRoles={['SuperAdmin']}><Companies /></ProtectedRoute> : <Navigate to="/login" />} />
+          <Route path="//companies/:id" element={isAuthenticated ? <ProtectedRoute allowedRoles={['SuperAdmin']}><CompanyProfile /></ProtectedRoute> : <Navigate to="/login" />} />
           <Route path="/admin-users" element={isAuthenticated ? <ProtectedRoute allowedRoles={['SuperAdmin']}><AdminUsers /></ProtectedRoute> : <Navigate to="/login" />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/logout" element={<LogoutPage />} />
