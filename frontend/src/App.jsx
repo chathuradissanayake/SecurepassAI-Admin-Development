@@ -15,14 +15,14 @@ import QRGenerator from './pages/QRGenerator';
 import Settings from './pages/Settings';
 import UserProfile from './pages/UserProfile';
 import Users from './pages/Users';
-import { isTokenExpired, getToken, getRole, clearAuthData } from './utils/auth';
+import { isTokenExpired, getToken, clearAuthData } from './utils/auth';
 import ProtectedRoute from './components/ProtectedRoute';
 import CompanyProfile from './pages/CompanyProfile';
+import AdminProfile from './pages/AdminProfile';
 
 const App = () => {
   const token = getToken();
   const isAuthenticated = token && !isTokenExpired(token);
-  const userRole = getRole();
 
   if (!isAuthenticated) {
     clearAuthData();
@@ -43,6 +43,7 @@ const App = () => {
           <Route path="/companies" element={isAuthenticated ? <ProtectedRoute allowedRoles={['SuperAdmin']}><Companies /></ProtectedRoute> : <Navigate to="/login" />} />
           <Route path="//companies/:id" element={isAuthenticated ? <ProtectedRoute allowedRoles={['SuperAdmin']}><CompanyProfile /></ProtectedRoute> : <Navigate to="/login" />} />
           <Route path="/admin-users" element={isAuthenticated ? <ProtectedRoute allowedRoles={['SuperAdmin']}><AdminUsers /></ProtectedRoute> : <Navigate to="/login" />} />
+          <Route path="/admin-users/:id" element={isAuthenticated ? <ProtectedRoute allowedRoles={['SuperAdmin']}><AdminProfile /></ProtectedRoute> : <Navigate to="/login" />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/logout" element={<LogoutPage />} />
           <Route path="/login" element={<LoginPage />} />
