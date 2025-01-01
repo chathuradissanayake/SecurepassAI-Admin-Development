@@ -1,7 +1,7 @@
 const express = require('express');
 const { loginAdminUser, getCurrentAdminUser, updateCurrentAdminUser, changePassword, getAllAdminUsers } = require('../controllers/adminAuthController');
 const { createCompany, createAdminUser } = require('../controllers/superAdminController');
-const { getCompaniesWithAdmins, getCompanies, addLocation } = require('../controllers/companyController');
+const { getCompaniesWithAdmins, getCompanies, getCompanyById, updateCompany, deleteCompany, addLocation, checkCompanyNameAndAddressUnique } = require('../controllers/companyController');
 const { authMiddleware, roleMiddleware } = require('../middleware/authMiddleware');
 const router = express.Router();
 
@@ -28,6 +28,18 @@ router.get('/companies-with-admins', authMiddleware, getCompaniesWithAdmins);
 
 // Get all companies
 router.get('/companies', authMiddleware, getCompanies);
+
+// Check if company name and address combination is unique
+router.get('/companies/check-name-address-update', authMiddleware, checkCompanyNameAndAddressUnique);
+
+// Get a company by ID
+router.get('/companies/:id', authMiddleware, getCompanyById);
+
+// Update a company
+router.put('/companies/:id', authMiddleware, updateCompany);
+
+// Delete a company
+router.delete('/companies/:id', authMiddleware, deleteCompany);
 
 // Add a location to a company
 router.post('/add-location', authMiddleware, addLocation);
