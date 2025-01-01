@@ -1,5 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CompanyList = () => {
   const [companies, setCompanies] = useState([]);
@@ -43,47 +45,47 @@ const CompanyList = () => {
       setCompanies([...companies, response.data]);
       setNewCompany({ name: '', address: '' });
       setShowModal(false);
-      setSuccess('Company created successfully');
       setError('');
+      toast.success('Company created successfully'); // Display success message
     } catch (err) {
       setError('Failed to create company');
       setSuccess('');
+      toast.error('Failed to create company'); // Display error message
     }
   };
 
   return (
     <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
-
-    {/* Search and Add Button */}
-    <div className="flex justify-between items-center mb-4">
+      <ToastContainer /> {/* Add ToastContainer */}
+      {/* Search and Add Button */}
+      <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold dark:text-slate-100 mb-4">Company List</h2>
         <button
-        onClick={() => setShowModal(true)}
-        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-        Create Company
+          onClick={() => setShowModal(true)}
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+        >
+          Create Company
         </button>
-        </div>
-        {error && <p className="text-red-500">{error}</p>}
-        {success && <p className="text-green-500">{success}</p>}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      </div>
+      {error && <p className="text-red-500">{error}</p>}
+      {success && <p className="text-green-500">{success}</p>}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {companies.map((company) => (
-            <div key={company._id} className="bg-white p-6 rounded-lg shadow-md">
+          <div key={company._id} className="bg-white p-6 rounded-lg shadow-md">
             <h3 className="text-xl font-semibold text-gray-900">{company.name}</h3>
             <p className="text-gray-600">{company.address}</p>
             <h4 className="mt-4 text-lg font-medium text-gray-800">Admins</h4>
             <ul className="mt-2 space-y-2">
-                {company.admins.map((admin) => (
+              {company.admins.map((admin) => (
                 <li key={admin._id} className="flex items-center space-x-2">
-                    <div className="text-gray-900">{admin.firstName} {admin.lastName}</div>
-                    <div className="text-gray-500">({admin.email})</div>
+                  <div className="text-gray-900">{admin.firstName} {admin.lastName}</div>
+                  <div className="text-gray-500">({admin.email})</div>
                 </li>
-                ))}
+              ))}
             </ul>
-            </div>
+          </div>
         ))}
-        </div>
-        
-      
+      </div>
 
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
