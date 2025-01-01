@@ -182,6 +182,42 @@ const CompanyProfile = () => {
             </div>
           </div>
 
+          {/* Admin Users List */}
+          <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
+            <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
+              Admin Users
+            </h3>
+            <table className="min-w-full bg-white dark:bg-slate-600">
+              <thead>
+                <tr>
+                  <th className="py-2 px-4 border-b dark:border-slate-500">Full Name</th>
+                  <th className="py-2 px-4 border-b dark:border-slate-500">Email</th>
+                  <th className="py-2 px-4 border-b dark:border-slate-500">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {company.admins.map((admin) => (
+                  <tr key={admin._id}>
+                    <td className="py-2 px-4 border-b dark:border-slate-500 text-slate-700 dark:text-slate-100">
+                      {admin.firstName} {admin.lastName}
+                    </td>
+                    <td className="py-2 px-4 border-b dark:border-slate-500 text-slate-500 dark:text-slate-300">
+                      {admin.email}
+                    </td>
+                    <td className="py-2 px-4 border-b dark:border-slate-500">
+                      <button
+                        onClick={() => navigate(`/admin/manage/${admin._id}`)}
+                        className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600"
+                      >
+                        Manage
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
           {/* Edit Company Modal */}
           <Modal isVisible={isEditModalOpen} onClose={handleCloseEditModal}>
             <h2 className="text-xl text-slate-700 dark:text-slate-200 font-bold mb-4">
