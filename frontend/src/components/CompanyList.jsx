@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FaTh, FaList } from 'react-icons/fa'; // Import icons
 
 const CompanyList = () => {
   const [companies, setCompanies] = useState([]);
@@ -10,6 +11,7 @@ const CompanyList = () => {
   const [newCompany, setNewCompany] = useState({ name: '', address: '' });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [viewMode, setViewMode] = useState('grid'); // State for view mode
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,7 +53,6 @@ const CompanyList = () => {
       );
 
       if (!checkResponse.data.isUnique) {
-        // setError('Company name and address combination already taken');
         toast.error('Company name and address combination already taken');
         return;
       }
@@ -82,8 +83,17 @@ const CompanyList = () => {
     <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
       <ToastContainer /> {/* Add ToastContainer */}
       {/* Search and Add Button */}
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold dark:text-slate-100 mb-4">Company List</h2>
+      <div className="flex justify-between items-center mb-4 ">
+        <div className='flex items-center gap-4'>
+          <FaTh
+            onClick={() => setViewMode('grid')}
+            className={`cursor-pointer text-2xl ${viewMode === 'grid' ? 'text-blue-500' : 'text-gray-500'} hover:text-blue-600`}
+          />
+          <FaList
+            onClick={() => setViewMode('list')}
+            className={`ml-2 cursor-pointer text-2xl ${viewMode === 'list' ? 'text-blue-500' : 'text-gray-500'} hover:text-blue-600`}
+          />
+        </div>
         <button
           onClick={() => setShowModal(true)}
           className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
@@ -93,27 +103,63 @@ const CompanyList = () => {
       </div>
       {error && <p className="text-red-500">{error}</p>}
       {success && <p className="text-green-500">{success}</p>}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {companies.map((company) => (
-          <div
-            key={company._id}
-            className="p-6 rounded-lg shadow-md bg-slate-100 cursor-pointer"
-            onClick={() => handleTileClick(company._id)}
-          >
-            <h3 className="text-xl font-semibold text-gray-900">{company.name}</h3>
-            <p className="text-gray-600">{company.address}</p>
-            <h4 className="mt-4 text-lg font-medium text-gray-800">Admins</h4>
-            <ul className="mt-2 space-y-2">
-              {company.admins.map((admin) => (
-                <li key={admin._id} className="flex items-center space-x-2">
-                  <div className="text-gray-900">{admin.firstName} {admin.lastName}</div>
-                  <div className="text-gray-500">({admin.email})</div>
-                </li>
+      {viewMode === 'grid' ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {companies.map((company) => (
+            <div
+              key={company._id}
+              className="p-6 rounded-lg shadow-md bg-slate-100 cursor-pointer"
+              onClick={() => handleTileClick(company._id)}
+            >
+              <h3 className="text-xl font-semibold text-gray-900">{company.name}</h3>
+              <p className="text-gray-600">{company.address}</p>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="overflow-hidden shadow-md sm:rounded-lg">
+          <table className="min-w-full bg-white border border-gray-200">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="px-6 py-3 text-left text-sm font-medium text-gray-600">
+                  Name
+                </th>
+                <th className="px-6 py-3 text-left text-sm font-medium text-gray-600">
+                  Address
+                </th>
+                <th className="px-6 py-3 text-left text-sm font-medium text-gray-600">
+                  Admins
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {companies.map((company, index) => (
+                <tr
+                  key={company._id}
+                  className={`border-b ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-gray-100`}
+                  onClick={() => handleTileClick(company._id)}
+                >
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <p className="text-sm font-medium text-gray-900">{company.name}</p>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <p className="text-sm text-gray-900">{company.address}</p>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <ul className="list-disc list-inside">
+                      {company.admins.map((admin) => (
+                        <li key={admin._id} className="text-sm text-gray-900">
+                          {admin.firstName} {admin.lastName}
+                        </li>
+                      ))}
+                    </ul>
+                  </td>
+                </tr>
               ))}
-            </ul>
-          </div>
-        ))}
-      </div>
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
