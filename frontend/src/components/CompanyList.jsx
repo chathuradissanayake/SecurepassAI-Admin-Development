@@ -39,6 +39,24 @@ const CompanyList = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
+      // Check if the company name and address combination is unique
+      const checkResponse = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/admin/companies/check-name-address-update`,
+        {
+          params: { name: newCompany.name, address: newCompany.address },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!checkResponse.data.isUnique) {
+        // setError('Company name and address combination already taken');
+        toast.error('Company name and address combination already taken');
+        return;
+      }
+
+      // Create the company if the combination is unique
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/admin/create-company`, newCompany, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -48,7 +66,7 @@ const CompanyList = () => {
       setNewCompany({ name: '', address: '' });
       setShowModal(false);
       setError('');
-      toast.success('Company created successfully'); 
+      toast.success('Company created successfully');
     } catch (err) {
       setError('Failed to create company');
       setSuccess('');
