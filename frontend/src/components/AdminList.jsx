@@ -149,6 +149,7 @@ const AdminList = () => {
                   <button
                     type="button"
                     className="text-gray-600 hover:text-gray-900 focus:outline-none"
+                    onClick={() => navigate(`/admin-users/${admin._id}`)}
                   >
                     &#x22EE; {/* Unicode character for vertical ellipsis */}
                   </button>
