@@ -110,7 +110,7 @@ const AdminList = () => {
           Create Admin
         </button>
       </div>
-      <div className="">
+      <div>
         <table className="w-full mt-4 bg-white dark:bg-slate-700 shadow-md rounded-lg overflow-hidden">
           <thead>
             <tr className="text-left bg-gray-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-b border-gray-300 dark:border-slate-400">
