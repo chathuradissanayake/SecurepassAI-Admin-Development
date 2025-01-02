@@ -7,16 +7,18 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const CompanyList = () => {
   const [companies, setCompanies] = useState([]);
+  const [filteredCompanies, setFilteredCompanies] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [newCompany, setNewCompany] = useState({ name: '', address: '' });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [viewMode, setViewMode] = useState('grid'); // State for view mode
   const [currentPage, setCurrentPage] = useState(0); // State for current page
+  const [searchQuery, setSearchQuery] = useState(''); // State for search query
   const navigate = useNavigate();
 
   const companiesPerPage = 12;
-  const totalPages = Math.ceil(companies.length / companiesPerPage);
+  const totalPages = Math.ceil(filteredCompanies.length / companiesPerPage);
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -28,6 +30,7 @@ const CompanyList = () => {
           },
         });
         setCompanies(response.data);
+        setFilteredCompanies(response.data); // Set initial filtered companies to all companies
       } catch (err) {
         console.error('Failed to fetch companies', err);
         toast.error('Failed to fetch companies. Please try again.');
@@ -36,6 +39,20 @@ const CompanyList = () => {
 
     fetchCompanies();
   }, []);
+
+  useEffect(() => {
+    // Filter companies based on the search query
+    if (searchQuery) {
+      const filtered = companies.filter(
+        (company) =>
+          company.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          company.address.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredCompanies(filtered);
+    } else {
+      setFilteredCompanies(companies); // If no search query, show all companies
+    }
+  }, [searchQuery, companies]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -93,7 +110,7 @@ const CompanyList = () => {
     navigate(`/companies/${id}`);
   };
 
-  const currentCompanies = companies.slice(
+  const currentCompanies = filteredCompanies.slice(
     currentPage * companiesPerPage,
     (currentPage + 1) * companiesPerPage
   );
@@ -114,12 +131,21 @@ const CompanyList = () => {
             className={`ml-2 cursor-pointer text-2xl ${viewMode === 'list' ? 'text-blue-500 dark:text-blue-400' : 'text-gray-500 dark:text-slate-400'} hover:text-blue-600`}
           />
         </div>
-        <button
-          onClick={() => setShowModal(true)}
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-        >
-          Create Company
-        </button>
+        <div className="flex items-center gap-2">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search by name or address"
+            className="border dark:border-none px-4 py-2 rounded w-80 dark:bg-slate-700 dark:text-slate-100"
+          />
+          <button
+            onClick={() => setShowModal(true)}
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+          >
+            Create Company
+          </button>
+        </div>
       </div>
       {error && <p className="text-red-500">{error}</p>}
       {success && <p className="text-green-500">{success}</p>}
