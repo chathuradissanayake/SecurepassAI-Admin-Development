@@ -87,11 +87,11 @@ const CompanyList = () => {
         <div className='flex items-center gap-4'>
           <FaTh
             onClick={() => setViewMode('grid')}
-            className={`cursor-pointer text-2xl ${viewMode === 'grid' ? 'text-blue-500' : 'text-gray-500'} hover:text-blue-600`}
+            className={`cursor-pointer text-2xl ${viewMode === 'grid' ? 'text-blue-500 dark:text-blue-400' : 'text-gray-500 dark:text-slate-400'} hover:text-blue-600`}
           />
           <FaList
             onClick={() => setViewMode('list')}
-            className={`ml-2 cursor-pointer text-2xl ${viewMode === 'list' ? 'text-blue-500' : 'text-gray-500'} hover:text-blue-600`}
+            className={`ml-2 cursor-pointer text-2xl ${viewMode === 'list' ? 'text-blue-500 dark:text-blue-400' : 'text-gray-500 dark:text-slate-400'} hover:text-blue-600`}
           />
         </div>
         <button
@@ -117,17 +117,17 @@ const CompanyList = () => {
           ))}
         </div>
       ) : (
-        <div className="overflow-hidden shadow-md sm:rounded-lg">
-          <table className="min-w-full bg-white border border-gray-200">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-600">
+        <div>
+          <table className="w-full mt-4 bg-white dark:bg-slate-700 shadow-md rounded-lg overflow-hidden">
+            <thead >
+              <tr className='text-left bg-gray-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-b border-gray-300 dark:border-slate-400'>
+                <th className="p-4">
                   Name
                 </th>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-600">
+                <th className="p-4">
                   Address
                 </th>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-600">
+                <th className="p-4">
                   Admins
                 </th>
               </tr>
@@ -136,19 +136,19 @@ const CompanyList = () => {
               {companies.map((company, index) => (
                 <tr
                   key={company._id}
-                  className={`border-b ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-gray-100`}
+                  className={`hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300`}
                   onClick={() => handleTileClick(company._id)}
                 >
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <p className="text-sm font-medium text-gray-900">{company.name}</p>
+                  <td className="p-3 border-t border-gray-200 dark:border-slate-500">
+                    <p className="text-sm font-medium">{company.name}</p>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <p className="text-sm text-gray-900">{company.address}</p>
+                  <td className="p-3 border-t border-gray-200 dark:border-slate-500">
+                    <p className="text-sm font-medium">{company.address}</p>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="p-3 border-t border-gray-200 dark:border-slate-500">
                     <ul className="list-disc list-inside">
                       {company.admins.map((admin) => (
-                        <li key={admin._id} className="text-sm text-gray-900">
+                        <li key={admin._id} className="text-sm text-gray-900 dark:text-slate-200">
                           {admin.firstName} {admin.lastName}
                         </li>
                       ))}
@@ -163,42 +163,42 @@ const CompanyList = () => {
 
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Create Company</h2>
+          <div className="bg-white dark:bg-slate-700 p-6 rounded-lg shadow-lg w-96">
+            <h2 className="text-xl font-semibold dark:text-slate-100 text-gray-800 mb-4">Create Company</h2>
             <form onSubmit={handleCreateCompany} className="space-y-4">
               <div>
-                <label className="block text-gray-700">Name</label>
+                <label className="block text-slate-700 dark:text-slate-200">Name</label>
                 <input
                   type="text"
                   name="name"
                   value={newCompany.name}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2 border rounded-lg"
+                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-slate-600 dark:text-slate-100 focus:ring-blue-400"
                   required
                 />
               </div>
               <div>
-                <label className="block text-gray-700">Address</label>
+                <label className="block text-slate-700 dark:text-slate-200">Address</label>
                 <input
                   type="text"
                   name="address"
                   value={newCompany.address}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2 border rounded-lg"
+                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-slate-600 dark:text-slate-100 focus:ring-blue-400"
                   required
                 />
               </div>
-              <div className="flex justify-end space-x-4">
+              <div className="flex justify-end">
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
+                  className="bg-gray-500 w-20 dark:bg-slate-500 text-white px-4 py-2 rounded mr-2"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                  className="bg-blue-500 w-20 text-white px-4 py-2 rounded"
                 >
                   Create
                 </button>
