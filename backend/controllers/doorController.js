@@ -1,6 +1,7 @@
 const Door = require('../models/Door');
 const AdminUser = require('../models/AdminUser');
 const PermissionRequest = require('../models/PermissionRequest');
+const User = require('../models/User');
 
 const createDoor = async (req, res) => {
   const { location, doorCode, roomName, qrData, qrImage, status } = req.body;
@@ -10,6 +11,12 @@ const createDoor = async (req, res) => {
   }
 
   try {
+    // Check if the door code already exists
+    const existingDoor = await Door.findOne({ doorCode });
+    if (existingDoor) {
+      return res.status(400).json({ success: false, message: "Door code already exists." });
+    }
+
     // Fetch the admin user to get the company details
     const adminUser = await AdminUser.findById(req.user.userId).populate('company');
     if (!adminUser || !adminUser.company) {

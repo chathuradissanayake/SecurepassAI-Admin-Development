@@ -2,6 +2,8 @@ import axios from 'axios';
 import { QRCodeCanvas } from 'qrcode.react';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 
@@ -14,6 +16,7 @@ const QRGenerator = () => {
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState('');
   const [newLocation, setNewLocation] = useState('');
+  const [isQrGenerated, setIsQrGenerated] = useState(false); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,15 +44,20 @@ const QRGenerator = () => {
     fetchCompanyDetails();
   }, []);
 
+  const handleDoorCodeChange = (e) => {
+    setDoorCode(e.target.value);
+  };
+
   const generateQRCode = async (e) => {
     e.preventDefault();
     console.log('Generating QR Code with:', { companyId, doorCode, roomName, selectedLocation });
     if (companyId && doorCode && roomName && selectedLocation) {
       const qrValue = `${doorCode}`;
       setQrData(qrValue);
+      setIsQrGenerated(true);
       console.log('QR Code generated:', qrValue);
     } else {
-      alert('Please fill in all fields.');
+      toast.error('Please fill in all fields.');
     }
   };
 
@@ -72,17 +80,21 @@ const QRGenerator = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      alert(response.data.message);
+      toast.success(response.data.message);
       navigate('/doors'); // Navigate to the doors page after successful save
     } catch (error) {
-      console.error(error);
-      alert('Failed to save QR Code.');
+      if (error.response && error.response.status === 400 && error.response.data.message === "Door code already exists.") {
+        toast.error('Door code already exists. Please choose a different one.');
+      } else {
+        console.error(error);
+        toast.error('Failed to save QR Code.');
+      }
     }
   };
 
   const addNewLocation = async () => {
     if (!newLocation) {
-      alert('Please enter a location name.');
+      toast.error('Please enter a location name.');
       return;
     }
     try {
@@ -98,10 +110,10 @@ const QRGenerator = () => {
       setLocations([...locations, newLocation]);
       setSelectedLocation(newLocation);
       setNewLocation('');
-      alert('Location added successfully');
+      toast.success('Location added successfully');
     } catch (error) {
       console.error('Failed to add location', error);
-      alert('Failed to add location.');
+      toast.error('Failed to add location.');
     }
   };
 
@@ -128,16 +140,12 @@ const QRGenerator = () => {
           <div className="p-6 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
             <h2 className="text-xl font-semibold dark:text-slate-100 mb-4">Enter Details</h2>
             <form onSubmit={generateQRCode} className="space-y-4">
-              {/* <div>
-                <label className="block text-sm font-medium">Company Name</label>
-                <p className="border p-2 w-full rounded bg-gray-100">{companyName}</p>
-              </div> */}
               <div>
                 <label className="block text-sm font-medium dark:text-slate-200">Door ID</label>
                 <input
                   type="text"
                   value={doorCode}
-                  onChange={(e) => setDoorCode(e.target.value)}
+                  onChange={handleDoorCodeChange}
                   placeholder="Enter door ID"
                   className="w-full px-4 py-2 border dark:border-none rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-700 dark:text-slate-300 focus:ring-blue-400"
                 />
@@ -254,9 +262,10 @@ const QRGenerator = () => {
                 <div className="flex mt-12">
                   <button
                     onClick={saveQRCodeToDatabase}
+                    disabled={!isQrGenerated}
                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                   >
-                    Save to Database
+                    Add new Door
                   </button>
                 </div>
               </div>
@@ -267,6 +276,7 @@ const QRGenerator = () => {
         </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

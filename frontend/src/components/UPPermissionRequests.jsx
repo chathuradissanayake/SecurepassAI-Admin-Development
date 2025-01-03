@@ -81,10 +81,11 @@ const UPPermissionRequests = ({ pendingRequests, onRequestUpdate }) => {
           <thead>
             <tr className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
               <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/6">Door ID</th>
-              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/5">Room Name</th>
-              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/5">Date</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/6">Room Name</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/6">Date</th>
               <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/6">Entry Time</th>
               <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/6">Exit Time</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/6">Message</th>
               <th className="p-3 border border-gray-300 dark:border-slate-400 text-center">Action</th>
             </tr>
           </thead>
@@ -99,6 +100,7 @@ const UPPermissionRequests = ({ pendingRequests, onRequestUpdate }) => {
                   <td className="p-2 border border-gray-200 dark:border-slate-500">{formattedDate}</td>
                   <td className="p-2 border border-gray-200 dark:border-slate-500">{request.inTime}</td>
                   <td className="p-2 border border-gray-200 dark:border-slate-500">{request.outTime}</td>
+                  <td className="p-2 border border-gray-200 dark:border-slate-500">{request.message}</td>
                   <td className="p-2 border border-gray-200 dark:border-slate-500">
                     <div className="flex items-center gap-2">
                       {/* Action Dropdown */}
