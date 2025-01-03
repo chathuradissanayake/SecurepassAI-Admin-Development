@@ -16,7 +16,7 @@ const QRGenerator = () => {
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState('');
   const [newLocation, setNewLocation] = useState('');
-  const [isDoorCodeUnique, setIsDoorCodeUnique] = useState(true); // State for door code uniqueness
+  const [isQrGenerated, setIsQrGenerated] = useState(false); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,37 +44,20 @@ const QRGenerator = () => {
     fetchCompanyDetails();
   }, []);
 
-  const handleDoorCodeChange = async (e) => {
-    const { value } = e.target;
-    setDoorCode(value);
-
-    if (value) {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get('/api/doors/check-door-code-unique', {
-          params: { doorCode: value },
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setIsDoorCodeUnique(response.data.isUnique);
-      } catch (error) {
-        console.error('Error checking door code uniqueness', error);
-      }
-    } else {
-      setIsDoorCodeUnique(true);
-    }
+  const handleDoorCodeChange = (e) => {
+    setDoorCode(e.target.value);
   };
 
   const generateQRCode = async (e) => {
     e.preventDefault();
     console.log('Generating QR Code with:', { companyId, doorCode, roomName, selectedLocation });
-    if (companyId && doorCode && roomName && selectedLocation && isDoorCodeUnique) {
+    if (companyId && doorCode && roomName && selectedLocation) {
       const qrValue = `${doorCode}`;
       setQrData(qrValue);
+      setIsQrGenerated(true);
       console.log('QR Code generated:', qrValue);
     } else {
-      toast.error('Please fill in all fields and ensure the door code is unique.');
+      toast.error('Please fill in all fields.');
     }
   };
 
@@ -100,8 +83,12 @@ const QRGenerator = () => {
       toast.success(response.data.message);
       navigate('/doors'); // Navigate to the doors page after successful save
     } catch (error) {
-      console.error(error);
-      toast.error('Failed to save QR Code.');
+      if (error.response && error.response.status === 400 && error.response.data.message === "Door code already exists.") {
+        toast.error('Door code already exists. Please choose a different one.');
+      } else {
+        console.error(error);
+        toast.error('Failed to save QR Code.');
+      }
     }
   };
 
@@ -162,9 +149,6 @@ const QRGenerator = () => {
                   placeholder="Enter door ID"
                   className="w-full px-4 py-2 border dark:border-none rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-700 dark:text-slate-300 focus:ring-blue-400"
                 />
-                {!isDoorCodeUnique && (
-                  <p className="text-red-500 mt-1">Door ID already exists. Please choose a different one.</p>
-                )}
               </div>
               <div>
                 <label className="block text-sm font-medium dark:text-slate-200">Room Name</label>
@@ -208,7 +192,7 @@ const QRGenerator = () => {
               <div className="flex items-center space-x-4">
                 <button
                   type="submit"
-                  disabled={!companyId || !doorCode || !roomName || !selectedLocation || !isDoorCodeUnique}
+                  disabled={!companyId || !doorCode || !roomName || !selectedLocation}
                   className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                 >
                   Generate QR Code
@@ -278,9 +262,10 @@ const QRGenerator = () => {
                 <div className="flex mt-12">
                   <button
                     onClick={saveQRCodeToDatabase}
+                    disabled={!isQrGenerated}
                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                   >
-                    Save to Database
+                    Add new Door
                   </button>
                 </div>
               </div>
