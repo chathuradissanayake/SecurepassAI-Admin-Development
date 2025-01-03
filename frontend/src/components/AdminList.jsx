@@ -110,17 +110,17 @@ const AdminList = () => {
           Create Admin
         </button>
       </div>
-      <div className="overflow-hidden shadow-md sm:rounded-lg">
-        <table className="min-w-full bg-white border border-gray-200">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-600">
+      <div>
+        <table className="w-full mt-4 bg-white dark:bg-slate-700 shadow-md rounded-lg overflow-hidden">
+          <thead>
+            <tr className="text-left bg-gray-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-b border-gray-300 dark:border-slate-400">
+              <th className="p-4 ">
                 Name
               </th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-600">
+              <th className="p-4 ">
                 Company
               </th>
-              <th className="px-6 py-3 text-right text-sm font-medium text-gray-600">
+              <th className="p-4 ">
                 Options
               </th>
             </tr>
@@ -129,25 +129,23 @@ const AdminList = () => {
             {adminUsers.map((admin, index) => (
               <tr
                 key={admin._id}
-                className={`border-b ${
-                  index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                } hover:bg-gray-100`}
+                className={`hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300`}
               >
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <p className="text-sm font-medium text-gray-900">
+                <td className="p-3 border-t border-gray-200 dark:border-slate-500">
+                  <p className="text-sm font-medium ">
                     {admin.firstName} {admin.lastName}
                   </p>
-                  <p className="text-sm text-gray-500">{admin.email}</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">{admin.email}</p>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <p className="text-sm text-gray-900">
+                <td className="p-3 border-t border-gray-200 dark:border-slate-500">
+                  <p className="text-sm font-medium">
                     {admin.company ? admin.company.name : 'N/A'}
                   </p>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-slate-500 dark:text-slate-400">
                     {admin.company ? admin.company.address : ''}
                   </p>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <td className="p-3 border-t border-gray-200 dark:border-slate-500 text-right">
                   <button
                     type="button"
                     className="text-gray-600 hover:text-gray-900 focus:outline-none"
