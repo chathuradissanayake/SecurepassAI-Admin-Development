@@ -2,8 +2,11 @@ import React from 'react';
 import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { ThemeProvider } from "../context/ThemeContext"; // Import the ThemeProvider
 
+import ProtectedRoute from './components/ProtectedRoute';
+import AdminProfile from './pages/AdminProfile';
 import AdminUsers from './pages/AdminUsers';
-import Companies from './pages/Companies'
+import Companies from './pages/Companies';
+import CompanyProfile from './pages/CompanyProfile';
 import Dashboard from './pages/Dashboard';
 import DoorDetails from './pages/DoorDetails';
 import Doors from './pages/Doors';
@@ -15,10 +18,7 @@ import QRGenerator from './pages/QRGenerator';
 import Settings from './pages/Settings';
 import UserProfile from './pages/UserProfile';
 import Users from './pages/Users';
-import { isTokenExpired, getToken, clearAuthData } from './utils/auth';
-import ProtectedRoute from './components/ProtectedRoute';
-import CompanyProfile from './pages/CompanyProfile';
-import AdminProfile from './pages/AdminProfile';
+import { clearAuthData, getToken, isTokenExpired } from './utils/auth';
 
 const App = () => {
   const token = getToken();
