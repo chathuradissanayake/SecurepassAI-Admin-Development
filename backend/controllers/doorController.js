@@ -42,21 +42,6 @@ const createDoor = async (req, res) => {
   }
 };
 
-const checkDoorCodeUnique = async (req, res) => {
-  const { doorCode } = req.query;
-
-  try {
-    const existingDoor = await Door.findOne({ doorCode });
-    if (existingDoor) {
-      return res.status(400).json({ success: false, message: "Door code already exists." });
-    }
-    res.status(200).json({ success: true, message: "Door code is unique." });
-  } catch (error) {
-    console.error("Error checking door code uniqueness:", error);
-    res.status(500).json({ success: false, message: "Error checking door code uniqueness." });
-  }
-};
-
 
 const getDoorById = async (req, res) => {
   const { id } = req.params;
@@ -155,5 +140,4 @@ module.exports = {
   updateDoor,
   deleteDoor,
   setdoorstatus,
-  checkDoorCodeUnique,
 };
