@@ -21,4 +21,7 @@ router.delete('/:id', authMiddleware, roleMiddleware(['Admin']), doorController.
 //set door status
 router.put('/:id/status', doorController.setdoorstatus);
 
+// Check if door code is unique
+router.get('/check-door-code-unique', authMiddleware, doorController.checkDoorCodeUnique);
+
 module.exports = router;
