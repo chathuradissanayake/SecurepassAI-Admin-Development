@@ -1,6 +1,7 @@
 const Door = require('../models/Door');
 const AdminUser = require('../models/AdminUser');
 const PermissionRequest = require('../models/PermissionRequest');
+const User = require('../models/User');
 
 const createDoor = async (req, res) => {
   const { location, doorCode, roomName, qrData, qrImage, status } = req.body;
@@ -10,6 +11,12 @@ const createDoor = async (req, res) => {
   }
 
   try {
+    // Check if the door code already exists
+    const existingDoor = await Door.findOne({ doorCode });
+    if (existingDoor) {
+      return res.status(400).json({ success: false, message: "Door code already exists." });
+    }
+
     // Fetch the admin user to get the company details
     const adminUser = await AdminUser.findById(req.user.userId).populate('company');
     if (!adminUser || !adminUser.company) {
@@ -32,6 +39,21 @@ const createDoor = async (req, res) => {
   } catch (error) {
     console.error("Error saving QR Code:", error);
     res.status(500).json({ success: false, message: "Error saving QR Code." });
+  }
+};
+
+const checkDoorCodeUnique = async (req, res) => {
+  const { doorCode } = req.query;
+
+  try {
+    const existingDoor = await Door.findOne({ doorCode });
+    if (existingDoor) {
+      return res.status(400).json({ success: false, message: "Door code already exists." });
+    }
+    res.status(200).json({ success: true, message: "Door code is unique." });
+  } catch (error) {
+    console.error("Error checking door code uniqueness:", error);
+    res.status(500).json({ success: false, message: "Error checking door code uniqueness." });
   }
 };
 
@@ -133,4 +155,5 @@ module.exports = {
   updateDoor,
   deleteDoor,
   setdoorstatus,
+  checkDoorCodeUnique,
 };
