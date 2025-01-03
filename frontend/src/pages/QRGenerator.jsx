@@ -2,6 +2,8 @@ import axios from 'axios';
 import { QRCodeCanvas } from 'qrcode.react';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 
@@ -14,6 +16,7 @@ const QRGenerator = () => {
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState('');
   const [newLocation, setNewLocation] = useState('');
+  const [isDoorCodeUnique, setIsDoorCodeUnique] = useState(true); // State for door code uniqueness
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,15 +44,37 @@ const QRGenerator = () => {
     fetchCompanyDetails();
   }, []);
 
+  const handleDoorCodeChange = async (e) => {
+    const { value } = e.target;
+    setDoorCode(value);
+
+    if (value) {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get('/api/doors/check-door-code-unique', {
+          params: { doorCode: value },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setIsDoorCodeUnique(response.data.isUnique);
+      } catch (error) {
+        console.error('Error checking door code uniqueness', error);
+      }
+    } else {
+      setIsDoorCodeUnique(true);
+    }
+  };
+
   const generateQRCode = async (e) => {
     e.preventDefault();
     console.log('Generating QR Code with:', { companyId, doorCode, roomName, selectedLocation });
-    if (companyId && doorCode && roomName && selectedLocation) {
+    if (companyId && doorCode && roomName && selectedLocation && isDoorCodeUnique) {
       const qrValue = `${doorCode}`;
       setQrData(qrValue);
       console.log('QR Code generated:', qrValue);
     } else {
-      alert('Please fill in all fields.');
+      toast.error('Please fill in all fields and ensure the door code is unique.');
     }
   };
 
@@ -72,17 +97,17 @@ const QRGenerator = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      alert(response.data.message);
+      toast.success(response.data.message);
       navigate('/doors'); // Navigate to the doors page after successful save
     } catch (error) {
       console.error(error);
-      alert('Failed to save QR Code.');
+      toast.error('Failed to save QR Code.');
     }
   };
 
   const addNewLocation = async () => {
     if (!newLocation) {
-      alert('Please enter a location name.');
+      toast.error('Please enter a location name.');
       return;
     }
     try {
@@ -98,10 +123,10 @@ const QRGenerator = () => {
       setLocations([...locations, newLocation]);
       setSelectedLocation(newLocation);
       setNewLocation('');
-      alert('Location added successfully');
+      toast.success('Location added successfully');
     } catch (error) {
       console.error('Failed to add location', error);
-      alert('Failed to add location.');
+      toast.error('Failed to add location.');
     }
   };
 
@@ -128,19 +153,18 @@ const QRGenerator = () => {
           <div className="p-6 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
             <h2 className="text-xl font-semibold dark:text-slate-100 mb-4">Enter Details</h2>
             <form onSubmit={generateQRCode} className="space-y-4">
-              {/* <div>
-                <label className="block text-sm font-medium">Company Name</label>
-                <p className="border p-2 w-full rounded bg-gray-100">{companyName}</p>
-              </div> */}
               <div>
                 <label className="block text-sm font-medium dark:text-slate-200">Door ID</label>
                 <input
                   type="text"
                   value={doorCode}
-                  onChange={(e) => setDoorCode(e.target.value)}
+                  onChange={handleDoorCodeChange}
                   placeholder="Enter door ID"
                   className="w-full px-4 py-2 border dark:border-none rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-700 dark:text-slate-300 focus:ring-blue-400"
                 />
+                {!isDoorCodeUnique && (
+                  <p className="text-red-500 mt-1">Door ID already exists. Please choose a different one.</p>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium dark:text-slate-200">Room Name</label>
@@ -184,7 +208,7 @@ const QRGenerator = () => {
               <div className="flex items-center space-x-4">
                 <button
                   type="submit"
-                  disabled={!companyId || !doorCode || !roomName || !selectedLocation}
+                  disabled={!companyId || !doorCode || !roomName || !selectedLocation || !isDoorCodeUnique}
                   className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                 >
                   Generate QR Code
@@ -267,6 +291,7 @@ const QRGenerator = () => {
         </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
