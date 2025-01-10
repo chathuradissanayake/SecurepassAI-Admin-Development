@@ -35,31 +35,31 @@ const RecentAccessDoors = ({ accessRecords }) => {
       <h2 className="text-xl font-semibold dark:text-slate-100 mb-4">Recent Access</h2>
 
       {/* Table */}
-      <div className="overflow-x-auto dark:bg-slate-700">
-        <table className="w-full text-left border-collapse">
+      <div>
+        <table className="w-full mt-4 bg-white dark:bg-slate-700 shadow-md rounded-lg overflow-hidden">
           <thead>
-            <tr className="bg-gray-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
-              <th className="p-3 border border-gray-300 dark:border-slate-400">Door Code</th>
-              <th className="p-3 border border-gray-300 dark:border-slate-400">Room Name</th>
-              <th className="p-3 border border-gray-300 dark:border-slate-400">Location</th>
-              <th className="p-3 border border-gray-300 dark:border-slate-400">User</th>
-              <th className="p-3 border border-gray-300 dark:border-slate-400">Entry Time</th>
-              <th className="p-3 border border-gray-300 dark:border-slate-400">Exit Time</th>
+            <tr className="text-left bg-gray-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-b border-gray-300 dark:border-slate-400">
+              <th className="p-4">Door Code</th>
+              <th className="p-4">Room Name</th>
+              <th className="p-4">Location</th>
+              <th className="p-4">User</th>
+              <th className="p-4">Entry Time</th>
+              <th className="p-4">Exit Time</th>
             </tr>
           </thead>
           <tbody>
             {currentRecords.map((record, index) => (
               <tr key={index} className="hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
-                <td className="p-2 border border-gray-200 dark:border-slate-500">{record.doorCode}</td>
-                <td className="p-2 border border-gray-200 dark:border-slate-500">{record.roomName}</td>
-                <td className="p-2 border border-gray-200 dark:border-slate-500">{record.location}</td>
-                <td className="p-2 border border-gray-200 dark:border-slate-500">
+                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{record.doorCode}</td>
+                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{record.roomName}</td>
+                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{record.location}</td>
+                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">
                   {record.user && record.user.userId
                     ? `${record.user.userId.firstName} ${record.user.userId.lastName}`
                     : 'Unknown User'}
                 </td>
-                <td className="p-2 border border-gray-200 dark:border-slate-500">{new Date(record.entryTime).toLocaleString()}</td>
-                <td className="p-2 border border-gray-200 dark:border-slate-500">{record.exitTime ? new Date(record.exitTime).toLocaleString() : 'N/A'}</td>
+                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{new Date(record.entryTime).toLocaleString()}</td>
+                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{record.exitTime ? new Date(record.exitTime).toLocaleString() : 'N/A'}</td>
               </tr>
             ))}
           </tbody>

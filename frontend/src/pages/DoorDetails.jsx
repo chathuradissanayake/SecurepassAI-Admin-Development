@@ -1,10 +1,10 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import ConfirmationModal from '../components/ConfirmationModal';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import Spinner from '../components/Spinner';
-import ConfirmationModal from '../components/ConfirmationModal'; 
 
 const DoorDetails = () => {
   const { id } = useParams();
@@ -209,29 +209,29 @@ const DoorDetails = () => {
           {/* Approved Permission Requests */}
           <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
             <h2 className="text-xl font-semibold mb-4 text-slate-700 dark:text-slate-100">Approved Permission Requests</h2>
-            <div className="overflow-x-auto dark:bg-slate-700">
-              <table className="min-w-full text-left border-collapse">
+            <div>
+              <table className="w-full mt-4 bg-white dark:bg-slate-700 shadow-md rounded-lg overflow-hidden">
                 <thead>
-                  <tr className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
-                    <th className="p-3 border border-gray-300 dark:border-slate-400">User Name</th>
-                    <th className="p-3 border border-gray-300 dark:border-slate-400">Date</th>
-                    <th className="p-3 border border-gray-300 dark:border-slate-400 ">In Time</th>
-                    <th className="p-3 border border-gray-300 dark:border-slate-400 ">Out Time</th>
-                    <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/3">Message</th>
+                  <tr className="text-left bg-gray-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-b border-gray-300 dark:border-slate-400">
+                    <th className="p-4">User Name</th>
+                    <th className="p-4">Date</th>
+                    <th className="p-4 ">In Time</th>
+                    <th className="p-4 ">Out Time</th>
+                    <th className="p-4 w-1/3">Message</th>
                   </tr>
                 </thead>
                 <tbody>
                   {currentItems.map((request) => (
                     <tr key={request._id} className="hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
-                      <td className="p-2 border border-gray-200 dark:border-slate-500">
+                      <td className="p-3 border-t  border-gray-400 dark:border-slate-500">
                         {request.user.firstName} {request.user.lastName}
                       </td>
-                      <td className="p-2 border border-gray-200 dark:border-slate-500">
+                      <td className="p-3 border-t  border-gray-400 dark:border-slate-500">
                         {new Date(request.date).toLocaleDateString('en-CA')}
                       </td>
-                      <td className="p-2 border border-gray-200 dark:border-slate-500">{request.inTime}</td>
-                      <td className="p-2 border border-gray-200 dark:border-slate-500">{request.outTime}</td>
-                      <td className="p-2 border border-gray-200 dark:border-slate-500">{request.message}</td>
+                      <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{request.inTime}</td>
+                      <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{request.outTime}</td>
+                      <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{request.message}</td>
                     </tr>
                   ))}
                 </tbody>
