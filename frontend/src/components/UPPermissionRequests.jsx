@@ -76,17 +76,17 @@ const UPPermissionRequests = ({ pendingRequests, onRequestUpdate }) => {
       <h2 className="text-xl font-semibold mb-4 text-slate-700 dark:text-slate-100">Permission Requests</h2>
 
       {/* Table */}
-      <div>
-        <table className="w-full mt-4 bg-white dark:bg-slate-700 shadow-md rounded-lg overflow-hidden">
+      <div className="overflow-x-auto  dark:bg-slate-700">
+        <table className="min-w-full text-left border-collapse">
           <thead>
-            <tr className="text-left bg-gray-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-b border-gray-300 dark:border-slate-400">
-              <th className="p-3 w-1/6">Door ID</th>
-              <th className="p-3 w-1/6">Room Name</th>
-              <th className="p-3 w-1/6">Date</th>
-              <th className="p-3 w-1/6">Entry Time</th>
-              <th className="p-3 w-1/6">Exit Time</th>
-              <th className="p-3 w-1/6">Message</th>
-              <th className="p-3">Action</th>
+            <tr className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/6">Door ID</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/6">Room Name</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/6">Date</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/6">Entry Time</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/6">Exit Time</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/6">Message</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400 text-center">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -94,14 +94,14 @@ const UPPermissionRequests = ({ pendingRequests, onRequestUpdate }) => {
               const date = new Date(request.date);
               const formattedDate = date.toLocaleDateString('en-CA'); // 'en-CA' locale formats date as yyyy-mm-dd
               return (
-                <tr key={index} className={`hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300`}>
-                  <td className="p-3 border-t border-gray-200 dark:border-slate-500">{request.door?.doorCode || 'N/A'}</td>
-                  <td className="p-3 border-t border-gray-200 dark:border-slate-500">{request.door?.roomName || 'N/A'}</td>
-                  <td className="p-3 border-t border-gray-200 dark:border-slate-500">{formattedDate}</td>
-                  <td className="p-3 border-t border-gray-200 dark:border-slate-500">{request.inTime}</td>
-                  <td className="p-3 border-t border-gray-200 dark:border-slate-500">{request.outTime}</td>
-                  <td className="p-3 border-t border-gray-200 dark:border-slate-500">{request.message}</td>
-                  <td className="p-3 border-t border-gray-200 dark:border-slate-500">
+                <tr key={index} className="hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
+                  <td className="p-2 border border-gray-200 dark:border-slate-500">{request.door?.doorCode || 'N/A'}</td>
+                  <td className="p-2 border border-gray-200 dark:border-slate-500">{request.door?.roomName || 'N/A'}</td>
+                  <td className="p-2 border border-gray-200 dark:border-slate-500">{formattedDate}</td>
+                  <td className="p-2 border border-gray-200 dark:border-slate-500">{request.inTime}</td>
+                  <td className="p-2 border border-gray-200 dark:border-slate-500">{request.outTime}</td>
+                  <td className="p-2 border border-gray-200 dark:border-slate-500">{request.message}</td>
+                  <td className="p-2 border border-gray-200 dark:border-slate-500">
                     <div className="flex items-center gap-2">
                       {/* Action Dropdown */}
                       <select
