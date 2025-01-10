@@ -48,29 +48,29 @@ const UPHistory = ({ historyRecords }) => {
       <h2 className="text-xl font-semibold mb-4 text-slate-700 dark:text-slate-100">Door Accessed History</h2>
 
       {/* Table */}
-      <div className="overflow-x-auto dark:bg-slate-700">
-        <table className="w-full text-left border-collapse">
+      <div>
+        <table className="w-full mt-4 bg-white dark:bg-slate-700 shadow-md rounded-lg overflow-hidden">
           <thead>
-            <tr className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
-              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/8">Door Code</th>
-              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/5">Room Name</th>
-              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/5">Entry Time</th>
-              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/5">Exit Time</th>
-              <th className="p-3 border border-gray-300 dark:border-slate-400 w-1/6">Duration</th>
-              <th className="p-3 border border-gray-300 dark:border-slate-400 ">Status</th>
+            <tr className="text-left bg-gray-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-b border-gray-300 dark:border-slate-400">
+              <th className="p-4 w-1/8">Door Code</th>
+              <th className="p-4 w-1/5">Room Name</th>
+              <th className="p-4 w-1/5">Entry Time</th>
+              <th className="p-4 w-1/5">Exit Time</th>
+              <th className="p-4 w-1/6">Duration</th>
+              <th className="p-4 ">Status</th>
             </tr>
           </thead>
           <tbody>
             {currentRecords.map((record, index) => (
               <tr key={index} className="hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
-                <td className="p-2 border  border-gray-200 dark:border-slate-500">{record.doorCode}</td>
-                <td className="p-2 border  border-gray-200 dark:border-slate-500">{record.roomName}</td>
-                <td className="p-2 border  border-gray-200 dark:border-slate-500">{new Date(record.entryTime).toLocaleString()}</td>
-                <td className="p-2 border  border-gray-200 dark:border-slate-500">{record.exitTime ? new Date(record.exitTime).toLocaleString() : 'N/A'}</td>
-                <td className="p-2 border  border-gray-200 dark:border-slate-500">
+                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{record.doorCode}</td>
+                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{record.roomName}</td>
+                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{new Date(record.entryTime).toLocaleString()}</td>
+                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{record.exitTime ? new Date(record.exitTime).toLocaleString() : 'N/A'}</td>
+                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">
                   {calculateDuration(record.entryTime, record.exitTime)}
                 </td>
-                <td className="p-2 border text-center  border-gray-200 dark:border-slate-500">
+                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">
                   <span
                     className={`px-2 py-1 rounded text-sm ${
                       record.exitTime
