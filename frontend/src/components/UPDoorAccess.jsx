@@ -72,42 +72,42 @@ const UPDoorAccess = ({ accessRecords = [], userId, onAccessUpdate }) => {
       <h2 className="text-xl font-semibold mb-4 text-slate-700 dark:text-slate-100">Approved Doors</h2>
 
       {/* Table */}
-      <div>
-        <table className="w-full mt-4 bg-white dark:bg-slate-700 shadow-md rounded-lg overflow-hidden">
+      <div className="overflow-x-auto dark:bg-slate-700">
+        <table className="min-w-full text-left border-collapse">
           <thead>
-            <tr className="text-left bg-gray-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-b border-gray-300 dark:border-slate-400">
-              <th className="p-4">Door Code</th>
-              <th className="p-4">Room Name</th>
-              <th className="p-4">Location</th>
-              <th className="p-4">Date</th>
-              <th className="p-4">Entry Time</th>
-              <th className="p-4">Exit Time</th>
-              <th className="p-4">Action</th>
+            <tr className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+              <th className="p-3 border border-gray-300 dark:border-slate-400">Door Code</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400">Room Name</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400">Location</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400">Date</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400">Entry Time</th>
+              <th className="p-3 border border-gray-300 dark:border-slate-400">Exit Time</th>
+              <th className="p-3 border text-center border-gray-300 dark:border-slate-400">Action</th>
             </tr>
           </thead>
           <tbody>
             {currentRecords.map((record, index) => (
               <tr key={index} className="hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
-                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{record.door?.doorCode || 'N/A'}</td>
-                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">
+                <td className="p-2 border border-gray-200 dark:border-slate-500">{record.door?.doorCode || 'N/A'}</td>
+                <td className="p-2 border border-gray-200 dark:border-slate-500">
                   <button
                     onClick={() => navigate(`/doors/${record.door?._id}`)}
-                    className=" text-blue-600 dark:text-blue-400 hover:underline"
+                    className="p-2 text-blue-600 dark:text-blue-400 hover:underline"
                   >
                     {record.door?.roomName || 'N/A'}
                   </button>
                 </td>
-                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{record.door?.location || 'N/A'}</td>
-                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{new Date(record.date).toLocaleDateString('en-CA')}</td>
-                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{record.inTime}</td>
-                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{record.outTime}</td>
-                <td className="p-3 border-t border-gray-400 dark:border-slate-500">
+                <td className="p-2 border border-gray-200 dark:border-slate-500">{record.door?.location || 'N/A'}</td>
+                <td className="p-2 border border-gray-200 dark:border-slate-500">{new Date(record.date).toLocaleDateString('en-CA')}</td>
+                <td className="p-2 border border-gray-200 dark:border-slate-500">{record.inTime}</td>
+                <td className="p-2 border border-gray-200 dark:border-slate-500">{record.outTime}</td>
+                <td className="p-2 border text-center border-gray-200 dark:border-slate-500">
                   <button
                     onClick={() => {
                       setRecordToDelete(record);
                       setIsDeleteModalOpen(true);
                     }}
-                    className="py-1 text-sm bg-red-400 text-white px-3 rounded hover:bg-red-500 "
+                    className="bg-red-400 text-white py-1 px-3 rounded hover:bg-red-500 "
                   >
                     Remove Permission
                   </button>
