@@ -10,6 +10,7 @@ import Spinner from "../components/Spinner";
 import UPDoorAccess from "../components/UPDoorAccess";
 import UPHistory from "../components/UPHistory";
 import UPPermissionRequests from "../components/UPPermissionRequests";
+import RejectedPermissionRequests from "../components/RejectedPermissionRequests";
 import avatar from "../assets/avatar.png";
 import ConfirmationModal from "../components/ConfirmationModal";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
@@ -22,6 +23,7 @@ const UserProfile = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [pendingRequests, setPendingRequests] = useState([]);
+  const [rejectedRequests, setRejectedRequests] = useState([]);
   const [historyRecords, setHistoryRecords] = useState([]);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -75,8 +77,24 @@ const UserProfile = () => {
       }
     };
 
+    const fetchRejectedRequests = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(`/api/permission-requests/rejected-requests/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
+        setRejectedRequests(response.data);
+      } catch (err) {
+        console.error("Error fetching rejected requests:", err);
+      }
+    };
+
     fetchUser();
     fetchHistory();
+    fetchRejectedRequests();
   }, [id]);
 
   const handleEdit = () => {
@@ -84,6 +102,11 @@ const UserProfile = () => {
   };
 
   const handleSave = async () => {
+    if (!formData.email.includes('@')) {
+      setEmailError('Invalid email address');
+      return;
+    }
+
     try {
       const token = localStorage.getItem("token");
       await axios.put(`/api/users/${id}`, formData, {
@@ -248,6 +271,9 @@ const UserProfile = () => {
             pendingRequests={pendingRequests}
             onRequestUpdate={handleRequestUpdate}
           />
+
+          {/* Rejected Door Permission Requests */}
+          <RejectedPermissionRequests rejectedRequests={rejectedRequests} />
 
           {/* Door Access Table */}
           <UPDoorAccess
