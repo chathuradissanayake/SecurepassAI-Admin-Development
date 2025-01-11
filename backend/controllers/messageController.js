@@ -1,9 +1,15 @@
 const ContactUs = require("../models/Messages");
+const AdminUser = require("../models/AdminUser");
 
-// Fetch all messages
-const getMessages = async (req, res) => {
+// Fetch messages by company ID
+const getMessagesByCompanyId = async (req, res) => {
   try {
-    const messages = await ContactUs.find().sort({ createdAt: -1 });
+    const adminUser = await AdminUser.findById(req.user.userId).populate('company');
+    if (!adminUser || !adminUser.company) {
+      return res.status(400).json({ success: false, message: "Admin user or company not found." });
+    }
+
+    const messages = await ContactUs.find({ company: adminUser.company._id }).sort({ createdAt: -1 });
     res.status(200).json(messages);
   } catch (error) {
     console.error("Error fetching messages:", error);
@@ -57,4 +63,4 @@ const updateUserStatusOnReply = async (req, res) => {
   }
 };
 
-module.exports = { getMessages, toggleReadState, updateUserStatusOnReply };
+module.exports = { getMessagesByCompanyId, toggleReadState, updateUserStatusOnReply };
