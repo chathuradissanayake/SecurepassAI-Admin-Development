@@ -135,10 +135,27 @@ const getPendingRequests = async (req, res) => {
   }
 };
 
+// Fetch rejected requests by user ID
+const getRejectedRequestsByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const rejectedRequests = await PermissionRequest.find({
+      user: userId,
+      status: 'Rejected'
+    }).populate('door', 'doorCode roomName location');
+
+    res.status(200).json(rejectedRequests);
+  } catch (error) {
+    console.error('Error fetching rejected requests:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
 module.exports = {
   createPermissionRequest,
   getPermissionRequestsByUserId,
   approvePermissionRequest,
   rejectPermissionRequest,
   getPendingRequests,
+  getRejectedRequestsByUserId,
 };
