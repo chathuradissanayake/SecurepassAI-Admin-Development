@@ -1,6 +1,7 @@
 const PermissionRequest = require("../models/PermissionRequest");
 const User = require("../models/User");
 const Door = require("../models/Door");
+const AdminUser = require("../models/AdminUser");
 
 const createPermissionRequest = async (req, res) => {
   const { userId, doorId, name, roomName, inTime, outTime, date, message } = req.body;
@@ -114,12 +115,15 @@ const rejectPermissionRequest = async (req, res) => {
   }
 };
 
-
 // Fetch pending requests filtered by company ID
 const getPendingRequests = async (req, res) => {
   try {
-    const companyId = req.companyId;
-    const pendingRequests = await PermissionRequest.find({ company: companyId, status: 'pending' })
+    const adminUser = await AdminUser.findById(req.user.userId).populate('company');
+    if (!adminUser || !adminUser.company) {
+      return res.status(400).json({ success: false, message: "Admin user or company not found." });
+    }
+
+    const pendingRequests = await PermissionRequest.find({ company: adminUser.company._id, status: 'Pending' })
       .populate('user', 'firstName lastName userId')
       .populate('door', 'doorCode roomName location')
       .sort({ requestTime: -1 });
@@ -130,8 +134,6 @@ const getPendingRequests = async (req, res) => {
     res.status(500).json({ error: 'Error fetching pending requests' });
   }
 };
-
-
 
 module.exports = {
   createPermissionRequest,
