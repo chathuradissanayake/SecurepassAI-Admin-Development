@@ -272,15 +272,15 @@ const UserProfile = () => {
             onRequestUpdate={handleRequestUpdate}
           />
 
-          {/* Rejected Door Permission Requests */}
-          <RejectedPermissionRequests rejectedRequests={rejectedRequests} />
-
           {/* Door Access Table */}
           <UPDoorAccess
             accessRecords={user.doorAccess || []}
             userId={user._id}
             onAccessUpdate={handleAccessUpdate}
           />
+          
+          {/* Rejected Door Permission Requests */}
+          <RejectedPermissionRequests rejectedRequests={rejectedRequests} />
 
           {/* Door Access History */}
           <UPHistory historyRecords={historyRecords} />
