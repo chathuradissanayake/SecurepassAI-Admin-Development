@@ -6,6 +6,7 @@ const {
   approvePermissionRequest,
   rejectPermissionRequest,
   getPendingRequests,
+  getRejectedRequestsByUserId,
 } = require('../controllers/permissionRequestController');
 const { authMiddleware, roleMiddleware } = require('../middleware/authMiddleware');
 
@@ -24,6 +25,9 @@ router.put('/:id/reject', rejectPermissionRequest);
 
 // Route to fetch pending requests
 router.get('/pending-requests', authMiddleware, roleMiddleware(['Admin']), getPendingRequests);
+
+// Route to fetch rejected requests by user ID
+router.get('/rejected-requests/:userId', authMiddleware, roleMiddleware(['Admin']), getRejectedRequestsByUserId);
 
 
 module.exports = router;

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ConfirmationModal from '../components/ConfirmationModal';
 import Header from '../components/Header';
@@ -89,6 +89,18 @@ const DoorDetails = () => {
 
     fetchDoor();
   }, [id]);
+
+  const printRef = useRef();
+
+  const handlePrint = () => {
+    const printContent = printRef.current.innerHTML;
+    const originalContent = document.body.innerHTML;
+
+    document.body.innerHTML = printContent;
+    window.print();
+    document.body.innerHTML = originalContent;
+    window.location.reload(); // Reload the page to restore the original content
+  };
 
   if (loading) return <Spinner />;
   if (error) return <p>Error: {error}</p>;
@@ -180,7 +192,7 @@ const DoorDetails = () => {
                 <div>
                   <div>
                     <button
-                      onClick={''}
+                      onClick={handlePrint}
                       className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-2 w-40 ">
                       Print QR
                     </button>
@@ -204,6 +216,19 @@ const DoorDetails = () => {
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Hidden section for printing */}
+          <div ref={printRef} className="hidden">
+            {door.qrImage && (
+              <div className="flex justify-center items-center h-screen">
+                <img
+                  src={door.qrImage}
+                  alt={`QR Code for ${door.roomName}`}
+                  className="w-48 h-48 p-4 bg-white object-contain"
+                />
+              </div>
+            )}
           </div>
 
           {/* Approved Permission Requests */}
