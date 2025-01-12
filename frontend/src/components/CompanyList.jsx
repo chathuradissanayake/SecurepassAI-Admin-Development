@@ -24,7 +24,7 @@ const CompanyList = () => {
     const fetchCompanies = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/companies-with-admins`, {
+        const response = await axios.get("/api/admin/companies-with-admins", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -64,7 +64,7 @@ const CompanyList = () => {
     try {
       const token = localStorage.getItem('token');
       const checkResponse = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/admin/companies/check-name-address-update`,
+        "/api/admin/companies/check-name-address-update",
         {
           params: { name: newCompany.name, address: newCompany.address },
           headers: {
@@ -78,7 +78,7 @@ const CompanyList = () => {
         return;
       }
 
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/admin/create-company`, newCompany, {
+      const response = await axios.post("/api/admin/create-company", newCompany, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

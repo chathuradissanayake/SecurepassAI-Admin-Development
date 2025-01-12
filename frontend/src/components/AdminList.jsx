@@ -22,7 +22,7 @@ const AdminList = () => {
     const fetchCompanies = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response1 = await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/companies`, {
+        const response1 = await axios.get("/api/admin/companies", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -56,7 +56,7 @@ const AdminList = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.post(`${import.meta.env.VITE_API_URL}/api/admin/create-admin`, {
+      await axios.post("/api/admin/create-admin", {
         firstName,
         lastName,
         email,
