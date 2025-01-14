@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const RejectedPermissionRequests = ({ rejectedRequests }) => {
+const UPRejectedPermissionRequests = ({ rejectedRequests }) => {
   const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(0);
   const [records, setRecords] = useState(rejectedRequests);
@@ -38,29 +38,30 @@ const RejectedPermissionRequests = ({ rejectedRequests }) => {
   return (
     <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
       <h2 className="text-xl font-semibold mb-4 text-slate-700 dark:text-slate-100">Rejected Requests</h2>
-      <div className="overflow-x-auto dark:bg-slate-700">
-        <table className="min-w-full text-left border-collapse">
+
+      <div>
+        <table className="w-full mt-4 bg-white dark:bg-slate-700 shadow-md rounded-lg overflow-hidden">
           <thead>
-            <tr className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
-              <th className="p-3 border border-gray-300 dark:border-slate-400">Door Code</th>
-              <th className="p-3 border border-gray-300 dark:border-slate-400">Room Name</th>
-              <th className="p-3 border border-gray-300 dark:border-slate-400">Location</th>
-              <th className="p-3 border border-gray-300 dark:border-slate-400">Date</th>
-              <th className="p-3 border border-gray-300 dark:border-slate-400">Entry Time</th>
-              <th className="p-3 border border-gray-300 dark:border-slate-400">Exit Time</th>
-              <th className="p-3 border border-gray-300 dark:border-slate-400">Message</th>
+            <tr className="text-left bg-gray-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-b border-gray-300 dark:border-slate-400">
+              <th className="p-4">Door Code</th>
+              <th className="p-4">Room Name</th>
+              <th className="p-4">Location</th>
+              <th className="p-4">Date</th>
+              <th className="p-4">Entry Time</th>
+              <th className="p-4">Exit Time</th>
+              <th className="p-4">Message</th>
             </tr>
           </thead>
           <tbody>
             {currentRecords.map((request, index) => (
               <tr key={index} className="hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
-                <td className="p-2 border border-gray-200 dark:border-slate-500">{request.door?.doorCode || 'N/A'}</td>
-                <td className="p-2 border border-gray-200 dark:border-slate-500">{request.door?.roomName || 'N/A'}</td>
-                <td className="p-2 border border-gray-200 dark:border-slate-500">{request.door?.location || 'N/A'}</td>
-                <td className="p-2 border border-gray-200 dark:border-slate-500">{new Date(request.date).toLocaleDateString('en-CA')}</td>
-                <td className="p-2 border border-gray-200 dark:border-slate-500">{request.inTime}</td>
-                <td className="p-2 border border-gray-200 dark:border-slate-500">{request.outTime}</td>
-                <td className="p-2 border border-gray-200 dark:border-slate-500">{request.message}</td>
+                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{request.door?.doorCode || 'N/A'}</td>
+                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{request.door?.roomName || 'N/A'}</td>
+                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{request.door?.location || 'N/A'}</td>
+                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{new Date(request.date).toLocaleDateString('en-CA')}</td>
+                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{request.inTime}</td>
+                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{request.outTime}</td>
+                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{request.message}</td>
               </tr>
             ))}
           </tbody>
@@ -108,4 +109,4 @@ const RejectedPermissionRequests = ({ rejectedRequests }) => {
   );
 };
 
-export default RejectedPermissionRequests;
+export default UPRejectedPermissionRequests;

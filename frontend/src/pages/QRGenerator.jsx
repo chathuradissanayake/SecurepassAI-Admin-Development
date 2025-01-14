@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { QRCodeCanvas } from 'qrcode.react';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -238,8 +238,8 @@ const QRGenerator = () => {
                 <h2 className="text-xl font-semibold dark:text-slate-100  mb-4">QR Code Details</h2>
                 <div className="divide-y divide-gray-300">
                   <div className="flex items-center py-2">
-                    <span className="font-medium w-1/2">Company Name</span>
-                    <span className="border-l border-gray-300 pl-2">{companyName}</span>
+                    <span className="font-medium dark:text-slate-300 w-1/2">Company Name</span>
+                    <span className="border-l border-gray-300 dark:text-slate-200 pl-2">{companyName}</span>
                   </div>
                   <div className="flex items-center py-2">
                     <span className="font-medium dark:text-slate-300 w-1/2">Door Code</span>
