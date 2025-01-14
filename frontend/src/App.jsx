@@ -33,6 +33,7 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
+          <Route path="/" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
           <Route path="/users" element={isAuthenticated ? <ProtectedRoute allowedRoles={['Admin']}><Users /></ProtectedRoute> : <Navigate to="/login" />} />
           <Route path="/users/:id" element={isAuthenticated ? <ProtectedRoute allowedRoles={['Admin']}><UserProfile /></ProtectedRoute> : <Navigate to="/login" />} />
           <Route path="/doors" element={isAuthenticated ? <ProtectedRoute allowedRoles={['Admin']}><Doors /></ProtectedRoute> : <Navigate to="/login" />} />
