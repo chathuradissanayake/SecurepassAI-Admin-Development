@@ -4,12 +4,12 @@ const AdminUser = require("../models/AdminUser");
 // Fetch messages by company ID
 const getMessagesByCompanyId = async (req, res) => {
   try {
-    const adminUser = await AdminUser.findById(req.user.userId).populate('company');
+    const adminUser = await AdminUser.findById(req.user.userId).populate('company' );
     if (!adminUser || !adminUser.company) {
       return res.status(400).json({ success: false, message: "Admin user or company not found." });
     }
 
-    const messages = await ContactUs.find({ company: adminUser.company._id }).sort({ createdAt: -1 });
+    const messages = await ContactUs.find({ company: adminUser.company._id }).populate('user', 'firstName lastName').sort({ createdAt: -1 });
     res.status(200).json(messages);
   } catch (error) {
     console.error("Error fetching messages:", error);
