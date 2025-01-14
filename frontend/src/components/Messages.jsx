@@ -19,6 +19,7 @@ const Messages = () => {
         });
         const data = await response.json();
         setMessages(data);
+        console.log(data)
 
         const unreadMessages = data.filter((message) => message.status === "unread").length;
         setUnreadCount(unreadMessages);
