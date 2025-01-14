@@ -19,6 +19,7 @@ const Messages = () => {
         });
         const data = await response.json();
         setMessages(data);
+        console.log(data)
 
         const unreadMessages = data.filter((message) => message.status === "unread").length;
         setUnreadCount(unreadMessages);
@@ -77,9 +78,13 @@ const Messages = () => {
 
   const handleSendReply = async (messageId) => {
     try {
+      const token = localStorage.getItem('token');
       const response = await fetch(`/api/contactus/messages/${messageId}/reply`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({ reply }),
       });
 

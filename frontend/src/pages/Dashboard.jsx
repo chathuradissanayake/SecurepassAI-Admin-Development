@@ -3,6 +3,8 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import DashboardMetrics from "../components/DashboardMetrics";
 import CollectionCounts from "../components/CollectionCounts";
+import Messages from "../components/Messages";
+import PendingRequests from "../components/PendingRequests"
 
 const Dashboard = () => {
   const userRole = localStorage.getItem('role'); // Assuming you store the role in localStorage
@@ -23,8 +25,24 @@ const Dashboard = () => {
           {/* Collection Counts Section for Admin */}
           {userRole !== 'SuperAdmin' && (
             <div>
+              <div>
               <CollectionCounts />
+              </div>
+              {/* Access Requests Section */}
+      <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="p-6 bg-white dark:bg-slate-600 dark:text-slate-200 border dark:border-none rounded-lg shadow-md">
+          <h3 className="text-gray-600 dark:text-slate-200 text-lg mb-4">Pending Requests</h3>
+          <PendingRequests/>
+        </div>
+
+        {/* Messages */}
+        <div className="p-6 bg-white dark:bg-slate-600 dark:text-slate-200 border dark:border-none rounded-lg shadow-md">
+            <Messages/>
+        </div>
+      </div>
+
             </div>
+            
           )}
         </div>
       </div>
