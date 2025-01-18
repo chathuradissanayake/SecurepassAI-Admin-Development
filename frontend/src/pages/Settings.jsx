@@ -50,8 +50,8 @@ const Settings = () => {
           <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
 
             {/* Left Column: Settings Panel */}
-            <div>
-              <div className="p-4 bg-slate-100 dark:bg-slate-600 rounded-lg shadow">
+            <div >
+              <div className="p-4 bg-slate-100 dark:bg-slate-600 rounded-lg shadow" >
                 
                 <nav className="flex min-w-[240px] flex-col gap-1 p-1.5 dark:text-slate-100 mt-3">
                   {[

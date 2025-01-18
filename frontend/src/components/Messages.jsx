@@ -139,7 +139,7 @@ const Messages = () => {
                     onClick={() =>
                       handleToggleReadState(message._id, message.status)
                     }
-                    className={`px-4 py-1 text-white font-sm rounded ${
+                    className={`px-4 py-0.5 text-white font-sm rounded ${
                       message.status === "read"
                         ? "bg-slate-500 dark:bg-slate-800 hover:bg-slate-600 dark:hover:bg-slate-900"
                         : "bg-blue-500 hover:bg-blue-600"
@@ -157,7 +157,7 @@ const Messages = () => {
                       replyingTo === message._id
                         ? "bg-red-500 hover:bg-red-600 opacity-80"
                         : "bg-purple-500 hover:bg-purple-600 opacity-80"
-                    } px-3.5 text-white font-sm rounded`}
+                    } px-3.5 py-0.5 text-white font-sm rounded`}
                   >
                     {replyingTo === message._id ? "Undo" : "Reply"}
                   </button>
