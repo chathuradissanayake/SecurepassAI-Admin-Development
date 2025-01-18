@@ -1,8 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Modal from '../components/Modal';
 import Spinner from '../components/Spinner';
+import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import { BiError } from "react-icons/bi";
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -23,11 +27,21 @@ const UserList = () => {
   });
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [emailUnique, setEmailUnique] = useState(null);
+  const [userIdUnique, setUserIdUnique] = useState(null);
+  const [emailError, setEmailError] = useState('');
+  const [userIdError, setUserIdError] = useState('');
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('/api/users', { withCredentials: true });
+        const token = localStorage.getItem('token');
+        const response = await axios.get('/api/users', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
         if (Array.isArray(response.data)) {
           setUsers(response.data);
           setFilteredUsers(response.data);
@@ -38,6 +52,7 @@ const UserList = () => {
       } catch (err) {
         setError(err.message);
         setLoading(false);
+        toast.error('Error fetching users');
       }
     };
 
@@ -58,18 +73,58 @@ const UserList = () => {
     setCurrentPage(1); // Reset to the first page on a new search
   };
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const { name, value } = e.target;
     setNewUser((prevUser) => ({
       ...prevUser,
       [name]: value,
     }));
+
+    const token = localStorage.getItem('token');
+
+    if (name === 'email') {
+      try {
+        const response = await axios.get(`/api/users/check-email?email=${value}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
+        setEmailUnique(response.data.isUnique);
+        setEmailError(response.data.isUnique ? '' : 'Email already taken');
+      } catch (error) {
+        console.error('Error checking email uniqueness', error);
+        toast.error('Error checking email uniqueness');
+      }
+    }
+
+    if (name === 'userId') {
+      try {
+        const response = await axios.get(`/api/users/check-userId?userId=${value}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
+        setUserIdUnique(response.data.isUnique);
+        setUserIdError(response.data.isUnique ? '' : 'User ID already in use');
+      } catch (error) {
+        console.error('Error checking user ID uniqueness', error);
+        toast.error('Error checking user ID uniqueness');
+      }
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/users/register', newUser, { withCredentials: true });
+      const token = localStorage.getItem('token');
+      await axios.post('/api/users/register', newUser, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
       setIsModalVisible(false);
       setNewUser({
         firstName: '',
@@ -79,11 +134,18 @@ const UserList = () => {
         password: ''
       });
       // Refresh the user list
-      const response = await axios.get('/api/users', { withCredentials: true });
+      const response = await axios.get('/api/users', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
       setUsers(response.data);
       setFilteredUsers(response.data);
+      toast.success('User created successfully');
     } catch (err) {
       console.error(err);
+      toast.error('Error creating user');
     }
   };
 
@@ -101,7 +163,6 @@ const UserList = () => {
 
   // Handle pagination
   const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const handlePrevious = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
@@ -111,7 +172,7 @@ const UserList = () => {
 
   return (
     <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
-
+      <ToastContainer />
       {/* Search and Add Button */}
       <div className="flex justify-between items-center mb-4">
       <h2 className="text-xl font-semibold dark:text-slate-100 mb-4">User List</h2>
@@ -132,24 +193,29 @@ const UserList = () => {
         </button>
       </div>
       </div>
-      <table className="w-full mt-4 bg-white dark:bg-slate-700 shadow-md rounded">
+      <table className="w-full mt-4 bg-white dark:bg-slate-700 shadow-md rounded-lg overflow-hidden">
         <thead>
           <tr className="text-left bg-gray-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
-            <th className="p-4 border border-gray-300 dark:border-slate-400">Full Name</th>
-            <th className="p-4 border border-gray-300 dark:border-slate-400">Email</th>
-            <th className="p-4 border border-gray-300 dark:border-slate-400">User ID</th>
-            <th className="p-4 border border-gray-300 dark:border-slate-400">Actions</th>
+            <th className="p-4 border-b border-gray-300 dark:border-slate-400">Full Name</th>
+            <th className="p-4 border-b border-gray-300 dark:border-slate-400">Email</th>
+            <th className="p-4 border-b border-gray-300 dark:border-slate-400">User ID</th>
+            <th className="p-4 border-b border-gray-300 dark:border-slate-400">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {currentUsers.map((user) => (
-            <tr key={user._id} className="hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
-              <td className="p-3 border border-gray-200 dark:border-slate-500">
+          {currentUsers.map((user, index) => (
+            <tr
+              key={user._id}
+              className={`hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 ${
+                index === currentUsers.length - 1 ? "rounded-b-md" : ""
+              }`}
+            >
+              <td className="p-3 border-t border-gray-200 dark:border-slate-500">
                 {user.firstName} {user.lastName}
               </td>
-              <td className="p-3 border border-gray-200 dark:border-slate-500">{user.email}</td>
-              <td className="p-3 border border-gray-200 dark:border-slate-500">{user.userId}</td>
-              <td className="p-3 border border-gray-200 dark:border-slate-500">
+              <td className="p-3 border-t border-gray-200 dark:border-slate-500">{user.email}</td>
+              <td className="p-3 border-t border-gray-200 dark:border-slate-500">{user.userId}</td>
+              <td className="p-3 border-t border-gray-200 dark:border-slate-500">
                 <button
                   className="text-blue-400"
                   onClick={() => handleRowClick(user._id)}
@@ -161,6 +227,7 @@ const UserList = () => {
           ))}
         </tbody>
       </table>
+
       <div className="flex justify-between items-center mt-4">
         <button
           onClick={handlePrevious}
@@ -175,7 +242,7 @@ const UserList = () => {
           {Array.from({ length: totalPages }, (_, index) => (
             <button
               key={index}
-              onClick={() => paginate(index + 1)}
+              onClick={() => setCurrentPage(index + 1)}
               className={`px-3 py-1 mx-1 rounded ${
                 currentPage === index + 1 ? 'bg-blue-700 dark:bg-slate-800 text-white' : 'bg-gray-200 dark:bg-slate-500 dark:text-gray-100 text-gray-600 hover:bg-gray-300'
               }`}
@@ -194,7 +261,6 @@ const UserList = () => {
           Next
         </button>
       </div>
-
       <Modal isVisible={isModalVisible} onClose={() => setIsModalVisible(false)}>
         <h2 className="text-xl text-slate-700 dark:text-slate-200 font-bold mb-4">Add New User</h2>
         <form onSubmit={handleSubmit}>
@@ -222,7 +288,7 @@ const UserList = () => {
               required
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <label className="block text-gray-700 dark:text-slate-200">Email</label>
             <input
               type="email"
@@ -233,18 +299,38 @@ const UserList = () => {
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-600 dark:text-slate-100 focus:ring-blue-400"
               required
             />
+            {emailUnique !== null && (
+              <span className="absolute right-3 top-10 transform -translate-y-1/2 text-lg">
+                {emailUnique ? <FaCheckCircle className="text-green-500" /> : <FaTimesCircle className="text-red-500" />}
+              </span>
+            )}
+            {emailError && (
+              <p className="text-red-500 mt-1 flex items-center">
+                <BiError className="mr-1" /> {emailError}
+              </p>
+            )}
           </div>
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <label className="block text-gray-700 dark:text-slate-200">User ID</label>
             <input
               type="text"
               name="userId"
               value={newUser.userId}
-              placeholder='InSP/XXXX/XXX/XX'
+              placeholder='InSP/yyyy/xxx/xxx'
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-600 dark:text-slate-100 focus:ring-blue-400"
               required
             />
+            {userIdUnique !== null && (
+              <span className="absolute right-3 top-10 transform -translate-y-1/2 text-lg">
+                {userIdUnique ? <FaCheckCircle className="text-green-500" /> : <FaTimesCircle className="text-red-500" />}
+              </span>
+            )}
+            {userIdError && (
+              <p className="text-red-500 mt-1 flex items-center">
+                <BiError className="mr-1" /> {userIdError}
+              </p>
+            )}
           </div>
           <div className="mb-4">
             <label className="block text-gray-700 dark:text-slate-200">Password</label>
@@ -268,9 +354,10 @@ const UserList = () => {
             </button>
             <button
               type="submit"
-              className="bg-blue-500 w-20 text-white px-4 py-2 rounded"
+              className={`w-20 px-4 py-2 rounded ${!emailUnique || !userIdUnique ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 text-white'}`}
+              disabled={!emailUnique || !userIdUnique} // Disable submit if email or userId is not unique
             >
-              Save
+              Create
             </button>
           </div>
         </form>

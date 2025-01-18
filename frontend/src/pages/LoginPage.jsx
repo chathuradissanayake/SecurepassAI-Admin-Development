@@ -1,26 +1,45 @@
+import axios from "axios";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-import { FaPhone, FaThumbsUp } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaPhone, FaThumbsUp } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 
 const LoginPage = () => {
-  const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
-    // Add login validation logic here if needed
-    navigate("/"); // Navigate to the Dashboard page
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post('/api/admin/login', {
+        email,
+        password,
+      });
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("role", response.data.role);
+      if (response.data.company) {
+        localStorage.setItem("companyName", response.data.company); 
+      }
+      console.log("Login successful, navigating to dashboard...");
+      navigate("/dashboard");
+    } catch (err) {
+      console.error("Login failed:", err);
+      setError("Invalid email or password");
+    }
   };
 
   return (
     <div className="h-screen w-screen flex items-center justify-center bg-gray-800">
       <div className="h-full w-full flex bg-white overflow-hidden">
         <div className="w-1/2 bg-gray-100 flex flex-col justify-center items-center p-6">
-          <img src={logo} alt="Logo" className="w-32 h-32 mb-6" />
+          <img src={logo} alt="Logo" className="w-60 h-60 " />
           <h1 className="text-3xl font-bold text-gray-800 mb-2">Welcome Back</h1>
           <p className="text-gray-500 mb-6">Login into your account</p>
+
+          {error && <p className="text-red-500 mb-4">{error}</p>}
 
           <div className="flex gap-4 mb-4">
             <button className="flex items-center px-4 py-2 border rounded-lg hover:bg-gray-200 transition">
@@ -43,6 +62,8 @@ const LoginPage = () => {
           <input
             type="email"
             placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full max-w-md px-4 py-2 border rounded-lg mb-4 mx-auto focus:ring-2 focus:ring-green-500 outline-none"
           />
 
@@ -50,6 +71,8 @@ const LoginPage = () => {
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
             />
             <button
@@ -73,7 +96,7 @@ const LoginPage = () => {
 
           <button
             className="w-full max-w-md mx-auto mt-6 px-4 py-2 bg-green-500 text-white text-lg rounded-lg hover:bg-green-600 transition"
-            onClick={handleLogin} // Call handleLogin on click
+            onClick={handleLogin}
           >
             Log In
           </button>

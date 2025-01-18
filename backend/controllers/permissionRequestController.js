@@ -1,6 +1,7 @@
 const PermissionRequest = require("../models/PermissionRequest");
 const User = require("../models/User");
 const Door = require("../models/Door");
+const AdminUser = require("../models/AdminUser");
 
 const createPermissionRequest = async (req, res) => {
   const { userId, doorId, name, roomName, inTime, outTime, date, message } = req.body;
@@ -114,24 +115,47 @@ const rejectPermissionRequest = async (req, res) => {
   }
 };
 
-
-const pendingRequest = async (req, res) => {
+// Fetch pending requests filtered by company ID
+const getPendingRequests = async (req, res) => {
   try {
-    const pendingRequests = await PermissionRequest.find({ status: 'Pending' })
+    const adminUser = await AdminUser.findById(req.user.userId).populate('company');
+    if (!adminUser || !adminUser.company) {
+      return res.status(400).json({ success: false, message: "Admin user or company not found." });
+    }
+
+    const pendingRequests = await PermissionRequest.find({ company: adminUser.company._id, status: 'Pending' })
       .populate('user', 'firstName lastName userId')
-      .populate('door', 'doorCode roomName location');
+      .populate('door', 'doorCode roomName location')
+      .sort({ requestTime: -1 });
+
     res.json(pendingRequests);
   } catch (error) {
-    res.status(500).json({ error: 'Server error' });
+    console.error('Error fetching pending requests:', error);
+    res.status(500).json({ error: 'Error fetching pending requests' });
   }
 };
 
+// Fetch rejected requests by user ID
+const getRejectedRequestsByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const rejectedRequests = await PermissionRequest.find({
+      user: userId,
+      status: 'Rejected'
+    }).populate('door', 'doorCode roomName location');
 
+    res.status(200).json(rejectedRequests);
+  } catch (error) {
+    console.error('Error fetching rejected requests:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
 
 module.exports = {
   createPermissionRequest,
   getPermissionRequestsByUserId,
   approvePermissionRequest,
   rejectPermissionRequest,
-  pendingRequest,
+  getPendingRequests,
+  getRejectedRequestsByUserId,
 };

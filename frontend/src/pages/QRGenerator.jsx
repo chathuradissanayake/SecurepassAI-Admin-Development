@@ -1,27 +1,63 @@
 import axios from 'axios';
 import { QRCodeCanvas } from 'qrcode.react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 
 const QRGenerator = () => {
-  const [location, setlocation] = useState('');
-  const [doorCode, setdoorCode] = useState('');
-  const [roomName, setroomName] = useState('');
+  const [doorCode, setDoorCode] = useState('');
+  const [roomName, setRoomName] = useState('');
   const [qrData, setQrData] = useState('');
+  const [companyName, setCompanyName] = useState('');
+  const [companyId, setCompanyId] = useState('');
+  const [locations, setLocations] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState('');
+  const [newLocation, setNewLocation] = useState('');
+  const [isQrGenerated, setIsQrGenerated] = useState(false); 
   const navigate = useNavigate();
 
-  // Example company list for the dropdown
-  const companyList = ['SLT Colombo', 'SLT Walisara', 'SLT Trace City'];
+  useEffect(() => {
+    const fetchCompanyDetails = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get('/api/admin/me', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log('Company details fetched:', response.data.company); // Log the company details
+        if (response.data.company) {
+          setCompanyName(response.data.company.name);
+          setCompanyId(response.data.company._id); // Set the company ID
+          setLocations(response.data.company.locations || []); // Set the locations
+        } else {
+          console.error('Company details not found in response');
+        }
+      } catch (error) {
+        console.error('Failed to fetch company details', error);
+      }
+    };
+
+    fetchCompanyDetails();
+  }, []);
+
+  const handleDoorCodeChange = (e) => {
+    setDoorCode(e.target.value);
+  };
 
   const generateQRCode = async (e) => {
     e.preventDefault();
-    if (location && doorCode && roomName) {
-      const qrValue = `${doorCode}`;
+    console.log('Generating QR Code with:', { companyId, doorCode, roomName, selectedLocation });
+    if (companyId && doorCode && roomName && selectedLocation) {
+      const qrValue = `${doorCode}_${selectedLocation}`;
       setQrData(qrValue);
+      setIsQrGenerated(true);
+      console.log('QR Code generated:', qrValue);
     } else {
-      alert('Please fill in all fields.');
+      toast.error('Please fill in all fields.');
     }
   };
 
@@ -31,18 +67,53 @@ const QRGenerator = () => {
       const canvas = document.getElementById('qrCode');
       const qrBase64 = canvas.toDataURL('image/png');
   
+      const token = localStorage.getItem('token');
       const response = await axios.post('/api/doors/create/', {
-        location,
+        location: selectedLocation, // Use selected location
         doorCode,
         roomName,
         qrData,
         qrImage: qrBase64, // Include the Base64 image
+        company: companyId, // Attach company ID
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
-      alert(response.data.message);
+      toast.success(response.data.message);
       navigate('/doors'); // Navigate to the doors page after successful save
     } catch (error) {
-      console.error(error);
-      alert('Failed to save QR Code.');
+      if (error.response && error.response.status === 400 && error.response.data.message === "Door code already exists.") {
+        toast.error('Door code already exists. Please choose a different one.');
+      } else {
+        console.error(error);
+        toast.error('Failed to save QR Code.');
+      }
+    }
+  };
+
+  const addNewLocation = async () => {
+    if (!newLocation) {
+      toast.error('Please enter a location name.');
+      return;
+    }
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post('/api/admin/add-location', {
+        companyId,
+        location: newLocation,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setLocations([...locations, newLocation]);
+      setSelectedLocation(newLocation);
+      setNewLocation('');
+      toast.success('Location added successfully');
+    } catch (error) {
+      console.error('Failed to add location', error);
+      toast.error('Failed to add location.');
     }
   };
 
@@ -53,7 +124,7 @@ const QRGenerator = () => {
       .replace('image/png', 'image/octet-stream');
     const downloadLink = document.createElement('a');
     downloadLink.href = pngUrl;
-    downloadLink.download = `${doorCode}_${roomName}_${location}_QR.png`;
+    downloadLink.download = `${doorCode}_${roomName}_${companyName}_QR.png`;
     downloadLink.click();
   };
 
@@ -70,26 +141,11 @@ const QRGenerator = () => {
             <h2 className="text-xl font-semibold dark:text-slate-100 mb-4">Enter Details</h2>
             <form onSubmit={generateQRCode} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium dark:text-slate-200">Company Name</label>
-                <select
-                  value={location}
-                  onChange={(e) => setlocation(e.target.value)}
-                  className="w-full px-4 py-2 border dark:border-none rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-700 dark:text-slate-300 focus:ring-blue-400"
-                >
-                  <option value="">Select a company</option>
-                  {companyList.map((company, index) => (
-                    <option key={index} value={company}>
-                      {company}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
                 <label className="block text-sm font-medium dark:text-slate-200">Door ID</label>
                 <input
                   type="text"
                   value={doorCode}
-                  onChange={(e) => setdoorCode(e.target.value)}
+                  onChange={handleDoorCodeChange}
                   placeholder="Enter door ID"
                   className="w-full px-4 py-2 border dark:border-none rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-700 dark:text-slate-300 focus:ring-blue-400"
                 />
@@ -99,15 +155,44 @@ const QRGenerator = () => {
                 <input
                   type="text"
                   value={roomName}
-                  onChange={(e) => setroomName(e.target.value)}
+                  onChange={(e) => setRoomName(e.target.value)}
                   placeholder="Enter room name"
                   className="w-full px-4 py-2 border dark:border-none rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-700 dark:text-slate-300 focus:ring-blue-400"
                 />
               </div>
+              <div>
+                <label className="block text-sm font-medium dark:text-slate-200">Location</label>
+                <select
+                  value={selectedLocation}
+                  onChange={(e) => setSelectedLocation(e.target.value)}
+                  className="w-full px-4 py-2 border dark:border-none rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-700 dark:text-slate-300 focus:ring-blue-400"
+                >
+                  <option value="">Select a location</option>
+                  {locations.map((location, index) => (
+                    <option key={index} value={location}>{location}</option>
+                  ))}
+                </select>
+                <div className="mt-2 flex items-center">
+                  <input
+                    type="text"
+                    value={newLocation}
+                    onChange={(e) => setNewLocation(e.target.value)}
+                    placeholder="Add new location"
+                    className="w-full px-4 py-2 border dark:border-none rounded-lg focus:outline-none focus:ring-2  dark:bg-slate-700 dark:text-slate-300 focus:ring-blue-400"
+                  />
+                  <button
+                    type="button"
+                    onClick={addNewLocation}
+                    className="ml-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
               <div className="flex items-center space-x-4">
                 <button
                   type="submit"
-                  disabled={!location || !doorCode || !roomName}
+                  disabled={!companyId || !doorCode || !roomName || !selectedLocation}
                   className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                 >
                   Generate QR Code
@@ -153,8 +238,8 @@ const QRGenerator = () => {
                 <h2 className="text-xl font-semibold dark:text-slate-100  mb-4">QR Code Details</h2>
                 <div className="divide-y divide-gray-300">
                   <div className="flex items-center py-2">
-                    <span className="font-medium dark:text-slate-300  w-1/2">Company Name</span>
-                    <span className="border-l border-gray-300 dark:text-slate-200 pl-2">{location}</span>
+                    <span className="font-medium dark:text-slate-300 w-1/2">Company Name</span>
+                    <span className="border-l border-gray-300 dark:text-slate-200 pl-2">{companyName}</span>
                   </div>
                   <div className="flex items-center py-2">
                     <span className="font-medium dark:text-slate-300 w-1/2">Door Code</span>
@@ -165,6 +250,10 @@ const QRGenerator = () => {
                     <span className="border-l border-gray-300 dark:text-slate-200 pl-2">{roomName}</span>
                   </div>
                   <div className="flex items-center py-2">
+                    <span className="font-medium dark:text-slate-300 w-1/2">Location</span>
+                    <span className="border-l border-gray-300 dark:text-slate-200 pl-2">{selectedLocation}</span>
+                  </div>
+                  <div className="flex items-center py-2">
                     <span className="font-medium dark:text-slate-300 w-1/2">QR Data</span>
                     <span className="border-l border-gray-300 dark:text-slate-200 pl-2">{qrData}</span>
                   </div>
@@ -173,9 +262,10 @@ const QRGenerator = () => {
                 <div className="flex mt-12">
                   <button
                     onClick={saveQRCodeToDatabase}
+                    disabled={!isQrGenerated}
                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                   >
-                    Save to Database
+                    Add new Door
                   </button>
                 </div>
               </div>
@@ -186,6 +276,7 @@ const QRGenerator = () => {
         </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

@@ -7,7 +7,7 @@ const { hashPassword } = require('../helper/auth');
 // Register User
 const registerUser = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, userId , profilePicture} = req.body;
+    const { firstName, lastName, email, password, userId, profilePicture } = req.body;
     console.log('Registering user:', req.body); // Log the request body
 
     // Check name
@@ -51,6 +51,7 @@ const registerUser = async (req, res) => {
       password: hashedPassword,
       userId,
       profilePicture,
+      company: req.companyId, // Attach company ID to the new user
     });
 
     console.log('User created:', user); // Log the created user
@@ -61,10 +62,52 @@ const registerUser = async (req, res) => {
   }
 };
 
+
+// Check email uniqueness
+const checkEmailUnique = async (req, res) => {
+  const { email } = req.query;
+  try {
+    const user = await User.findOne({ email });
+    if (user) {
+      return res.status(200).json({ isUnique: false });
+    }
+    res.status(200).json({ isUnique: true });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Check userId uniqueness
+const checkUserIdUnique = async (req, res) => {
+  const { userId } = req.query;
+  try {
+    const user = await User.findOne({ userId });
+    if (user) {
+      return res.status(200).json({ isUnique: false });
+    }
+    res.status(200).json({ isUnique: true });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+const checkEmailUniqueForUpdate = async (req, res) => {
+  const { email, userId } = req.query;
+  try {
+    const user = await User.findOne({ email });
+    if (user && user.userId !== userId) {
+      return res.status(200).json({ isUnique: false });
+    }
+    res.status(200).json({ isUnique: true });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 // Get all users
 const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await User.find({ company: req.companyId }); // Filter by company ID
     console.log('Fetched users:', users); // Log the fetched users
     res.status(200).json(users);
   } catch (error) {
@@ -80,7 +123,7 @@ const getUserById = async (req, res) => {
     console.log('Fetching user with id:', id); // Log the id
 
     // Find the user and populate the pending requests and doorAccess
-    const user = await User.findById(id).populate({
+    const user = await User.findOne({ _id: id, company: req.companyId }).populate({
       path: 'pendingRequests',
       match: { status: 'Pending' },
       populate: { path: 'door' }
@@ -151,7 +194,7 @@ const updateUserById = async (req, res) => {
       return res.status(400).json({ error: 'User ID is already taken' });
     }
 
-    const user = await User.findByIdAndUpdate(id, { firstName, lastName, email, userId }, { new: true });
+    const user = await User.findOneAndUpdate({ _id: id, company: req.companyId }, { firstName, lastName, email, userId }, { new: true });
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
@@ -168,7 +211,7 @@ const deleteUserById = async (req, res) => {
   try {
     const { id } = req.params;
     console.log('Deleting user with id:', id); // Log the id
-    const user = await User.findByIdAndDelete(id);
+    const user = await User.findOneAndDelete({ _id: id, company: req.companyId });
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
@@ -200,4 +243,4 @@ const getUserHistoryById = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, getAllUsers, getUserById, updateUserById, deleteUserById,removeDoorAccess, getUserHistoryById };
+module.exports = { registerUser, getAllUsers, getUserById, updateUserById, deleteUserById,removeDoorAccess, getUserHistoryById, checkEmailUnique, checkUserIdUnique,checkEmailUniqueForUpdate };

@@ -1,22 +1,21 @@
-const mongoose = require("mongoose");
+const Door = require('../models/Door');
+const User = require('../models/User');
+const History = require('../models/History');
+const Message = require('../models/Messages');
 
 // Fetch document counts for all collections
 const getCollectionCounts = async (req, res) => {
   try {
-    const db = mongoose.connection;
-    const collections = await db.db.listCollections().toArray();
+    const companyId = req.companyId;
+    const doorsCount = await Door.countDocuments({ company: companyId });
+    const usersCount = await User.countDocuments({ company: companyId });
+    const historiesCount = await History.countDocuments({ company: companyId });
 
-    const counts = await Promise.all(
-      collections.map(async (collection) => {
-        const count = await db.collection(collection.name).countDocuments();
-        return {
-          name: collection.name,
-          count,
-        };
-      })
-    );
-
-    res.json(counts);
+    res.json([
+      { name: 'doors', count: doorsCount },
+      { name: 'users', count: usersCount },
+      { name: 'histories', count: historiesCount },
+    ]);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -25,7 +24,7 @@ const getCollectionCounts = async (req, res) => {
 const getFilteredHistoriesCount = async (req, res) => {
   try {
     const { entryTime } = req.query; // Get today's date from query parameter
-    const db = mongoose.connection;
+    const companyId = req.companyId;
 
     // Define start and end of the day
     const startOfDay = new Date(entryTime);
@@ -33,8 +32,9 @@ const getFilteredHistoriesCount = async (req, res) => {
     const endOfDay = new Date(entryTime);
     endOfDay.setUTCHours(23, 59, 59, 999); // 23:59:59.999 UTC
 
-    // Filter histories based on the date range
-    const count = await db.collection("histories").countDocuments({
+    // Filter histories based on the date range and company ID
+    const count = await History.countDocuments({
+      company: companyId,
       entryTime: { $gte: startOfDay, $lt: endOfDay },
     });
 
@@ -46,35 +46,30 @@ const getFilteredHistoriesCount = async (req, res) => {
 
 const getUnreadMessageCount = async (req, res) => {
   try {
-    const db = mongoose.connection;
+    const companyId = req.companyId;
 
-    // Count documents where the status is "unread"
-    const count = await db.collection("contactus").countDocuments({ status: "unread" });
+    // Count documents where the status is "unread" and company ID matches
+    const count = await Message.countDocuments({
+      company: companyId,
+      status: "unread"
+    });
 
     res.json({ count });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-
 };
 
-
+// Fetch active doors count
 const getActiveDoorsCount = async (req, res) => {
   try {
-    const db = mongoose.connection;
+    const companyId = req.companyId;
+    const activeDoorsCount = await Door.countDocuments({ company: companyId, status: "Active" });
 
-    // Count documents where the status is "unread"
-    const count = await db.collection("doors").countDocuments({ status: "Active" });
-
-    res.json({ count });
+    res.json({ count: activeDoorsCount });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-
 };
-
-
-
-
 
 module.exports = { getCollectionCounts, getFilteredHistoriesCount, getUnreadMessageCount, getActiveDoorsCount };
