@@ -79,7 +79,7 @@ const Sidebar = () => {
                   <FaDoorOpen /> Doors
                 </NavLink>
               </li>
-              <li>
+              {/* <li>
                 <NavLink
                   to="/settings"
                   className={({ isActive }) =>
@@ -90,7 +90,7 @@ const Sidebar = () => {
                 >
                   <FaCog /> Settings
                 </NavLink>
-              </li>
+              </li> */}
             </>
           )}
           {userRole === 'SuperAdmin' && (
@@ -122,17 +122,17 @@ const Sidebar = () => {
             </>
           )}
           <li>
-            <NavLink
-              to="/profile"
-              className={({ isActive }) =>
-                isActive
-                  ? " text-blue-600 flex items-center gap-4 dark:text-cyan-500"
-                  : "text-gray-600 flex items-center gap-2 dark:text-slate-400"
-              }
-            >
-              <FaUser /> Profile
-            </NavLink>
-          </li>
+                <NavLink
+                  to="/settings"
+                  className={({ isActive }) =>
+                    isActive
+                      ? " text-blue-600 flex items-center gap-4 dark:text-cyan-500"
+                      : "text-gray-600 flex items-center gap-2 dark:text-slate-400"
+                  }
+                >
+                  <FaCog /> Settings
+                </NavLink>
+              </li>
           <li>
             <button
               onClick={confirmLogout}
