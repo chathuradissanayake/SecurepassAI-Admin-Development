@@ -12,7 +12,7 @@ import Sidebar from '../components/Sidebar';
 import ThemeChange from '../components/ThemeChange';
 
 const Settings = () => {
-  const [activeSection, setActiveSection] = useState('theme'); // Default to ThemeChange
+  const [activeSection, setActiveSection] = useState('profile-settings'); // Default to ThemeChange
   const navigate = useNavigate();
 
 
