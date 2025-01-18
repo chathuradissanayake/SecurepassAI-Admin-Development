@@ -10,27 +10,12 @@ import Languages from '../components/Languages';
 import ProfileSettings from '../components/ProfileSettings';
 import Sidebar from '../components/Sidebar';
 import ThemeChange from '../components/ThemeChange';
-import { clearAuthData } from '../utils/auth';
 
 const Settings = () => {
   const [activeSection, setActiveSection] = useState('theme'); // Default to ThemeChange
   const navigate = useNavigate();
 
-    const handleLogout = () => {
-      // Clear local storage
-      clearAuthData();
-      // Perform any other logout logic here (e.g., clearing session)
-      console.log("Logging out...");
-      navigate("/logout"); // Redirect to the logout page
-    };
-  
-    const confirmLogout = () => {
-      setShowLogoutModal(true);
-    };
-  
-    const cancelLogout = () => {
-      setShowLogoutModal(false);
-    };
+
 
   const renderActiveComponent = () => {
     switch (activeSection) {
