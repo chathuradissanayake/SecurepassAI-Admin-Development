@@ -2,20 +2,17 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
-
 const ProfileSettings = () => {
-//edit name
-const [profile, setProfile] = useState({
+  const [profile, setProfile] = useState({
     firstName: "",
     lastName: "",
     email: "",
   });
-
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState(""); // New state for success message
   const userRole = localStorage.getItem('role'); // Assuming you store the role in localStorage
   const navigate = useNavigate();
 
-  //change names and email
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -60,8 +57,9 @@ const [profile, setProfile] = useState({
         }
       );
       setError("");
-      alert("Profile updated successfully");
+      setSuccessMessage("Profile updated successfully"); // Set success message
     } catch (err) {
+      setSuccessMessage(""); // Clear success message on error
       if (err.response && err.response.status === 403) {
         setError("Super Admins are not allowed to update their profile");
       } else {
@@ -70,70 +68,69 @@ const [profile, setProfile] = useState({
     }
   };
 
-
   return (
     <div className="m-2">
-      
-        <h2 className="text-lg font-medium text-slate-800 dark:text-slate-200 mb-4">Name and Email change </h2>
+      <h2 className="text-lg font-medium text-slate-800 dark:text-slate-200 mb-4">Name and Email change</h2>
 
-        {error && <p className="text-red-500">{error}</p>}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-            {/*First name */}
-            <div>
-            <label className="block text-sm font-medium text-slate-800 dark:text-slate-200">First Name</label>
-            <input
-                type="text"
-                name="firstName"
-                value={profile.firstName}
-                onChange={handleChangeName}
-                className="mt-1 w-full p-2 border rounded dark:bg-slate-700 dark:border-slate-600 dark:text-slate-200"
-                disabled={userRole === 'SuperAdmin'}
-            />
-
-            </div>
-            <div>
-
-            {/* Last name */}
-            <label className="block text-sm font-medium text-slate-800 dark:text-slate-200">Last Name</label>
-            <input
-                type="text"
-                name="lastName"
-                value={profile.lastName}
-                onChange={handleChangeName}
-                className="mt-1 w-full p-2 border rounded dark:bg-slate-700 dark:border-slate-600 dark:text-slate-200"
-                disabled={userRole === 'SuperAdmin'}
-            />
-            </div> 
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* First Name */}
+        <div>
+          <label className="block text-sm font-medium text-slate-800 dark:text-slate-200">First Name</label>
+          <input
+            type="text"
+            name="firstName"
+            value={profile.firstName}
+            onChange={handleChangeName}
+            className="mt-1 w-full p-2 border rounded dark:bg-slate-700 dark:border-slate-600 dark:text-slate-200"
+            disabled={userRole === 'SuperAdmin'}
+          />
         </div>
 
-        {/* email */}
+        {/* Last Name */}
+        <div>
+          <label className="block text-sm font-medium text-slate-800 dark:text-slate-200">Last Name</label>
+          <input
+            type="text"
+            name="lastName"
+            value={profile.lastName}
+            onChange={handleChangeName}
+            className="mt-1 w-full p-2 border rounded dark:bg-slate-700 dark:border-slate-600 dark:text-slate-200"
+            disabled={userRole === 'SuperAdmin'}
+          />
+        </div>
+      </div>
+
+      {/* Email */}
+      <div className="mt-4">
+        <label className="block text-sm font-medium text-slate-800 dark:text-slate-200">Email</label>
+        <input
+          type="email"
+          name="email"
+          value={profile.email}
+          onChange={handleChangeName}
+          className="mt-1 w-full p-2 border rounded dark:bg-slate-700 dark:border-slate-600 dark:text-slate-200"
+          disabled={userRole === 'SuperAdmin'}
+        />
+      </div>
+
+      {error && <p className="text-red-500 mt-2">{error}</p>}
+      {successMessage && <p className="text-green-500 mt-2">{successMessage}</p>}
+
+      {/* Save Button */}
+      {userRole !== 'SuperAdmin' && (
         <div className="mt-4">
-            <label className="block text-sm font-medium text-slate-800 dark:text-slate-200">Email</label>
-            <input
-                type="email"
-                name="email"
-                value={profile.email}
-                onChange={handleChangeName}
-                className="mt-1 w-full p-2 border rounded dark:bg-slate-700 dark:border-slate-600 dark:text-slate-200"
-                disabled={userRole === 'SuperAdmin'}
-            />
-            </div>
-
-        {/* Save Button */}
-        {userRole !== 'SuperAdmin' && (
-            <div className="mt-8">
-            <button
-                onClick={handleSaveName}
-                className="bg-blue-600 text-white font-semibold px-6 py-2 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            >
-                Save
-            </button>
-            </div>
-        )}
+          <button
+            onClick={handleSaveName}
+            className="bg-blue-600  text-white px-10 py-1.5 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 my-4"
+          >
+            Save
+          </button>
+        </div>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default ProfileSettings
+export default ProfileSettings;
