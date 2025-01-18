@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 const ChangePassword = () => {
+    
 
     //change password
   const [passwords, setPasswords] = useState({
@@ -114,11 +115,13 @@ const ChangePassword = () => {
           {successMessage && <p className="text-green-600 mt-2">{successMessage}</p>}
 
           {/* Save Button */}
+        <div className="flex justify-start">
           <button
             onClick={handleSavePassword}
-            className="bg-blue-600 text-white font-semibold px-6 py-2 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 my-4">
-            Save
+            className="bg-blue-600  text-white px-10 py-1.5 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 my-4">
+            Change Password
           </button>
+          </div>
     </div>
   )
 }
