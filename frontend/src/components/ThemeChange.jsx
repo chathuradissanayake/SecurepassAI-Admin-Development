@@ -1,37 +1,28 @@
-import React from "react";
-import { GoChevronLeft } from "react-icons/go";
-import { Link, useNavigate } from "react-router-dom";
+import React from 'react';
 import { useTheme } from "../../context/ThemeContext";
 
-const ThemeToggle = () => {
-  const { theme, toggleTheme } = useTheme();
-
-  const navigate = useNavigate();
-
-  // Handle theme selection
-  const handleSelectTheme = (selectedTheme) => {
-    if (theme !== selectedTheme) {
-      toggleTheme(); // Switch the theme if it's different
-    }
-  };
-
+const ThemeChange = () => {
+    
+    const { theme, toggleTheme } = useTheme();
+    const handleSelectTheme = (selectedTheme) => {
+        if (theme !== selectedTheme) {
+          toggleTheme(); // Switch the theme if it's different
+        }
+      }
+    
   return (
-    <div className="flex justify-center min-h-screen bg-gray-50 dark:bg-slate-600 ">
-      <div className="bg-white shadow-md rounded-md p-8 w-full max-w-md dark:bg-slate-800">
+    <div className='m-2'>
+      <h3 className="text-lg font-medium text-slate-800 dark:text-slate-200 mb-4">
+              Theme Settings
+        </h3>
 
-        <div className="title flex items-center space-x-2 mb-8 dark:text-slate-100">
-                  <Link to="/settings">
-                    <GoChevronLeft className="cursor-pointer" />
-                  </Link>
-                  <span className="font-semibold">Theme</span>
-                </div>
-      <div className="flex flex-col space-y-3">
+        <div className="flex flex-col space-y-3">
         {/* Light Theme */}
         <button
           className={`flex items-center p-3 rounded-md cursor-pointer transition ${
             theme === "light"
               ? "bg-blue-300 text-white shadow-lg"
-              : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+              : "bg-slate-200 dark:bg-slate-700 text-gray-800 dark:text-gray-200"
           }`}
           onClick={() => handleSelectTheme("light")}
         >
@@ -51,8 +42,8 @@ const ThemeToggle = () => {
         <button
           className={`flex items-center p-3 rounded-md cursor-pointer transition ${
             theme === "dark"
-              ? "bg-blue-300 text-white shadow-lg"
-              : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+              ? "bg-slate-800 text-white shadow-lg"
+              : "bg-slate-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
           }`}
           onClick={() => handleSelectTheme("dark")}
         >
@@ -69,8 +60,7 @@ const ThemeToggle = () => {
         </button>
       </div>
     </div>
-    </div>
-  );
-};
+  )
+}
 
-export default ThemeToggle;
+export default ThemeChange
