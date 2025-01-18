@@ -11,7 +11,7 @@ const ThemeChange = () => {
       }
     
   return (
-    <div>
+    <div className='m-2'>
       <h3 className="text-lg font-medium text-slate-800 dark:text-slate-200 mb-4">
               Theme Settings
         </h3>
