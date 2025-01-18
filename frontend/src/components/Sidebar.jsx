@@ -46,7 +46,7 @@ const Sidebar = () => {
               to="/dashboard"
               className={({ isActive }) =>
                 isActive
-                  ? " text-blue-600 flex items-center gap-4 dark:text-cyan-500"
+                  ? " text-blue-600 flex items-center gap-4 dark:text-blue-400"
                   : "text-gray-600 flex items-center gap-2 dark:text-slate-400"
               }
             >
@@ -60,7 +60,7 @@ const Sidebar = () => {
                   to="/users"
                   className={({ isActive }) =>
                     isActive
-                      ? " text-blue-600 flex items-center gap-4 dark:text-cyan-500"
+                      ? " text-blue-600 flex items-center gap-4 dark:text-blue-400"
                       : "text-gray-600 flex items-center gap-2 dark:text-slate-400"
                   }
                 >
@@ -72,7 +72,7 @@ const Sidebar = () => {
                   to="/doors"
                   className={({ isActive }) =>
                     isActive
-                      ? " text-blue-600 flex items-center gap-4 dark:text-cyan-500"
+                      ? " text-blue-600 flex items-center gap-4 dark:text-blue-400"
                       : "text-gray-600 flex items-center gap-2 dark:text-slate-400"
                   }
                 >
@@ -84,7 +84,7 @@ const Sidebar = () => {
                   to="/settings"
                   className={({ isActive }) =>
                     isActive
-                      ? " text-blue-600 flex items-center gap-4 dark:text-cyan-500"
+                      ? " text-blue-600 flex items-center gap-4 dark:text-blue-400"
                       : "text-gray-600 flex items-center gap-2 dark:text-slate-400"
                   }
                 >
@@ -100,7 +100,7 @@ const Sidebar = () => {
                   to="/companies"
                   className={({ isActive }) =>
                     isActive
-                      ? " text-blue-600 flex items-center gap-4 dark:text-cyan-500"
+                      ? " text-blue-600 flex items-center gap-4 dark:text-blue-400"
                   : "text-gray-600 flex items-center gap-2 dark:text-slate-400"
                   }
                 >
@@ -112,7 +112,7 @@ const Sidebar = () => {
                   to="/admin-users"
                   className={({ isActive }) =>
                     isActive
-                      ? " text-blue-600 flex items-center gap-4 dark:text-cyan-500"
+                      ? " text-blue-600 flex items-center gap-4 dark:text-blue-400"
                   : "text-gray-600 flex items-center gap-2 dark:text-slate-400"
                   }
                 >
@@ -126,7 +126,7 @@ const Sidebar = () => {
                   to="/settings"
                   className={({ isActive }) =>
                     isActive
-                      ? " text-blue-600 flex items-center gap-4 dark:text-cyan-500"
+                      ? " text-blue-600 flex items-center gap-4 dark:text-blue-400"
                       : "text-gray-600 flex items-center gap-2 dark:text-slate-400"
                   }
                 >
@@ -136,7 +136,7 @@ const Sidebar = () => {
           <li>
             <button
               onClick={confirmLogout}
-              className="text-gray-600 flex items-center gap-2 dark:text-slate-400 hover:text-blue-600 dark:hover:text-cyan-500"
+              className="text-gray-600 flex items-center gap-2 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400"
             >
               <FaSignOutAlt /> Logout
             </button>
