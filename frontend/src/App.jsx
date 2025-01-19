@@ -39,7 +39,7 @@ const App = () => {
           <Route path="/doors" element={isAuthenticated ? <ProtectedRoute allowedRoles={['Admin']}><Doors /></ProtectedRoute> : <Navigate to="/login" />} />
           <Route path="/doors/:id" element={isAuthenticated ? <ProtectedRoute allowedRoles={['Admin']}><DoorDetails /></ProtectedRoute> : <Navigate to="/login" />} />
           <Route path="/create-door" element={isAuthenticated ? <ProtectedRoute allowedRoles={['Admin']}><QRGenerator /></ProtectedRoute> : <Navigate to="/login" />} />
-          <Route path="/settings" element={isAuthenticated ? <ProtectedRoute allowedRoles={['Admin']}><Settings /></ProtectedRoute> : <Navigate to="/login" />} />
+          <Route path="/settings" element={isAuthenticated ? <Settings /> : <Navigate to="/login" />} />
           <Route path="/profile" element={isAuthenticated ? <Profile /> : <Navigate to="/login" />} />
           <Route path="/companies" element={isAuthenticated ? <ProtectedRoute allowedRoles={['SuperAdmin']}><Companies /></ProtectedRoute> : <Navigate to="/login" />} />
           <Route path="//companies/:id" element={isAuthenticated ? <ProtectedRoute allowedRoles={['SuperAdmin']}><CompanyProfile /></ProtectedRoute> : <Navigate to="/login" />} />

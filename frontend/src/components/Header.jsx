@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { FaBell } from "react-icons/fa";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from "../../context/ThemeContext";
-import avatar from "../assets/avatar.png";
 
 const Header = () => {
   const location = useLocation();
@@ -10,6 +9,7 @@ const Header = () => {
   const [unreadCount, setUnreadCount] = useState(0);
   const { theme, toggleTheme } = useTheme();
   const [companyName, setCompanyName] = useState(null);
+  const [userDetails, setUserDetails] = useState({ firstName: "", lastName: "" }); // State for user's name
 
   const isDarkTheme = theme === 'dark';
   const handleThemeToggle = () => {
@@ -24,6 +24,51 @@ const Header = () => {
       setCompanyName(companyName);
     }
   }, [userRole]);
+
+// User details
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`/api/admin/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        setUserDetails({ firstName: data.firstName, lastName: data.lastName });
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+    };
+
+    fetchUserDetails();
+  }, []);
+
+// Message count
+  useEffect(() => {
+    if (userRole === 'Admin') {
+      const fetchUnreadMessagesCount = async () => {
+        try {
+          const token = localStorage.getItem('token');
+          const response = await fetch(`/api/collections/unread-count`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            withCredentials: true,
+          });
+          const data = await response.json();
+      
+          console.log("Unread Messages Count:", data.count); // Log the count
+          setUnreadCount(data.count || 0); // Update the state with the count
+        } catch (error) {
+          console.error("Error fetching unread messages count:", error);
+        }
+      };
+      fetchUnreadMessagesCount();
+    }
+  }, [userRole]);
+
 
   const getTitle = (path) => {
     if (path.startsWith('/users/') && path.split('/').length === 3) {
@@ -57,29 +102,7 @@ const Header = () => {
     }
   };
 
-  useEffect(() => {
-    if (userRole === 'Admin') {
-      const fetchUnreadMessagesCount = async () => {
-        try {
-          const token = localStorage.getItem('token');
-          const response = await fetch(`/api/collections/unread-count`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            withCredentials: true,
-          });
-          const data = await response.json();
-      
-          console.log("Unread Messages Count:", data.count); // Log the count
-          setUnreadCount(data.count || 0); // Update the state with the count
-        } catch (error) {
-          console.error("Error fetching unread messages count:", error);
-        }
-      };
-      fetchUnreadMessagesCount();
-    }
-  }, [userRole]);
-
+ 
   return (
     <div>
       <header className="flex justify-between items-center p-5 bg-white dark:bg-slate-700">
@@ -111,12 +134,13 @@ const Header = () => {
               <button className="text-yellow-400 text-3xl mt-1"><FaBell /></button>
             </div>
           )}
-          <img
-            src={avatar}
-            alt="User Avatar"
-            className="w-8 h-8 rounded-full cursor-pointer" 
-            onClick={() => navigate('/profile')}
-          />
+          
+           <div>
+            <div className="text-xs font-light dark:text-slate-300">log in as</div>
+            <div className="text-lg font-medium text-gray-800 dark:text-white">
+              {userDetails.firstName} {userDetails.lastName}
+            </div>
+          </div>
         </div>
       </header>
       <hr />

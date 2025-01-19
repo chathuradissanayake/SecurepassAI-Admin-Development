@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { FaEye, FaEyeSlash, FaPhone, FaThumbsUp } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
+import { FaEye, FaEyeSlash, FaThumbsUp } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 
@@ -41,7 +40,7 @@ const LoginPage = () => {
 
           {error && <p className="text-red-500 mb-4">{error}</p>}
 
-          <div className="flex gap-4 mb-4">
+          {/* <div className="flex gap-4 mb-4">
             <button className="flex items-center px-4 py-2 border rounded-lg hover:bg-gray-200 transition">
               <FcGoogle className="mr-2 text-lg" />
               Google
@@ -57,7 +56,7 @@ const LoginPage = () => {
             <hr className="flex-grow border-gray-300" />
             <span className="px-2 text-gray-500 text-sm">Or continue with</span>
             <hr className="flex-grow border-gray-300" />
-          </div>
+          </div> */}
 
           <input
             type="email"
@@ -89,9 +88,9 @@ const LoginPage = () => {
               <input type="checkbox" className="mr-2" />
               <span className="text-gray-600 text-sm">Remember me</span>
             </label>
-            <a href="/recover" className="text-red-500 text-sm hover:underline">
+            {/* <a href="/recover" className="text-red-500 text-sm hover:underline">
               Recover Password
-            </a>
+            </a> */}
           </div>
 
           <button
