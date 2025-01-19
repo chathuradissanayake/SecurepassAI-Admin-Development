@@ -8,6 +8,7 @@ const userSchema = new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   profilePicture:{type: String},
+  faceCount:{type: Number , default: 0},
   doorAccess: [{
     door: { type: Schema.Types.ObjectId, ref: 'Door' },
     inTime: { type: String },
