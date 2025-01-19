@@ -59,7 +59,7 @@ const RecentAccessDoors = ({ accessRecords }) => {
                     : 'Unknown User'}
                 </td>
                 <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{new Date(record.entryTime).toLocaleString()}</td>
-                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{record.exitTime ? new Date(record.exitTime).toLocaleString() : 'N/A'}</td>
+                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{record.exitTime ? new Date(record.exitTime).toLocaleString() : 'Still in the room'}</td>
               </tr>
             ))}
           </tbody>
