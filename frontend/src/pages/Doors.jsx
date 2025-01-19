@@ -42,6 +42,7 @@ const Doors = () => {
           withCredentials: true,
         });
         setAccessRecords(response.data);
+        console.log("Recent access records:", response.data);
       } catch (error) {
         console.error("Error fetching recent access records:", error);
         setError(error.message);
