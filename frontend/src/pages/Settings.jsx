@@ -1,153 +1,92 @@
 import React, { useState } from 'react';
+import { GoChevronRight } from "react-icons/go";
+import { useNavigate } from 'react-router-dom';
+import AboutUs from '../components/AboutUs';
+import AdminContact from '../components/AdminContact';
+import AppInformation from '../components/AppInformation';
+import ChangePassword from '../components/ChangePassword';
 import Header from '../components/Header';
+import Languages from '../components/Languages';
+import ProfileSettings from '../components/ProfileSettings';
 import Sidebar from '../components/Sidebar';
-import axios from 'axios';
+import ThemeChange from '../components/ThemeChange';
 
 const Settings = () => {
-  const [isTwoFactorEnabled, setIsTwoFactorEnabled] = useState(false);
-  const [passwords, setPasswords] = useState({
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: ''
-  });
-  const [passwordError, setPasswordError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [activeSection, setActiveSection] = useState('profile-settings'); // Default to ThemeChange
+  const navigate = useNavigate();
 
-  const handleToggle = () => {
-    setIsTwoFactorEnabled(!isTwoFactorEnabled);
-  };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setPasswords((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
 
-  const handleSave = async () => {
-    if (passwords.newPassword !== passwords.confirmPassword) {
-      setPasswordError('Passwords do not match');
-    } else {
-      setPasswordError('');
-      try {
-        const token = localStorage.getItem("token");
-        await axios.put(
-          '/api/admin/change-password',
-          {
-            currentPassword: passwords.currentPassword,
-            newPassword: passwords.newPassword,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setSuccessMessage('Password changed successfully');
-      } catch (err) {
-        setPasswordError('Failed to change password');
-      }
+  const renderActiveComponent = () => {
+    switch (activeSection) {
+      case 'theme':
+        return <ThemeChange />;
+      case 'change-password':
+        return <ChangePassword />;
+      case 'language':
+        return <Languages/>
+      case 'profile-settings':
+        return <ProfileSettings/>
+      case 'app-info':
+        return <AppInformation/>
+      case 'admin-contact':
+        return <AdminContact/>
+      case 'about-us':
+        return <AboutUs/>
+      default:
+        return null;
     }
   };
 
-  
-
-
   return (
-    <div className="flex h-full">
+    <div className="flex h-full dark:bg-slate-700">
       <Sidebar />
       <div className="flex-1">
         <Header />
-
-        
-        {/* Two-Factor Authentication */}
-        <div className="p-6 space-y-6">
-          <h2 className="text-xl font-semibold text-gray-800">
-            Two-factor Authentication
+        <div className="p-6 space-y-4">
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+            Settings
           </h2>
-          <div className="flex items-center mt-4">
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                className="sr-only peer"
-                checked={isTwoFactorEnabled}
-                onChange={handleToggle}
-              />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:bg-green-500 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
-            </label>
-            <span className="ml-3 text-sm text-gray-700">
-              Enable or disable two-factor authentication
-            </span>
-          </div>
-        </div>
+          <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-        {/* Change Password */}
-        <div className="px-6 space-y-6">
-          <h2 className="text-xl font-semibold text-gray-800">Change Password</h2>
-          <div className="mt-4">
-            <label
-              htmlFor="currentPassword"
-              className="block text-gray-600 font-medium"
-            >
-              Current Password
-            </label>
-            <input
-              type="password"
-              id="currentPassword"
-              name="currentPassword"
-              value={passwords.currentPassword}
-              onChange={handleChange}
-              className="w-1/2 mt-2 px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
-              placeholder="********"
-            />
-          </div>
-          <div className="mt-4">
-            <label
-              htmlFor="newPassword"
-              className="block text-gray-600 font-medium"
-            >
-              New Password
-            </label>
-            <input
-              type="password"
-              id="newPassword"
-              name="newPassword"
-              value={passwords.newPassword}
-              onChange={handleChange}
-              className="w-1/2 mt-2 px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
-              placeholder="********"
-            />
-          </div>
-          <div className="mt-4">
-            <label
-              htmlFor="confirmPassword"
-              className="block text-gray-600 font-medium"
-            >
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={passwords.confirmPassword}
-              onChange={handleChange}
-              className="w-1/2 mt-2 px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
-              placeholder="********"
-            />
-          </div>
-          {passwordError && <p className="text-red-600 mt-2">{passwordError}</p>}
-          {successMessage && <p className="text-green-600 mt-2">{successMessage}</p>}
-        </div>
+            {/* Left Column: Settings Panel */}
+            <div >
+              <div className="p-4 bg-slate-100 dark:bg-slate-600 rounded-lg shadow" >
+                
+                <nav className="flex min-w-[240px] flex-col gap-1 p-1.5 dark:text-slate-100 mt-3">
+                  {[
+                    { id: 'profile-settings', label: 'Profile Settings' },
+                    { id: 'change-password', label: 'Change Password' },
+                    { id: 'theme', label: 'Theme' },
+                    { id: 'language', label: 'Language' },
+                    { id: 'app-info', label: 'App Information' },
+                    { id: 'admin-contact', label: 'Emagency Contact' },
+                    { id: 'about-us', label: 'About Us' },
+                    { id: 'log-out', label: 'Log out' },
+                  ].map((item) => (
+                    <div
+                      key={item.id}
+                      role="button"
+                      onClick={() => setActiveSection(item.id)}
+                      className={` text-slate-800 dark:text-slate-100 dark:hover:bg-slate-700 flex w-full items-center rounded-md p-3 transition-all hover:bg-slate-300 focus:bg-slate-300 active:bg-slate-300 justify-between ${
+                        activeSection === item.id ? 'bg-blue-200 dark:bg-slate-800' : ''
+                      }`}
+                    >
+                      {item.label}
+                      <GoChevronRight className="text-gray-500" />
+                    </div>
+                  ))}
+                </nav>
+              </div>
+            </div>
 
-        {/* Save Button */}
-        <div className="p-6 space-y-6">
-          <button
-            onClick={handleSave}
-            className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
-          >
-            Save
-          </button>
+            {/* Right Column: Active Section */}
+            <div>
+              <div className="p-4 bg-slate-100 dark:bg-slate-600 rounded-lg shadow">
+                {renderActiveComponent()}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

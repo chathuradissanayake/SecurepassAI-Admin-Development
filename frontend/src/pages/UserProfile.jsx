@@ -1,8 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { BiError } from "react-icons/bi";
+import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import avatar from "../assets/avatar.png";
+import ConfirmationModal from "../components/ConfirmationModal";
 import Header from "../components/Header";
 import Modal from "../components/Modal";
 import Sidebar from "../components/Sidebar";
@@ -10,11 +14,7 @@ import Spinner from "../components/Spinner";
 import UPDoorAccess from "../components/UPDoorAccess";
 import UPHistory from "../components/UPHistory";
 import UPPermissionRequests from "../components/UPPermissionRequests";
-import RejectedPermissionRequests from "../components/RejectedPermissionRequests";
-import avatar from "../assets/avatar.png";
-import ConfirmationModal from "../components/ConfirmationModal";
-import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
-import { BiError } from "react-icons/bi";
+import UPRejectedPermissionRequests from "../components/UPRejectedPermissionRequests";
 
 const UserProfile = () => {
   const { id } = useParams();
@@ -280,7 +280,7 @@ const UserProfile = () => {
           />
           
           {/* Rejected Door Permission Requests */}
-          <RejectedPermissionRequests rejectedRequests={rejectedRequests} />
+          <UPRejectedPermissionRequests rejectedRequests={rejectedRequests} />
 
           {/* Door Access History */}
           <UPHistory historyRecords={historyRecords} />
