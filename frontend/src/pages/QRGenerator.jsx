@@ -52,7 +52,7 @@ const QRGenerator = () => {
     e.preventDefault();
     console.log('Generating QR Code with:', { companyId, doorCode, roomName, selectedLocation });
     if (companyId && doorCode && roomName && selectedLocation) {
-      const qrValue = `${doorCode}_${selectedLocation}`;
+      const qrValue = `${doorCode}`;
       setQrData(qrValue);
       setIsQrGenerated(true);
       console.log('QR Code generated:', qrValue);
