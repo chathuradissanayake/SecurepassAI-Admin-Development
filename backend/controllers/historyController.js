@@ -10,7 +10,7 @@ const getRecentAccessDoors = async (req, res) => {
     const recentAccess = await History.find({ company: req.companyId })
       .sort({ entryTime: -1 })
       .limit(50)
-      .populate('user.userId', 'firstName lastName email');
+      .populate('user', 'firstName lastName'); // Populate user with first name and last name
 
     if (!recentAccess) {
       return res.status(404).json({ error: 'No recent access records found' });
@@ -23,4 +23,5 @@ const getRecentAccessDoors = async (req, res) => {
     res.status(500).json({ error: 'Error fetching recent access doors' });
   }
 };
+
 module.exports = { getRecentAccessDoors };

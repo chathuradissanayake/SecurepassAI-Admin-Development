@@ -56,7 +56,7 @@ const PendingRequests = () => {
                   className="block bg-slate-100 p-4 rounded-lg hover:bg-slate-200 mb-2 dark:bg-slate-700 dark:hover:bg-slate-800 dark:text-slate-300"
                 >
                   <div className="flex justify-between">
-                    <h2 className="text-lg font-semibold text-slate-700 dark:text-slate-100">
+                    <h2 className="text-md font-semibold text-slate-700 dark:text-slate-100">
                       {request.user.firstName} {request.user.lastName} ({request.user.userId})
                     </h2>
                     <p className="text-yellow-500 font-bold mt-2">{request.status}</p>

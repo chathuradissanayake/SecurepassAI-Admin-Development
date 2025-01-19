@@ -131,7 +131,7 @@ const Messages = () => {
               >
             
                 <div className="my-2 ml-2 flex justify-between">
-                  <p className="text-xl text-gray-800 dark:text-slate-200 font-medium">
+                  <p className="text-md text-gray-500 dark:text-slate-200 font-medium">
                     {message.user ? message.user.userId : "Unknown User"} {/* Display userId */}
                   </p>
                   
@@ -139,7 +139,7 @@ const Messages = () => {
                     onClick={() =>
                       handleToggleReadState(message._id, message.status)
                     }
-                    className={`px-4 py-1 text-white font-sm rounded ${
+                    className={`px-4 py-0.5 text-white font-sm rounded ${
                       message.status === "read"
                         ? "bg-slate-500 dark:bg-slate-800 hover:bg-slate-600 dark:hover:bg-slate-900"
                         : "bg-blue-500 hover:bg-blue-600"
@@ -150,14 +150,14 @@ const Messages = () => {
                 </div>
                 
                 <div className="flex items-center justify-between">
-                  <p className="text-slate-600 dark:text-slate-300 mx-2 mb-4">{message.message}</p>
+                  <p className="text-slate-600 dark:text-slate-300 font-mono mx-2 mb-4">{message.message}</p>
                   <button
                     onClick={() => handleReply(message)}
                     className={`${
                       replyingTo === message._id
                         ? "bg-red-500 hover:bg-red-600 opacity-80"
                         : "bg-purple-500 hover:bg-purple-600 opacity-80"
-                    } px-3.5 py-1 text-white font-sm rounded`}
+                    } px-3.5 py-0.5 text-white font-sm rounded`}
                   >
                     {replyingTo === message._id ? "Undo" : "Reply"}
                   </button>
