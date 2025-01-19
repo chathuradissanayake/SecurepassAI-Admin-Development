@@ -27,7 +27,7 @@ const AboutUs = () => {
       ];
 
   return (
-    <div className='overflow-auto [&::-webkit-scrollbar]:w-2
+    <div className='overflow-auto m-2 [&::-webkit-scrollbar]:w-2
                       [&::-webkit-scrollbar-track]:rounded-full
                       [&::-webkit-scrollbar-track]:bg-gray-100
                       [&::-webkit-scrollbar-thumb]:rounded-full
@@ -35,8 +35,8 @@ const AboutUs = () => {
                       dark:[&::-webkit-scrollbar-track]:bg-slate-800
                       dark:[&::-webkit-scrollbar-thumb]:bg-slate-500'style={{ height: 'calc(100vh - 200px)' }}>
       
-      <h3 className="text-lg font-medium text-slate-800 dark:text-slate-200 mb-4">
-              App Information
+      <h3 className="text-lg font-medium text-slate-800 dark:text-slate-200 mb-4 ">
+              About us
         </h3>
       <div className="flex justify-center mb-6">
           <img
