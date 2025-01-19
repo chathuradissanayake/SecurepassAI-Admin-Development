@@ -54,8 +54,8 @@ const RecentAccessDoors = ({ accessRecords }) => {
                 <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{record.roomName}</td>
                 <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{record.location}</td>
                 <td className="p-3 border-t  border-gray-400 dark:border-slate-500">
-                  {record.user && record.user.userId
-                    ? `${record.user.userId.firstName} ${record.user.userId.lastName}`
+                  {record.user
+                    ? `${record.user.firstName} ${record.user.lastName}`
                     : 'Unknown User'}
                 </td>
                 <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{new Date(record.entryTime).toLocaleString()}</td>
