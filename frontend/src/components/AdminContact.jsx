@@ -4,7 +4,7 @@ const AdminContact = () => {
   return (
     <div className='m-2'>
         <h3 className="text-lg font-medium text-slate-800 dark:text-slate-200 mb-4">
-              App Information
+             Emegency Contact
         </h3>
       
           <p className="text-gray-600 mb-4 text-sm dark:text-slate-200">

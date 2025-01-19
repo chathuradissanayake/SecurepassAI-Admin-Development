@@ -1,6 +1,7 @@
 import axios from "axios";
-import React, { useState } from "react";
-import { FaEye, FaEyeSlash, FaThumbsUp } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { FaEye, FaEyeSlash, FaPhone, FaThumbsUp } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 
@@ -9,7 +10,14 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false); // State to track if user is logged in
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      setLoggedIn(true);
+    }
+  }, []);
 
   const handleLogin = async () => {
     try {
@@ -23,11 +31,18 @@ const LoginPage = () => {
         localStorage.setItem("companyName", response.data.company); 
       }
       console.log("Login successful, navigating to dashboard...");
-      navigate("/dashboard");
+      setLoggedIn(true); // Set loggedIn to true after successful login
+      setTimeout(() => {
+        window.location.reload(); // Refresh the page after login
+      }, 2000); // You can adjust the delay as per your requirement
     } catch (err) {
       console.error("Login failed:", err);
       setError("Invalid email or password");
     }
+  };
+
+  const handleGoToDashboard = () => {
+    navigate("/dashboard");
   };
 
   return (
@@ -40,65 +55,62 @@ const LoginPage = () => {
 
           {error && <p className="text-red-500 mb-4">{error}</p>}
 
-          {/* <div className="flex gap-4 mb-4">
-            <button className="flex items-center px-4 py-2 border rounded-lg hover:bg-gray-200 transition">
-              <FcGoogle className="mr-2 text-lg" />
-              Google
-            </button>
+          {!loggedIn ? (
+            <>
+          
+              <div className="w-full max-w-[350px] flex items-center mb-4">
+              </div>
 
-            <button className="flex items-center px-4 py-2 border rounded-lg hover:bg-gray-200 transition">
-              <FaPhone className="mr-2 text-lg text-blue-500" />
-              Phone
-            </button>
-          </div>
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full max-w-md px-4 py-2 border rounded-lg mb-4 mx-auto focus:ring-2 focus:ring-green-500 outline-none"
+              />
 
-          <div className="w-full max-w-[350px] flex items-center mb-4">
-            <hr className="flex-grow border-gray-300" />
-            <span className="px-2 text-gray-500 text-sm">Or continue with</span>
-            <hr className="flex-grow border-gray-300" />
-          </div> */}
+              <div className="w-full max-w-md mx-auto relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
 
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full max-w-md px-4 py-2 border rounded-lg mb-4 mx-auto focus:ring-2 focus:ring-green-500 outline-none"
-          />
+              <div className="flex justify-between items-center w-full max-w-md mx-auto mt-4">
+                <label className="flex items-center">
+                  <input type="checkbox" className="mr-2" />
+                  <span className="text-gray-600 text-sm">Remember me</span>
+                </label>
+                {/* <a href="/recover" className="text-red-500 text-sm hover:underline">
+                  Recover Password
+                </a> */}
+              </div>
 
-          <div className="w-full max-w-md mx-auto relative">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
-            />
+              <button
+                className="w-full max-w-md mx-auto mt-6 px-4 py-2 bg-green-500 text-white text-lg rounded-lg hover:bg-green-600 transition"
+                onClick={handleLogin}
+              >
+                Log In
+              </button>
+            </>
+          ) : (
             <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            className="w-full max-w-md mx-auto mt-6 px-4 py-2 bg-blue-500 text-white text-lg rounded-lg hover:bg-blue-600 transition"
+            onClick={handleGoToDashboard}
             >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </button>
-          </div>
-
-          <div className="flex justify-between items-center w-full max-w-md mx-auto mt-4">
-            <label className="flex items-center">
-              <input type="checkbox" className="mr-2" />
-              <span className="text-gray-600 text-sm">Remember me</span>
-            </label>
-            {/* <a href="/recover" className="text-red-500 text-sm hover:underline">
-              Recover Password
-            </a> */}
-          </div>
-
-          <button
-            className="w-full max-w-md mx-auto mt-6 px-4 py-2 bg-green-500 text-white text-lg rounded-lg hover:bg-green-600 transition"
-            onClick={handleLogin}
-          >
-            Log In
+            Go to Dashboard
           </button>
+          )}
         </div>
 
         <div className="w-1/2 relative">
