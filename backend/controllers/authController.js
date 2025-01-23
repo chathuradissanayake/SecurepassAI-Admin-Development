@@ -52,6 +52,7 @@ const registerUser = async (req, res) => {
       userId,
       profilePicture,
       company: req.companyId, // Attach company ID to the new user
+      admin : req.adminUserId // Attach admin ID to the new user
     });
 
     console.log('User created:', user); // Log the created user
