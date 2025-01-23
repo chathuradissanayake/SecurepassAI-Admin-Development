@@ -21,6 +21,7 @@ const authMiddleware = async (req, res, next) => {
       const adminUser = await AdminUser.findById(req.user.userId).populate('company');
       if (adminUser) {
         req.companyId = adminUser.company._id;
+        req.adminUserId = adminUser._id;
       } else {
         return res.status(401).json({ error: 'User not found' });
       }
