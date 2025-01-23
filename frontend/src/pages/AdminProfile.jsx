@@ -24,6 +24,8 @@ const AdminProfile = () => {
     companyId: "",
   });
   const [companies, setCompanies] = useState([]);
+  const [doors, setDoors] = useState([]);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const fetchAdmin = async () => {
@@ -65,9 +67,41 @@ const AdminProfile = () => {
       }
     };
 
+    const fetchDoors = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(`/api/admin/admin-users/${id}/doors`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
+        setDoors(response.data);
+      } catch (err) {
+        console.error("Error fetching doors:", err);
+      }
+    };
+
+    const fetchUsers = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(`/api/admin/admin-users/${id}/users`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
+        setUsers(response.data);
+      } catch (err) {
+        console.error("Error fetching users:", err);
+      }
+    };
+
     fetchAdmin();
     fetchCompanies();
-  }, [id]);
+    fetchDoors();
+    fetchUsers();
+  }, [id, formData.companyId]);
 
   const handleEdit = () => {
     setIsEditModalOpen(true);
@@ -180,7 +214,57 @@ const AdminProfile = () => {
             </div>
           </div>
 
-          {/* Edit Admin Modal */}
+          {/* Doors Table */}
+          <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
+            <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
+              Doors Created by Admin
+            </h2>
+            <table className="w-full">
+              <thead>
+                <tr>
+                  <th className="text-left p-2">Door Code</th>
+                  <th className="text-left p-2">Room Name</th>
+                  <th className="text-left p-2">Location</th>
+                </tr>
+              </thead>
+              <tbody>
+                {doors.map((door) => (
+                  <tr key={door._id}>
+                    <td className="p-2">{door.doorCode}</td>
+                    <td className="p-2">{door.roomName}</td>
+                    <td className="p-2">{door.location}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Users Table */}
+          <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
+            <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
+              Users Created by Admin
+            </h2>
+            <table className="w-full">
+              <thead>
+                <tr>
+                  <th className="text-left p-2">First Name</th>
+                  <th className="text-left p-2">Last Name</th>
+                  <th className="text-left p-2">Email</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((user) => (
+                  <tr key={user._id}>
+                    <td className="p-2">{user.firstName}</td>
+                    <td className="p-2">{user.lastName}</td>
+                    <td className="p-2">{user.email}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+         {/* Edit Admin Modal */}
           <Modal isVisible={isEditModalOpen} onClose={handleCloseEditModal}>
             <h2 className="text-xl text-slate-700 dark:text-slate-200 font-bold mb-4">
               Edit Admin
