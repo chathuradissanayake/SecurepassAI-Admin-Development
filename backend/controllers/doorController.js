@@ -30,6 +30,7 @@ const createDoor = async (req, res) => {
       qrData,
       qrImage,
       company: adminUser.company._id, // Attach company ID to the new door
+      admin: adminUser._id, // Attach adminUser ID to the new door
       status,
     });
 
