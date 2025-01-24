@@ -81,7 +81,7 @@ const deleteAdminUserById = async (req, res) => {
       return res.status(404).json({ error: 'Admin user not found' });
     }
 
-    await user.remove();
+    await user.deleteOne({ _id: req.params.id });
     res.json({ message: 'Admin user deleted successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
