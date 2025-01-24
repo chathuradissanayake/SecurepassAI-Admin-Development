@@ -80,7 +80,7 @@ const deleteCompany = async (req, res) => {
     if (!company) {
       return res.status(404).json({ error: 'Company not found' });
     }
-    await company.remove();
+    await Company.deleteOne({ _id: req.params.id });
     res.json({ message: 'Company deleted successfully' });
   } catch (error) {
     console.error('Error deleting company:', error);
