@@ -62,7 +62,7 @@ const Settings = () => {
                     { id: 'app-info', label: 'App Information' },
                     { id: 'admin-contact', label: 'Emagency Contact' },
                     { id: 'about-us', label: 'About Us' },
-                    { id: 'log-out', label: 'Log out' },
+                    
                   ].map((item) => (
                     <div
                       key={item.id}

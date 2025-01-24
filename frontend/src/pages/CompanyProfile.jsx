@@ -65,7 +65,16 @@ const CompanyProfile = () => {
         },
         withCredentials: true,
       });
-      setCompany(formData);
+  
+      // Refetch the updated company details
+      const response = await axios.get(`/api/admin/companies/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
+      setCompany(response.data); // Update the state with the new data
+  
       setIsEditModalOpen(false);
       toast.success("Company information updated successfully!");
     } catch (err) {
@@ -73,6 +82,7 @@ const CompanyProfile = () => {
       setError(err.message);
     }
   };
+  
 
   const handleCloseEditModal = () => {
     setIsEditModalOpen(false);
