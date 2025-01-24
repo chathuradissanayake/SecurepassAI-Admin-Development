@@ -129,7 +129,8 @@ const AdminList = () => {
             {adminUsers.map((admin, index) => (
               <tr
                 key={admin._id}
-                className={`hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300`}
+                className={`hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 cursor-pointer`}
+                onClick={() => navigate(`/admin-users/${admin._id}`)}
               >
                 <td className="p-3 border-t border-gray-200 dark:border-slate-500">
                   <p className="text-sm font-medium ">
@@ -149,7 +150,10 @@ const AdminList = () => {
                   <button
                     type="button"
                     className="text-gray-600 hover:text-gray-900 focus:outline-none"
-                    onClick={() => navigate(`/admin-users/${admin._id}`)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/admin-users/${admin._id}`);
+                    }}
                   >
                     &#x22EE; {/* Unicode character for vertical ellipsis */}
                   </button>

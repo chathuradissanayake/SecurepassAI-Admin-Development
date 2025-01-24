@@ -1,5 +1,7 @@
 const AdminUser = require('../models/AdminUser');
 const Company = require('../models/Company');
+const Door = require('../models/Door');
+const User = require('../models/User');
 const bcrypt = require('bcrypt');
 
 const createCompany = async (req, res) => {
@@ -38,4 +40,23 @@ const createAdminUser = async (req, res) => {
   }
 };
 
-module.exports = { createCompany, createAdminUser };
+const getDoorsByAdmin = async (req, res) => {
+  try {
+    const doors = await Door.find({ admin: req.params.adminId });
+    res.status(200).json(doors);
+  } catch (error) {
+    console.error('Error fetching doors:', error);
+    res.status(500).json({ error: 'Error fetching doors' });
+  }
+};
+
+const getUsersByAdmin = async (req, res) => {
+  try {
+    const users = await User.find({ admin: req.params.adminId });
+    res.status(200).json(users);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).json({ error: 'Error fetching users' });
+  }
+};
+module.exports = { createCompany, createAdminUser,getDoorsByAdmin, getUsersByAdmin };

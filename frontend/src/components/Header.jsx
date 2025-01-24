@@ -80,6 +80,9 @@ const Header = () => {
     if (path.startsWith('/companies/') && path.split('/').length === 3) {
       return 'Company Profile';
     }
+    if (path.startsWith('/admin-users/') && path.split('/').length === 3) {
+      return 'Admin Profile';
+    }
     switch (path) {
       case '/dashboard':
         return 'Dashboard';
@@ -136,7 +139,7 @@ const Header = () => {
           )}
           
            <div>
-            <div className="text-xs font-light dark:text-slate-300">log in as</div>
+            <div className="text-xs font-light dark:text-slate-300">logged in as</div>
             <div className="text-lg font-medium text-gray-800 dark:text-white">
               {userDetails.firstName} {userDetails.lastName}
             </div>
