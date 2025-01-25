@@ -3,11 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AdminDoorsList from "../components/AdminDoorsList";
+import AdminUsersList from "../components/AdminUsersList";
+import ConfirmationModal from "../components/ConfirmationModal";
 import Header from "../components/Header";
 import Modal from "../components/Modal";
 import Sidebar from "../components/Sidebar";
 import Spinner from "../components/Spinner";
-import ConfirmationModal from "../components/ConfirmationModal";
 
 const AdminProfile = () => {
   const { id } = useParams();
@@ -26,6 +28,7 @@ const AdminProfile = () => {
   const [companies, setCompanies] = useState([]);
   const [doors, setDoors] = useState([]);
   const [users, setUsers] = useState([]);
+
 
   useEffect(() => {
     const fetchAdmin = async () => {
@@ -213,56 +216,14 @@ const AdminProfile = () => {
               </div>
             </div>
           </div>
+          
 
-          {/* Doors Table */}
-          <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
-            <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
-              Doors Created by Admin
-            </h2>
-            <table className="w-full">
-              <thead>
-                <tr>
-                  <th className="text-left p-2">Door Code</th>
-                  <th className="text-left p-2">Room Name</th>
-                  <th className="text-left p-2">Location</th>
-                </tr>
-              </thead>
-              <tbody>
-                {doors.map((door) => (
-                  <tr key={door._id}>
-                    <td className="p-2">{door.doorCode}</td>
-                    <td className="p-2">{door.roomName}</td>
-                    <td className="p-2">{door.location}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
 
           {/* Users Table */}
-          <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
-            <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
-              Users Created by Admin
-            </h2>
-            <table className="w-full">
-              <thead>
-                <tr>
-                  <th className="text-left p-2">First Name</th>
-                  <th className="text-left p-2">Last Name</th>
-                  <th className="text-left p-2">Email</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((user) => (
-                  <tr key={user._id}>
-                    <td className="p-2">{user.firstName}</td>
-                    <td className="p-2">{user.lastName}</td>
-                    <td className="p-2">{user.email}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <AdminUsersList users={users} />
+
+          {/* Doors Table */}
+          <AdminDoorsList doors={doors} />
 
          {/* Edit Admin Modal */}
           <Modal isVisible={isEditModalOpen} onClose={handleCloseEditModal}>
