@@ -229,7 +229,7 @@ const CompanyProfile = () => {
                     <td className="py-2 px-4 border-t dark:border-slate-500 text-center">
                       <button
                         onClick={() => navigate(`/admin-users/${admin._id}`)}
-                        className="bg-blue-500 border dark:bg-slate-800 dark:text-slate-300 text-sm text-white py-1 px-3 rounded hover:bg-blue-600"
+                        className="bg-blue-500 dark:bg-blue-800 dark:text-slate-300 text-sm text-white py-1 px-3 rounded hover:bg-blue-600 dark:hover:bg-blue-900"
                       >
                         Manage
                       </button>
