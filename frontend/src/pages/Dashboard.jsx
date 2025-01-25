@@ -1,10 +1,11 @@
 import React from "react";
-import Header from "../components/Header";
-import Sidebar from "../components/Sidebar";
-import DashboardMetrics from "../components/DashboardMetrics";
 import CollectionCounts from "../components/CollectionCounts";
+import CompanyList from "../components/CompanyList";
+import DashboardMetrics from "../components/DashboardMetrics";
+import Header from "../components/Header";
 import Messages from "../components/Messages";
-import PendingRequests from "../components/PendingRequests"
+import PendingRequests from "../components/PendingRequests";
+import Sidebar from "../components/Sidebar";
 
 const Dashboard = () => {
   const userRole = localStorage.getItem('role'); // Assuming you store the role in localStorage
@@ -19,7 +20,12 @@ const Dashboard = () => {
           {userRole === 'SuperAdmin' && (
             <div className="mt-6">
               <DashboardMetrics />
+
+              <div className="mt-6">
+                <CompanyList />
+              </div>
             </div>
+            
           )}
 
           {/* Collection Counts Section for Admin */}
@@ -29,17 +35,17 @@ const Dashboard = () => {
               <CollectionCounts />
               </div>
               {/* Access Requests Section */}
-      <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div className="p-6 bg-white dark:bg-slate-600 dark:text-slate-200 border dark:border-none rounded-lg shadow-md">
-          <h3 className="text-gray-600 dark:text-slate-200 text-lg mb-4">Pending Requests</h3>
-          <PendingRequests/>
-        </div>
+              <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="p-6 bg-white dark:bg-slate-600 dark:text-slate-200 border dark:border-none rounded-lg shadow-md">
+                  <h3 className="text-gray-600 dark:text-slate-200 text-lg mb-4">Pending Requests</h3>
+                  <PendingRequests/>
+              </div>
 
-        {/* Messages */}
-        <div className="p-6 bg-white dark:bg-slate-600 dark:text-slate-200 border dark:border-none rounded-lg shadow-md">
-            <Messages/>
-        </div>
-      </div>
+              {/* Messages */}
+              <div className="p-6 bg-white dark:bg-slate-600 dark:text-slate-200 border dark:border-none rounded-lg shadow-md">
+                  <Messages/>
+              </div>
+              </div>
 
             </div>
             
