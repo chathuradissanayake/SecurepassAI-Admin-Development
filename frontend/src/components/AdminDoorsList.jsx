@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 const AdminDoorsList = ({ doors }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const rowsPerPage = 5;
+  const navigate = useNavigate();
 
   // Pagination Handlers
   const handlePrev = () => {
@@ -24,6 +26,10 @@ const AdminDoorsList = ({ doors }) => {
     (currentPage + 1) * rowsPerPage
   );
 
+  const handleRowClick = (id) => {
+    navigate(`/doors/${id}`);
+  };
+
   return (
     <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
       <h2 className="text-xl font-semibold mb-4 text-slate-700 dark:text-slate-100">
@@ -36,6 +42,7 @@ const AdminDoorsList = ({ doors }) => {
             <th className="p-4">Door Code</th>
             <th className="p-4">Room Name</th>
             <th className="p-4">Location</th>
+            <th className="p-4 ">More</th>
           </tr>
         </thead>
         <tbody>
@@ -52,6 +59,14 @@ const AdminDoorsList = ({ doors }) => {
               </td>
               <td className="p-3 border-t border-gray-400 dark:border-slate-500">
                 {door.location}
+              </td>
+              <td className="p-3 ">
+                <button
+                  className="bg-blue-500  dark:bg-blue-800 dark:text-slate-300 text-sm text-white py-1 px-3 rounded hover:bg-blue-600 dark:hover:bg-blue-900"
+                  onClick={() => handleRowClick(doors._id)}
+                >
+                  Manage
+                </button>
               </td>
             </tr>
           ))}
