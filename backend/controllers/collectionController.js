@@ -10,11 +10,14 @@ const getCollectionCounts = async (req, res) => {
     const doorsCount = await Door.countDocuments({ company: companyId });
     const usersCount = await User.countDocuments({ company: companyId });
     const historiesCount = await History.countDocuments({ company: companyId });
+    const messagesCount = await Message.countDocuments({ company: companyId });
+
 
     res.json([
       { name: 'doors', count: doorsCount },
       { name: 'users', count: usersCount },
       { name: 'histories', count: historiesCount },
+      { name: 'contactus', count: messagesCount },
     ]);
   } catch (error) {
     res.status(500).json({ error: error.message });

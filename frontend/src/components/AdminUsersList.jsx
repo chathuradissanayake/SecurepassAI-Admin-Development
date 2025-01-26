@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
 
 const AdminUsersList = ({users}) => {
     const [currentPage, setCurrentPage] = useState(0);
     const rowsPerPage = 5;
-    const navigate = useNavigate();
 
     // Pagination Handlers
     const handlePrev = () => {
@@ -26,9 +24,7 @@ const AdminUsersList = ({users}) => {
     (currentPage + 1) * rowsPerPage
     );
 
-    const handleRowClick = (id) => {
-      navigate(`/users/${id}`);
-    };
+    
 
   return (
     
@@ -42,7 +38,7 @@ const AdminUsersList = ({users}) => {
                   <th className="p-4">First Name</th>
                   <th className="p-4">Last Name</th>
                   <th className="p-4">Email</th>
-                  <th className="p-4">More</th>
+                  
                 </tr>
               </thead>
               <tbody>
@@ -51,14 +47,7 @@ const AdminUsersList = ({users}) => {
                     <td className="p-3">{user.firstName}</td>
                     <td className="p-3">{user.lastName}</td>
                     <td className="p-3">{user.email}</td>
-                    <td className="p-3 ">
-                      <button
-                        className="bg-blue-500  dark:bg-blue-800 dark:text-slate-300 text-sm text-white py-1 px-3 rounded hover:bg-blue-600 dark:hover:bg-blue-900"
-                        onClick={() => handleRowClick(user._id)}
-                      >
-                        Manage
-                      </button>
-                    </td>
+                    
                     
                   </tr>
                 ))}
