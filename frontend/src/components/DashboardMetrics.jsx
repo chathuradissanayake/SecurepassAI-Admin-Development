@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { FaUsers, FaUserShield, FaBuilding } from "react-icons/fa";
+import { FaBuilding, FaCheckCircle, FaCommentAlt, FaDoorOpen, FaUsers, FaUserShield } from "react-icons/fa";
 
 const DashboardMetrics = () => {
   const [metrics, setMetrics] = useState({
     totalUsersCount: 0,
     totalAdminUsersCount: 0,
     totalCompaniesCount: 0,
+    totalDoorsCount:0,
+    totalHistoriesCount:0,
+    totalMessagesCount:0,
   });
 
   useEffect(() => {
@@ -29,6 +32,7 @@ const DashboardMetrics = () => {
   }, []);
 
   return (
+    <div>
     <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {/* Total Users Card */}
       <div className="p-4 bg-white dark:bg-slate-600 dark:text-slate-200 rounded-lg shadow-md flex items-center gap-4">
@@ -43,7 +47,7 @@ const DashboardMetrics = () => {
 
       {/* Total Admin Users Card */}
       <div className="p-4 bg-white dark:bg-slate-600 dark:text-slate-200 rounded-lg shadow-md flex items-center gap-4">
-        <div className="text-green-500 text-3xl">
+        <div className="text-cyan-500 text-3xl">
           <FaUserShield />
         </div>
         <div>
@@ -54,7 +58,7 @@ const DashboardMetrics = () => {
 
       {/* Total Companies Card */}
       <div className="p-4 bg-white dark:bg-slate-600 dark:text-slate-200 rounded-lg shadow-md flex items-center gap-4">
-        <div className="text-yellow-500 text-3xl">
+        <div className="text-orange-500 text-3xl">
           <FaBuilding />
         </div>
         <div>
@@ -62,6 +66,44 @@ const DashboardMetrics = () => {
           <p className="text-2xl font-bold">{metrics.totalCompaniesCount}</p>
         </div>
       </div>
+    </div>
+
+    <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      
+       {/* Active Doors Card */}
+        <div className="p-4 bg-white dark:bg-slate-600 dark:text-slate-200 rounded-lg shadow-md flex items-center gap-4">
+          <div className="text-green-500 text-3xl">
+            <FaDoorOpen />
+          </div>
+          <div>
+            <h3 className="text-gray-600 dark:text-slate-300 text-sm">Total Doors</h3>
+            <p className="text-2xl font-bold">{metrics.totalDoorsCount}</p>
+           </div>
+        </div>
+
+        {/* Total Access Attempts */}
+        <div className="p-4 bg-white dark:bg-slate-600 dark:text-slate-200 rounded-lg shadow-md flex items-center gap-4">
+          <div className="text-yellow-500 text-3xl">
+            <FaCheckCircle />
+          </div>
+          <div>
+            <h3 className="text-gray-600 dark:text-slate-300 text-sm">Total Access Attempts</h3>
+            <p className="text-2xl font-bold">{metrics.totalHistoriesCount}</p>
+           </div>
+        </div>
+
+        {/* Total Messages Card */}
+        <div className="p-4 bg-white dark:bg-slate-600 dark:text-slate-200 rounded-lg shadow-md flex items-center gap-4">
+          <div className="text-purple-500 text-3xl">
+            <FaCommentAlt />
+          </div>
+          <div>
+            <h3 className="text-gray-600 dark:text-slate-300 text-sm">Total Messages</h3>
+            <p className="text-2xl font-bold">{metrics.totalMessagesCount}</p>
+           </div>
+        </div>
+
+    </div>
     </div>
   );
 };
