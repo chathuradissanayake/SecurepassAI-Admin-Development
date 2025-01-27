@@ -3,12 +3,12 @@ import { FaBuilding, FaCheckCircle, FaCommentAlt, FaDoorOpen, FaUsers, FaUserShi
 
 const DashboardMetrics = () => {
   const [metrics, setMetrics] = useState({
-    totalUsersCount: 0,
-    totalAdminUsersCount: 0,
-    totalCompaniesCount: 0,
-    totalDoorsCount:0,
-    totalHistoriesCount:0,
-    totalMessagesCount:0,
+    totalUsersCount: (null),
+    totalAdminUsersCount: (null),
+    totalCompaniesCount: (null),
+    totalDoorsCount:(null),
+    totalHistoriesCount:(null),
+    totalMessagesCount:(null),
   });
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const DashboardMetrics = () => {
         </div>
         <div>
           <h3 className="text-gray-600 dark:text-slate-300 text-sm">Total Users</h3>
-          <p className="text-2xl font-bold">{metrics.totalUsersCount}</p>
+          <p className="text-2xl font-bold">{metrics.totalUsersCount !== null ? metrics.totalUsersCount : "Loading..."}</p>
         </div>
       </div>
 
@@ -52,7 +52,7 @@ const DashboardMetrics = () => {
         </div>
         <div>
           <h3 className="text-gray-600 dark:text-slate-300 text-sm">Total Admin Users</h3>
-          <p className="text-2xl font-bold">{metrics.totalAdminUsersCount}</p>
+          <p className="text-2xl font-bold">{metrics.totalAdminUsersCount !== null ? metrics.totalAdminUsersCount : "Loading..."}</p>
         </div>
       </div>
 
@@ -63,7 +63,7 @@ const DashboardMetrics = () => {
         </div>
         <div>
           <h3 className="text-gray-600 dark:text-slate-300 text-sm">Total Companies</h3>
-          <p className="text-2xl font-bold">{metrics.totalCompaniesCount}</p>
+          <p className="text-2xl font-bold">{metrics.totalCompaniesCount !== null ? metrics.totalCompaniesCount : "Loading..."}</p>
         </div>
       </div>
     </div>
@@ -77,7 +77,7 @@ const DashboardMetrics = () => {
           </div>
           <div>
             <h3 className="text-gray-600 dark:text-slate-300 text-sm">Total Doors</h3>
-            <p className="text-2xl font-bold">{metrics.totalDoorsCount}</p>
+            <p className="text-2xl font-bold">{metrics.totalDoorsCount !== null ? metrics.totalDoorsCount : "Loading..."}</p>
            </div>
         </div>
 
@@ -88,7 +88,7 @@ const DashboardMetrics = () => {
           </div>
           <div>
             <h3 className="text-gray-600 dark:text-slate-300 text-sm">Total Access Attempts</h3>
-            <p className="text-2xl font-bold">{metrics.totalHistoriesCount}</p>
+            <p className="text-2xl font-bold">{metrics.totalHistoriesCount !== null ? metrics.totalHistoriesCount : "Loading..."}</p>
            </div>
         </div>
 
@@ -99,7 +99,7 @@ const DashboardMetrics = () => {
           </div>
           <div>
             <h3 className="text-gray-600 dark:text-slate-300 text-sm">Total Messages</h3>
-            <p className="text-2xl font-bold">{metrics.totalMessagesCount}</p>
+            <p className="text-2xl font-bold">{metrics.totalMessagesCount !== null ? metrics.totalMessagesCount : "Loading..."}</p>
            </div>
         </div>
 
