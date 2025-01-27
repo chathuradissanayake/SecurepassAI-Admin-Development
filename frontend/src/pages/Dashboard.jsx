@@ -1,6 +1,5 @@
 import React from "react";
 import CollectionCounts from "../components/CollectionCounts";
-import CompanyList from "../components/CompanyList";
 import DashboardMetrics from "../components/DashboardMetrics";
 import Header from "../components/Header";
 import Messages from "../components/Messages";
@@ -21,10 +20,10 @@ const Dashboard = () => {
             <div className="mt-6">
               <DashboardMetrics />
 
-              <div className="mt-6">
+              {/* <div className="mt-6">
               <h3 className="text-gray-600 dark:text-slate-200 text-lg mb-4">Companies</h3>
                 <CompanyList />
-              </div>
+              </div> */}
             </div>
             
           )}
