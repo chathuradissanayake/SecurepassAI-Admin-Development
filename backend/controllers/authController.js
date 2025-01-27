@@ -224,24 +224,4 @@ const deleteUserById = async (req, res) => {
   }
 };
 
-// Get user history by _id
-const getUserHistoryById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    console.log('Fetching history for user with id:', id); // Log the id
-
-    // Find the user history
-    const history = await History.find({ 'user.userId': id }).sort({ entryTime: -1 });
-    if (!history) {
-      return res.status(404).json({ error: 'History not found' });
-    }
-
-    console.log('Fetched user history:', history); // Log the fetched history
-    res.status(200).json(history);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: 'Error fetching user history' });
-  }
-};
-
-module.exports = { registerUser, getAllUsers, getUserById, updateUserById, deleteUserById,removeDoorAccess, getUserHistoryById, checkEmailUnique, checkUserIdUnique,checkEmailUniqueForUpdate };
+module.exports = { registerUser, getAllUsers, getUserById, updateUserById, deleteUserById,removeDoorAccess, checkEmailUnique, checkUserIdUnique,checkEmailUniqueForUpdate };

@@ -65,13 +65,14 @@ const UserProfile = () => {
     const fetchHistory = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(`/api/users/${id}/history`, {
+        const response = await axios.get(`/api/history/recent-access`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
           withCredentials: true,
         });
-        setHistoryRecords(response.data);
+        const filteredHistory = response.data.filter(record => record.user._id === id);
+        setHistoryRecords(filteredHistory);
       } catch (err) {
         console.error("Error fetching history:", err);
       }
