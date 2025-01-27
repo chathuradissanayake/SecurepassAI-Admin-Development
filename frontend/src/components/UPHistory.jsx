@@ -66,7 +66,7 @@ const UPHistory = ({ historyRecords }) => {
                 <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{record.doorCode}</td>
                 <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{record.roomName}</td>
                 <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{new Date(record.entryTime).toLocaleString()}</td>
-                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{record.exitTime ? new Date(record.exitTime).toLocaleString() : 'N/A'}</td>
+                <td className="p-3 border-t  border-gray-400 dark:border-slate-500">{record.exitTime ? new Date(record.exitTime).toLocaleString() : 'Still in the Room'}</td>
                 <td className="p-3 border-t  border-gray-400 dark:border-slate-500">
                   {calculateDuration(record.entryTime, record.exitTime)}
                 </td>

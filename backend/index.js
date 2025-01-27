@@ -24,7 +24,7 @@ app.use('/api/contactus', require('./routes/messageRoutes'));
 app.use('/api/collections', require('./routes/collectionRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes')); 
 app.use('/api/dashboard', require('./routes/dashboardRoutes'));
-
+app.use('/api/growth', require('./routes/growthRoutes'));
 
 // Database connection
 mongoose.connect(process.env.MONGO_URI)
