@@ -1,15 +1,15 @@
-import React from 'react';
-import { Line } from 'react-chartjs-2';
 import {
-  Chart as ChartJS,
   CategoryScale,
+  Chart as ChartJS,
+  Legend,
   LinearScale,
-  PointElement,
   LineElement,
+  PointElement,
   Title,
   Tooltip,
-  Legend,
 } from 'chart.js';
+import React from 'react';
+import { Line } from 'react-chartjs-2';
 
 ChartJS.register(
   CategoryScale,
@@ -51,22 +51,22 @@ const CombinedGrowthChart = ({ data }) => {
         label: 'User Growth',
         data: userGrowthData.map(item => item.count),
         fill: false,
-        backgroundColor: 'rgba(75,192,192,0.4)',
-        borderColor: 'rgba(75,192,192,1)',
+        backgroundColor: 'rgba(59, 130, 246, 0.4)',
+        borderColor: 'rgba(59, 130, 246, 1)',
       },
       {
         label: 'Company Growth',
         data: companyGrowthData.map(item => item.count),
         fill: false,
-        backgroundColor: 'rgba(153,102,255,0.4)',
-        borderColor: 'rgba(153,102,255,1)',
+        backgroundColor: 'rgba(249, 115, 22,0.4)',
+        borderColor: 'rgba(249, 115, 22,1)',
       },
       {
         label: 'Door Growth',
         data: doorGrowthData.map(item => item.count),
         fill: false,
-        backgroundColor: 'rgba(255,159,64,0.4)',
-        borderColor: 'rgba(255,159,64,1)',
+        backgroundColor: 'rgba(34, 197, 94,0.4)',
+        borderColor: 'rgba(34, 197, 94,1)',
       },
     ],
   };
@@ -74,10 +74,25 @@ const CombinedGrowthChart = ({ data }) => {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
+    scales: {
+      x: {
+        ticks: {
+          color: 'rgba(148, 163, 184, 1)', // X-axis label color
+        },
+        
+      },
+      y: {
+        ticks: {
+          color: 'rgba(148, 163, 184, 1)', // Y-axis label color
+        },
+        
+      },
+    },
+    
   };
 
   return (
-    <div className="w-full h-64 md:h-96">
+    <div className="w-full h-56 md:h-[330px]">
       <Line data={chartData} options={options} />
     </div>
   );
