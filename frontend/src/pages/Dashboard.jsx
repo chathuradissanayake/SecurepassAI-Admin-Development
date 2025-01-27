@@ -22,6 +22,7 @@ const Dashboard = () => {
               <DashboardMetrics />
 
               <div className="mt-6">
+              <h3 className="text-gray-600 dark:text-slate-200 text-lg mb-4">Companies</h3>
                 <CompanyList />
               </div>
             </div>

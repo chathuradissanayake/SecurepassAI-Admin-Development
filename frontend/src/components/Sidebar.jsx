@@ -96,7 +96,7 @@ const Sidebar = () => {
           {userRole === 'SuperAdmin' && (
             <>
               <li>
-                <NavLink
+                {/* <NavLink
                   to="/companies"
                   className={({ isActive }) =>
                     isActive
@@ -105,7 +105,7 @@ const Sidebar = () => {
                   }
                 >
                   <FaUserFriends /> Companies
-                </NavLink>
+                </NavLink> */}
               </li>
               <li>
                 <NavLink
