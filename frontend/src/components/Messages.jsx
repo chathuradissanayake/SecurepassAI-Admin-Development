@@ -131,7 +131,7 @@ const Messages = () => {
               >
             
                 <div className="my-2 ml-2 flex justify-between">
-                <p className="text-md text-gray-500 dark:text-slate-200 font-medium">
+                <p className="text-md text-slate-700 dark:text-slate-100 font-medium">
                   {message.user && message.user.objId 
                   ? `${message.user.objId.firstName} ${message.user.objId.lastName || ""} (${message.user.userId || "Unknown ID"})` 
                   : "Unknown User"}
