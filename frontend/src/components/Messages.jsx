@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 
 const Messages = () => {
   const [messages, setMessages] = useState([]);
@@ -131,11 +132,15 @@ const Messages = () => {
               >
             
                 <div className="my-2 ml-2 flex justify-between">
-                <p className="text-md text-slate-700 dark:text-slate-100 font-medium">
-                  {message.user && message.user.objId 
-                  ? `${message.user.objId.firstName} ${message.user.objId.lastName || ""} (${message.user.userId || "Unknown ID"})` 
-                  : "Unknown User"}
-                </p>
+                <Link 
+                      to={`/users/${message.user.objId._id}`}
+                      className="block text-md text-slate-700 dark:text-slate-100 font-medium dark:hover:text-slate-400 hover:text-blue-800">
+                  <p>
+                    {message.user && message.user.objId 
+                    ? `${message.user.objId.firstName} ${message.user.objId.lastName || ""} (${message.user.userId || "Unknown ID"})` 
+                    : "Unknown User"}
+                  </p>
+                </Link>
                   
                   <button
                     onClick={() =>
