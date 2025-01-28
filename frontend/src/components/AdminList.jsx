@@ -18,6 +18,35 @@ const AdminList = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const navigate = useNavigate();
 
+  const itemsPerPage = 8;
+  const [currentPage, setCurrentPage] = useState(0);
+
+  // Calculate total pages
+  const totalPages = Math.ceil(adminUsers.length / itemsPerPage);
+
+  // Get the current page data
+  const currentRecords = adminUsers.slice(
+    currentPage * itemsPerPage,
+    currentPage * itemsPerPage + itemsPerPage
+  );
+
+  // Handlers for pagination
+  const handleNext = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrev = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handlePageClick = (pageIndex) => {
+    setCurrentPage(pageIndex);
+  };
+
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
@@ -126,10 +155,11 @@ const AdminList = () => {
             </tr>
           </thead>
           <tbody>
-            {adminUsers.map((admin, index) => (
+            {currentRecords.map((admin, index) => (
               <tr
                 key={admin._id}
-                className={`hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300`}
+                className={`hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 cursor-pointer`}
+                onClick={() => navigate(`/admin-users/${admin._id}`)}
               >
                 <td className="p-3 border-t border-gray-200 dark:border-slate-500">
                   <p className="text-sm font-medium ">
@@ -149,7 +179,10 @@ const AdminList = () => {
                   <button
                     type="button"
                     className="text-gray-600 hover:text-gray-900 focus:outline-none"
-                    onClick={() => navigate(`/admin-users/${admin._id}`)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/admin-users/${admin._id}`);
+                    }}
                   >
                     &#x22EE; {/* Unicode character for vertical ellipsis */}
                   </button>
@@ -158,6 +191,44 @@ const AdminList = () => {
             ))}
           </tbody>
         </table>
+
+        {/* Pagination Controls */}
+        <div className="flex justify-between items-center mt-4">
+          <button
+            onClick={handlePrev}
+            disabled={currentPage === 0}
+            className={`px-4 py-2 rounded ${
+              currentPage === 0 ? 'bg-gray-200 text-gray-400 dark:bg-slate-500 cursor-not-allowed' : 'bg-blue-600 dark:bg-slate-800 text-white hover:bg-blue-700'
+            }`}
+          >
+            Previous
+          </button>
+
+          {/* Page Numbers */}
+          <div className="flex gap-2">
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <button
+                key={index}
+                onClick={() => handlePageClick(index)}
+                className={`px-3 py-1 rounded ${
+                  currentPage === index ? 'bg-blue-700 dark:bg-slate-800 text-white' : 'bg-gray-200 dark:bg-slate-500 dark:text-gray-100 text-gray-600 hover:bg-gray-300'
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
+
+          <button
+            onClick={handleNext}
+            disabled={currentPage === totalPages - 1}
+            className={`px-4 py-2 rounded ${
+              currentPage === totalPages - 1 ? 'bg-gray-200 text-gray-400 dark:bg-slate-500 cursor-not-allowed' : 'bg-blue-600 dark:bg-slate-800 text-white hover:bg-blue-700'
+            }`}
+          >
+            Next
+          </button>
+        </div>
       </div>
 
       {/* Modal for Creating Admin */}

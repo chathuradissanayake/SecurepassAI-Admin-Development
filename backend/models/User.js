@@ -22,7 +22,8 @@ const userSchema = new Schema({
     exitTime: { type: Date },
     status: { type: String, enum: ['Active', 'Exited'], default: 'Active' },
   }],
-  company: { type: Schema.Types.ObjectId, ref: 'Company', required: true }
+  company: { type: Schema.Types.ObjectId, ref: 'Company', required: true },
+  admin: { type: Schema.Types.ObjectId, ref: 'AdminUser', required: true }
 }, { timestamps: true });
 
 const UserModel = mongoose.model('User', userSchema);

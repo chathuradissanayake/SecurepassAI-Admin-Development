@@ -36,7 +36,7 @@ const Sidebar = () => {
     <aside className="w-64 bg-slate-200 dark:bg-slate-800 min-h-screen p-6 flex flex-col">
       <div className="flex justify-center mb-2">
         <NavLink to="/dashboard">
-          <img src={logo} alt="Logo" className="w-60 h-60" />
+          <img src={logo} alt="Logo" className="" />
         </NavLink>
       </div>
       <nav className="flex-1">

@@ -3,11 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AdminDoorsList from "../components/AdminDoorsList";
+import AdminUsersList from "../components/AdminUsersList";
+import ConfirmationModal from "../components/ConfirmationModal";
 import Header from "../components/Header";
 import Modal from "../components/Modal";
 import Sidebar from "../components/Sidebar";
 import Spinner from "../components/Spinner";
-import ConfirmationModal from "../components/ConfirmationModal";
 
 const AdminProfile = () => {
   const { id } = useParams();
@@ -24,6 +26,9 @@ const AdminProfile = () => {
     companyId: "",
   });
   const [companies, setCompanies] = useState([]);
+  const [doors, setDoors] = useState([]);
+  const [users, setUsers] = useState([]);
+
 
   useEffect(() => {
     const fetchAdmin = async () => {
@@ -65,9 +70,41 @@ const AdminProfile = () => {
       }
     };
 
+    const fetchDoors = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(`/api/admin/admin-users/${id}/doors`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
+        setDoors(response.data);
+      } catch (err) {
+        console.error("Error fetching doors:", err);
+      }
+    };
+
+    const fetchUsers = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(`/api/admin/admin-users/${id}/users`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
+        setUsers(response.data);
+      } catch (err) {
+        console.error("Error fetching users:", err);
+      }
+    };
+
     fetchAdmin();
     fetchCompanies();
-  }, [id]);
+    fetchDoors();
+    fetchUsers();
+  }, [id, formData.companyId]);
 
   const handleEdit = () => {
     setIsEditModalOpen(true);
@@ -179,8 +216,16 @@ const AdminProfile = () => {
               </div>
             </div>
           </div>
+          
 
-          {/* Edit Admin Modal */}
+
+          {/* Users Table */}
+          <AdminUsersList users={users} />
+
+          {/* Doors Table */}
+          <AdminDoorsList doors={doors} />
+
+         {/* Edit Admin Modal */}
           <Modal isVisible={isEditModalOpen} onClose={handleCloseEditModal}>
             <h2 className="text-xl text-slate-700 dark:text-slate-200 font-bold mb-4">
               Edit Admin

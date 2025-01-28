@@ -9,7 +9,8 @@ const doorSchema = new mongoose.Schema({
     qrImage: { type: String}, // Base64 string for the QR image
     status: {type: String, default:'Active'},
     approvedUsers: [{ type: Schema.Types.ObjectId, ref: 'User' }] ,
-    company: { type: Schema.Types.ObjectId, ref: 'Company', required: true }
+    company: { type: Schema.Types.ObjectId, ref: 'Company', required: true },
+    admin: { type: Schema.Types.ObjectId, ref: 'AdminUser', required: true }
 }, { timestamps: true });
 
 const Door = mongoose.model('Door', doorSchema); 

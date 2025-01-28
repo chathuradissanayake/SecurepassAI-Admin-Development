@@ -1,5 +1,5 @@
 const express = require('express');
-const { registerUser, getAllUsers, getUserById, updateUserById, deleteUserById, removeDoorAccess, getUserHistoryById,checkEmailUnique, checkUserIdUnique,checkEmailUniqueForUpdate } = require('../controllers/authController');
+const { registerUser, getAllUsers, getUserById, updateUserById, deleteUserById, removeDoorAccess,checkEmailUnique, checkUserIdUnique,checkEmailUniqueForUpdate } = require('../controllers/authController');
 const { authMiddleware, roleMiddleware } = require('../middleware/authMiddleware');
 const router = express.Router();
 
@@ -20,9 +20,6 @@ router.get('/', authMiddleware, roleMiddleware(['SuperAdmin', 'Admin']), getAllU
 
 // Get user by _id
 router.get('/:id', authMiddleware, roleMiddleware(['SuperAdmin', 'Admin']), getUserById);
-
-// Get user history by _id
-router.get('/:id/history', authMiddleware, roleMiddleware(['SuperAdmin', 'Admin']), getUserHistoryById);
 
 // Update user by _id
 router.put('/:id', authMiddleware, roleMiddleware(['Admin']), updateUserById);

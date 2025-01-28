@@ -65,7 +65,16 @@ const CompanyProfile = () => {
         },
         withCredentials: true,
       });
-      setCompany(formData);
+  
+      // Refetch the updated company details
+      const response = await axios.get(`/api/admin/companies/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
+      setCompany(response.data); // Update the state with the new data
+  
       setIsEditModalOpen(false);
       toast.success("Company information updated successfully!");
     } catch (err) {
@@ -73,6 +82,7 @@ const CompanyProfile = () => {
       setError(err.message);
     }
   };
+  
 
   const handleCloseEditModal = () => {
     setIsEditModalOpen(false);
@@ -182,6 +192,22 @@ const CompanyProfile = () => {
             </div>
           </div>
 
+          {/* Locations Tiles */}
+          <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
+            <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
+              Locations
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {company.locations.map((location, index) => (
+                <div key={index} className="p-4 border rounded-lg shadow-sm bg-white dark:bg-slate-700 dark:text-slate-300">
+                  <h4 className="text-lg font-semibold text-slate-700 dark:text-slate-100 mb-2">
+                    {location}
+                  </h4>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Admin Users List */}
           <div className="p-4 border dark:border-none rounded-lg shadow-sm bg-white dark:bg-slate-600">
             <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
@@ -190,25 +216,20 @@ const CompanyProfile = () => {
             <table className="w-full mt-4 bg-white dark:bg-slate-700 shadow-md rounded-lg overflow-hidden">
               <thead>
                 <tr className="text-left bg-gray-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-b border-gray-300 dark:border-slate-400">
-                  <th className="p-4 ">Full Name</th>
-                  <th className="p-4 ">Email</th>
-                  <th className="p-4 text-center ">Action</th>
+                  <th className="p-4">Full Name</th>
+                  <th className="p-4">Email</th>
+                  <th className="p-4 text-center">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {company.admins.map((admin) => (
-                  <tr key={admin._id}
-                      className={`hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300`}>
-                    <td className="p-3 border-t border-gray-200 dark:border-slate-500">
-                      {admin.firstName} {admin.lastName}
-                    </td>
-                    <td className="py-2 px-4 border-t dark:border-slate-500 text-slate-500 dark:text-slate-300">
-                      {admin.email}
-                    </td>
+                  <tr key={admin._id} className="hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
+                    <td className="p-3 border-t border-gray-200 dark:border-slate-500">{admin.firstName} {admin.lastName}</td>
+                    <td className="py-2 px-4 border-t dark:border-slate-500 text-slate-500 dark:text-slate-300">{admin.email}</td>
                     <td className="py-2 px-4 border-t dark:border-slate-500 text-center">
                       <button
                         onClick={() => navigate(`/admin-users/${admin._id}`)}
-                        className="bg-blue-500 border dark:bg-slate-800 dark:text-slate-300 text-sm text-white py-1 px-3 rounded hover:bg-blue-600"
+                        className="bg-blue-500 dark:bg-blue-800 dark:text-slate-300 text-sm text-white py-1 px-3 rounded hover:bg-blue-600 dark:hover:bg-blue-900"
                       >
                         Manage
                       </button>
