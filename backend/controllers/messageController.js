@@ -9,7 +9,7 @@ const getMessagesByCompanyId = async (req, res) => {
       return res.status(400).json({ success: false, message: "Admin user or company not found." });
     }
 
-    const messages = await ContactUs.find({ company: adminUser.company._id }).populate('user', 'firstName lastName').sort({ createdAt: -1 });
+    const messages = await ContactUs.find({ company: adminUser.company._id }).populate('user.objId', 'firstName lastName userId').sort({ createdAt: -1 });
     res.status(200).json(messages);
   } catch (error) {
     console.error("Error fetching messages:", error);
@@ -27,7 +27,7 @@ const toggleReadState = async (req, res) => {
       id,
       { status },
       { new: true }
-    );
+    ).populate('user.objId');  // Populate user detailss
 
     if (!updatedMessage) {
       return res.status(404).json({ error: "Message not found" });

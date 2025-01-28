@@ -131,9 +131,11 @@ const Messages = () => {
               >
             
                 <div className="my-2 ml-2 flex justify-between">
-                  <p className="text-md text-gray-500 dark:text-slate-200 font-medium">
-                    {message.user ? message.user.userId : "Unknown User"} {/* Display userId */}
-                  </p>
+                <p className="text-md text-gray-500 dark:text-slate-200 font-medium">
+                  {message.user && message.user.objId 
+                  ? `${message.user.objId.firstName} ${message.user.objId.lastName || ""} (${message.user.userId || "Unknown ID"})` 
+                  : "Unknown User"}
+                </p>
                   
                   <button
                     onClick={() =>
@@ -150,7 +152,11 @@ const Messages = () => {
                 </div>
                 
                 <div className="flex items-center justify-between">
-                  <p className="text-slate-600 dark:text-slate-300 font-mono mx-2 mb-4">{message.message}</p>
+                  <p className={`px-2 py-0.5  font-sm rounded ${
+                      message.status === "read"
+                        ? "text-slate-700 dark:text-slate-300 font-mono mb-4"
+                        : "text-blue-700 dark:text-blue-300 font-mono mb-4"
+                    }`}>{message.message}</p>
                   <button
                     onClick={() => handleReply(message)}
                     className={`${
