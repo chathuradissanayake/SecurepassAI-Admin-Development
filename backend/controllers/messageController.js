@@ -50,7 +50,7 @@ const updateUserStatusOnReply = async (req, res) => {
       id,
       { reply, userstatus: "unread" },
       { new: true }
-    );
+    ).populate('user.objId');  // Populate user detailss;
 
     if (!updatedMessage) {
       return res.status(404).json({ error: "Message not found" });
