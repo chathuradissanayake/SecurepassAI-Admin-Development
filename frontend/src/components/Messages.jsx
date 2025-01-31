@@ -57,6 +57,7 @@ const Messages = () => {
         setUnreadCount((prevCount) =>
           newStatus === "read" ? prevCount - 1 : prevCount + 1
         );
+        //await fetchMessages(); // Refetch all messages after updating
       } else {
         console.error("Failed to toggle message status");
       }
