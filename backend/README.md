@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project is the backend for the QR and FR Admin application. It provides the necessary APIs and services to support the frontend application.
+This project is the backend for the SecurepassAI-Admin-Development application. It provides the necessary APIs and services to support the frontend application.
 
 ## Technologies Used
 
@@ -22,11 +22,11 @@ This project is the backend for the QR and FR Admin application. It provides the
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/yourusername/QR-and-FR-Admin.git
+    git clone https://github.com/yourusername/SecurepassAI-Admin-Development.git
     ```
 2. Navigate to the backend directory:
     ```sh
-    cd QR-and-FR-Admin/backend
+    cd SecurepassAI-Admin-Development/backend
     ```
 3. Install dependencies:
     ```sh
