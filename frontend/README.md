@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project is the frontend component of the QR and FR Admin application. It is built using modern web technologies to provide a seamless user experience.
+This project is the frontend component of the SecurepassAI-Admin-Development application. It is built using modern web technologies to provide a seamless user experience.
 
 ## Technologies Used
 
@@ -25,11 +25,11 @@ Make sure you have the following installed:
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/chathuradissanayake/QR-and-FR-Admin.git
+    git clone https://github.com/chathuradissanayake/SecurepassAI-Admin-Development.git
     ```
 2. Navigate to the frontend directory:
     ```sh
-    cd QR-and-FR-Admin/frontend
+    cd SecurepassAI-Admin-Development/frontend
     ```
 3. Install the dependencies:
     ```sh
