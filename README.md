@@ -1,4 +1,4 @@
-# SecurepassAI-Admin
+# SecurepassAI Admin/SuperAdmin Application 
 
 ## Project Overview
 
